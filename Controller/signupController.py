@@ -8,3 +8,6 @@ class signupController:
 
     def main(self):
         self.view.main()
+    
+    def on_button_click(self, caption):
+        print(f'button {caption} clicked')
