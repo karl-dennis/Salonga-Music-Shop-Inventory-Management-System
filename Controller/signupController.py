@@ -9,5 +9,6 @@ class signupController:
     def main(self):
         self.view.main()
     
-    def on_button_click(self, entryValue):
-        print(f'button clicked, the value is: {entryValue}')
+    def on_button_click(self, usernameValue, passwordValue):
+        # print(f'button clicked, the value is: {usernameValue} for user and {passwordValue} for password')
+        result = self.model.signup(usernameValue, passwordValue)

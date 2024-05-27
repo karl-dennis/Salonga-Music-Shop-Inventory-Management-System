@@ -78,7 +78,6 @@ class signupView(tk.Tk):
 
     def _on_signup_button_click(self):
         username = self.userName.get()
-        self.controller.on_button_click(username)
-
         password = self.password.get()
-        self.controller.on_button_click(password)
+        self.controller.on_button_click(username, password)
+
