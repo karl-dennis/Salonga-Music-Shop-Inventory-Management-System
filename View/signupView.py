@@ -10,6 +10,7 @@ class signupView(tk.Tk):
         self.controller = controller
         
         self.userName = tk.StringVar()
+        self.password = tk.StringVar()
         
         self.title("Salonga Music Shop")
 
@@ -30,8 +31,7 @@ class signupView(tk.Tk):
         self.frame = tk.Frame(self)
         self.frame.grid()
 
-    # this method / function is private, meaning it cant be accessed outside of this class
-
+    # the methods / functions below are private, meaning it cant be accessed outside of this class
     def _signup_Label(self):
         self.signupLabel = tk.Label(self.frame, text="Sign Up")
         self.signupLabel.grid(row=0, column=0, columnspan=2)
@@ -49,10 +49,16 @@ class signupView(tk.Tk):
         self.passwordLabel.grid(row=2, column=0)
 
     def _password_entry(self):
-        self.passwordEntry = tk.Entry(self.frame)
+        self.passwordEntry = tk.Entry(self.frame, textvariable=self.password)
         self.passwordEntry.grid(row=2, column=1)
 
     def _signup_button(self):
-        self.signupButton = tk.Button(self.frame, text="Sign Up")
+        self.signupButton = tk.Button(self.frame, text="Sign Up", command=self._on_signup_button_click)
         self.signupButton.grid(row=3, column=0, columnspan=2)
-    
+
+    def _on_signup_button_click(self):
+        username = self.userName.get()
+        self.controller.on_button_click(username)
+
+        password = self.password.get()
+        self.controller.on_button_click(password)
