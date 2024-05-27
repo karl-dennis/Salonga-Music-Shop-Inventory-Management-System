@@ -1,5 +1,5 @@
 import tkinter as tk
-
+from tkinter import ttk
 class signupView(tk.Tk):
 
     PAD = 10
@@ -15,46 +15,66 @@ class signupView(tk.Tk):
         self.title("Salonga Music Shop")
 
         self.mainframe()
-        self.geometry('340x440')
+        self.custom_styles()
+        self.geometry("400x300+500+200") # TODO: dynamic resizing
+        # self.minsize(400, 300)
+        # self.maxsize(400, 300) 
         self._signup_Label()
+        self.usernameFrame()
         self._username_Label()
         self._userName_entry()
+        self.passwordFrame()
         self._password_Label()
         self._password_entry()
         self._signup_button()
+
 
 
     def main(self):
         self.mainloop()
 
     def mainframe(self):
-        self.frame = tk.Frame(self)
-        self.frame.grid()
-
+        self.frame = ttk.Frame(self, borderwidth=1, relief='ridge')
+        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.7, relheight=0.7)
+    
+    # Added custom fontstyles
+    def custom_styles(self):
+        self.style = ttk.Style()
+        self.style.configure("Text.TLabel", font=('Consolas', 10))
+        self.style.configure("Text.TButton", font=('Consolas', 10))
+        
     # the methods / functions below are private, meaning it cant be accessed outside of this class
     def _signup_Label(self):
-        self.signupLabel = tk.Label(self.frame, text="Sign Up")
-        self.signupLabel.grid(row=0, column=0, columnspan=2)
-
+        self.signupLabel = ttk.Label(self.frame, text="Sign In", font=("Consolas", 12, 'bold'))
+        self.signupLabel.pack(pady=(20,0))
+        
+    def usernameFrame(self): # Added separate frames to merge entry and label widgets
+        self.usernameFrame = ttk.Frame(self.frame)
+        self.usernameFrame.pack(pady=(20,0))
+        
     def _userName_entry(self):
-        self.userNameEntry = tk.Entry(self.frame, textvariable=self.userName)
-        self.userNameEntry.grid(row=1, column=1)
+        self.usernameEntry = ttk.Entry(self.usernameFrame, textvariable=self.userName)
+        self.usernameEntry.pack(side='left', padx=5, pady=5)
 
     def _username_Label(self):
-        self.userNameLabel = tk.Label(self.frame, text="Username")
-        self.userNameLabel.grid(row=1, column=0)
+        self.usernameLabel = ttk.Label(self.usernameFrame, text="Username", style="Text.TLabel")
+        self.usernameLabel.pack(side='left', padx=5, pady=5)
 
+    def passwordFrame(self):
+        self.passwordFrame = ttk.Frame(self.frame)
+        self.passwordFrame.pack(pady=(0,20))
+        
     def _password_Label(self):
-        self.passwordLabel = tk.Label(self.frame, text="Password")
-        self.passwordLabel.grid(row=2, column=0)
+        self.passwordLabel = ttk.Label(self.passwordFrame, text="Password", style="Text.TLabel")
+        self.passwordLabel.pack(side='left', padx=5, pady=5)
 
     def _password_entry(self):
-        self.passwordEntry = tk.Entry(self.frame, textvariable=self.password)
-        self.passwordEntry.grid(row=2, column=1)
+        self.passwordEntry = ttk.Entry(self.passwordFrame, textvariable=self.password)
+        self.passwordEntry.pack(side='left', padx=5, pady=5)
 
     def _signup_button(self):
-        self.signupButton = tk.Button(self.frame, text="Sign Up", command=self._on_signup_button_click)
-        self.signupButton.grid(row=3, column=0, columnspan=2)
+        self.signupButton = ttk.Button(self.frame, text="Confirm", style="Text.TButton", command=self._on_signup_button_click)
+        self.signupButton.pack(pady=(25,0))
 
     def _on_signup_button_click(self):
         username = self.userName.get()
