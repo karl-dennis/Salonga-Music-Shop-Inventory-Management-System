@@ -1,4 +1,5 @@
 from Model.signupModel import *
+from View.loginView import *
 from View.signupView import *
 
 class signupController:

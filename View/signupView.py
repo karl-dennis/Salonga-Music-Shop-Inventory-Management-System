@@ -44,9 +44,9 @@ class signupView(tk.Tk):
         self.minsize(set_width, set_height) # Locks the window dimensions
         self.maxsize(set_width, set_height) 
             
-    def mainframe(self):     
-        self.frame = ttk.Frame(self, borderwidth=1, relief='ridge')
-        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.7, relheight=0.7)
+    def mainframe(self): # Renamed frame for frame switching
+        self.signupFrame = ttk.Frame(self, borderwidth=1, relief='ridge')
+        self.signupFrame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.7, relheight=0.7)
     
     # Added custom fontstyles
     def custom_styles(self):
@@ -56,11 +56,11 @@ class signupView(tk.Tk):
         
     # the methods / functions below are private, meaning it cant be accessed outside of this class
     def _signup_label(self):
-        self.signupLabel = ttk.Label(self.frame, text="Sign Up", font=("Consolas", 12, 'bold'))
+        self.signupLabel = ttk.Label(self.signupFrame, text="Sign Up", font=("Consolas", 12, 'bold'))
         self.signupLabel.pack(pady=(20,10))
         
     def _username_frame(self): # Added separate frames to merge entry and label widgets
-        self.usernameFrame = ttk.Frame(self.frame)
+        self.usernameFrame = ttk.Frame(self.signupFrame)
         self.usernameFrame.pack(pady=(10,0))
         
     def _userName_entry(self):
@@ -72,7 +72,7 @@ class signupView(tk.Tk):
         self.usernameLabel.pack(side='left', padx=5, pady=5)
 
     def _password_frame(self):
-        self.passwordFrame = ttk.Frame(self.frame)
+        self.passwordFrame = ttk.Frame(self.signupFrame)
         self.passwordFrame.pack()
         
     def _password_label(self):
@@ -84,7 +84,7 @@ class signupView(tk.Tk):
         self.passwordEntry.pack(side='left', padx=5, pady=5)
 
     def _button_frame(self): # Frame for merging button widgets
-        self.buttonFrame = ttk.Frame(self.frame)
+        self.buttonFrame = ttk.Frame(self.signupFrame)
         self.buttonFrame.pack(pady=(20,0))
     
     def _back_button(self): # TODO: change window on click

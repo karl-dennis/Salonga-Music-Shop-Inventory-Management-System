@@ -45,9 +45,9 @@ class loginView(tk.Tk):
         self.minsize(set_width, set_height) # Locks the window dimensions
         self.maxsize(set_width, set_height) 
     
-    def mainframe(self):        
-        self.frame = ttk.Frame(self, borderwidth=1, relief='ridge')
-        self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.7, relheight=0.7)
+    def mainframe(self): # Renamed frame for frame switching    
+        self.loginFrame = ttk.Frame(self, borderwidth=1, relief='ridge')
+        self.loginFrame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.7, relheight=0.7)
     
     # Added custom fontstyles
     def custom_styles(self):
@@ -57,11 +57,11 @@ class loginView(tk.Tk):
         
     # the methods / functions below are private, meaning it cant be accessed outside of this class
     def _login_label(self):
-        self.signupLabel = ttk.Label(self.frame, text="Log In", font=("Consolas", 12, 'bold'))
+        self.signupLabel = ttk.Label(self.loginFrame, text="Log In", font=("Consolas", 12, 'bold'))
         self.signupLabel.pack(pady=(20,10))
         
     def _username_frame(self): # Separate frames for merging entry and label widgets
-        self.usernameFrame = ttk.Frame(self.frame)
+        self.usernameFrame = ttk.Frame(self.loginFrame)
         self.usernameFrame.pack(pady=(10,0))
         
     def _userName_entry(self):
@@ -73,7 +73,7 @@ class loginView(tk.Tk):
         self.usernameLabel.pack(side='left', padx=5, pady=5)
 
     def _password_frame(self):
-        self.passwordFrame = ttk.Frame(self.frame)
+        self.passwordFrame = ttk.Frame(self.loginFrame)
         self.passwordFrame.pack()
         
     def _password_label(self):
@@ -85,16 +85,19 @@ class loginView(tk.Tk):
         self.passwordEntry.pack(side='left', padx=5, pady=5)
 
     def _button_frame(self): # Frame for merging button widgets
-        self.buttonFrame = ttk.Frame(self.frame)
+        self.buttonFrame = ttk.Frame(self.loginFrame)
         self.buttonFrame.pack(pady=(20,0))
         
     def _signup_button(self): # TODO: change window on click
-        self.signupButton = ttk.Button(self.buttonFrame, text="Sign Up", style="Text.TButton")
+        self.signupButton = ttk.Button(self.buttonFrame, text="Sign Up", style="Text.TButton", command=self._on_signup_button_click)
         self.signupButton.pack(side='left', padx=5, pady=5)
         
     def _confirm_button(self):
         self.confirmButton = ttk.Button(self.buttonFrame, text="Confirm", style="Text.TButton", command=self._on_confirm_button_click)
         self.confirmButton.pack(side='left', padx=5, pady=5)
+    
+    def _on_signup_button_click(self):
+        self.controller.to_signup()    
     
     def _on_confirm_button_click(self):
         username = self.userName.get()
