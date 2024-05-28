@@ -8,6 +8,7 @@ class signupModel:
         self.create_table()
 
     def signup(self, username, password):
+        
         try:
             self.cursor.execute('''INSERT INTO accounts(username, password) VALUES (?, ?)''', (username, password))
             self.connectDatabase.commit()
