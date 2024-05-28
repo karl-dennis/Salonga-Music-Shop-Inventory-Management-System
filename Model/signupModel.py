@@ -1,4 +1,7 @@
 import sqlite3
+import tkinter as tk
+from tkinter import messagebox
+import bcrypt
 
 class signupModel:
     def __init__(self):
@@ -8,11 +11,22 @@ class signupModel:
         self.create_table()
 
     def signup(self, username, password):
-        
         try:
-            self.cursor.execute('''INSERT INTO accounts(username, password) VALUES (?, ?)''', (username, password))
-            self.connectDatabase.commit()
-            print('Success: User signed up successfully.')
+            # Check if username already exists
+            self.cursor.execute('''SELECT username FROM accounts WHERE username=?''', (username,))
+            if self.cursor.fetchone() is not None:
+                messagebox.showerror('Warning!', 'Username already exists.')
+            else:
+                # Hash the password
+                encoded_password = password.encode('utf-8')
+                hashed_password = bcrypt.hashpw(encoded_password, bcrypt.gensalt())
+
+                # Insert username and hashed password into the database
+                self.cursor.execute('''INSERT INTO accounts (username, password) VALUES (?, ?)''', (username, hashed_password))
+                self.connectDatabase.commit()
+                print('Success: User signed up successfully.')
+                messagebox.showinfo('Success!', 'User signed up successfully.')
+
         except sqlite3.Error as e:
             print('Error:', e)
 
