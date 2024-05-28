@@ -1,6 +1,6 @@
 from Model.signupModel import signupModel
 from View.signupView import signupView
-from Controller.loginController import loginController
+# from Controller.loginController import loginController
 
 class signupController:
     def __init__(self):
@@ -19,6 +19,7 @@ class signupController:
         self.switch_to_login()
 
     def switch_to_login(self):
+        from Controller.loginController import loginController
         self.view.destroy()
         login_controller = loginController()
         login_controller.main()

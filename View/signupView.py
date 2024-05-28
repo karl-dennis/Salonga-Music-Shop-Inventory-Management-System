@@ -25,7 +25,6 @@ class signupView(tk.Tk):
         self._button_frame()
         self._back_button()
         self._confirm_button()
-        self._login_button()  # Add login button
 
     def main(self):
         self.mainloop()
@@ -90,10 +89,6 @@ class signupView(tk.Tk):
     def _confirm_button(self):
         self.confirmButton = ttk.Button(self.buttonFrame, text="Confirm", style="Text.TButton", command=self._on_confirm_button_click)
         self.confirmButton.pack(side='left', padx=5, pady=5)
-
-    def _login_button(self):
-        self.loginButton = ttk.Button(self.buttonFrame, text="Login", style="Text.TButton", command=self._login_button_clicked)
-        self.loginButton.pack(side='left', padx=5, pady=5)
 
     def _on_confirm_button_click(self):
         username = self.userName.get()
