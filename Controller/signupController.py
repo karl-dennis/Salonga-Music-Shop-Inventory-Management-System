@@ -12,3 +12,4 @@ class signupController:
     def on_button_click(self, usernameValue, passwordValue):
         # print(f'button clicked, the value is: {usernameValue} for user and {passwordValue} for password')
         result = self.model.signup(usernameValue, passwordValue)
+      
