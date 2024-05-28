@@ -8,5 +8,7 @@ class loginController:
         
     def main(self):
         self.view.main()
-        
     
+    def on_button_click(self, username, password):
+        # print(f'on controller with username: {username} and password: {password}')
+        loginConfirm = self.model.login(username, password)

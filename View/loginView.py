@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-class Controller:
-    pass
 
 class loginView(tk.Tk):
     
@@ -85,7 +83,7 @@ class loginView(tk.Tk):
     def _password_entry(self):
         self.passwordEntry = ttk.Entry(self.passwordFrame, textvariable=self.password)
         self.passwordEntry.pack(side='left', padx=5, pady=5)
-       
+
     def _button_frame(self): # Frame for merging button widgets
         self.buttonFrame = ttk.Frame(self.frame)
         self.buttonFrame.pack(pady=(20,0))
@@ -95,11 +93,16 @@ class loginView(tk.Tk):
         self.signupButton.pack(side='left', padx=5, pady=5)
         
     def _confirm_button(self):
-        self.confirmButton = ttk.Button(self.buttonFrame, text="Confirm", style="Text.TButton")
+        self.confirmButton = ttk.Button(self.buttonFrame, text="Confirm", style="Text.TButton", command=self._on_confirm_button_click)
         self.confirmButton.pack(side='left', padx=5, pady=5)
+    
+    def _on_confirm_button_click(self):
+        username = self.userName.get()
+        password = self.password.get()
+        self.controller.on_button_click(username, password)
 
 # Code runner, di ko kasi maayos yung main()
-if __name__ == "__main__":
-    controller = Controller()
-    app = loginView(controller)
-    app.main()
+# if __name__ == "__main__":
+#     controller = Controller()
+#     app = loginView(controller)
+#     app.main()

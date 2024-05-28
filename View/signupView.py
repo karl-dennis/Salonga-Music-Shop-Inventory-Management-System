@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+
 class signupView(tk.Tk):
 
     PAD = 10
