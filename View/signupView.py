@@ -15,7 +15,7 @@ class signupView(tk.Tk):
         
         self.title("Salonga Music Shop")
         
-        self.mainframe()
+        self.mainframe() 
         self.center_window()
         self.custom_styles()
         self._signup_label()
@@ -27,7 +27,7 @@ class signupView(tk.Tk):
         self._password_entry()
         self._button_frame()
         self._back_button()
-        self._confirm_button()
+        self._signup_button()
 
 
     def main(self):
@@ -46,7 +46,7 @@ class signupView(tk.Tk):
             
     def mainframe(self): # Renamed frame for frame switching
         self.signupFrame = ttk.Frame(self, borderwidth=1, relief='ridge')
-        self.signupFrame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.7, relheight=0.7)
+        # self.signupFrame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.7, relheight=0.7)
     
     # Added custom fontstyles
     def custom_styles(self):
@@ -88,15 +88,18 @@ class signupView(tk.Tk):
         self.buttonFrame.pack(pady=(20,0))
     
     def _back_button(self): # TODO: change window on click
-        self.backButton = ttk.Button(self.buttonFrame, text="Back", style="Text.TButton")
+        self.backButton = ttk.Button(self.buttonFrame, text="Back", style="Text.TButton", command=self._on_back_button_click)
         self.backButton.pack(side='left', padx=5, pady=5)
         
-    def _confirm_button(self):
-        self.confirmButton = ttk.Button(self.buttonFrame, text="Confirm", style="Text.TButton", command=self._on_confirm_button_click)
+    def _signup_button(self):
+        self.confirmButton = ttk.Button(self.buttonFrame, text="Confirm", style="Text.TButton", command=self._on_signup_button_click)
         self.confirmButton.pack(side='left', padx=5, pady=5)
 
-    def _on_confirm_button_click(self):
+    def _on_back_button_click(self):
+        self.controller.to_login()
+    
+    def _on_signup_button_click(self):
         username = self.userName.get()
         password = self.password.get()
-        self.controller.on_button_click(username, password)
+        self.controller.on_signup_query(username, password)
 

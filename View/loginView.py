@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-
 class loginView(tk.Tk):
     
     PAD = 10
@@ -99,10 +98,16 @@ class loginView(tk.Tk):
     def _on_signup_button_click(self):
         self.controller.to_signup()    
     
+    def show_signup(self):
+        pass
+        
+    def hide_signup(self):
+        pass    
+    
     def _on_confirm_button_click(self):
         username = self.userName.get()
         password = self.password.get()
-        self.controller.on_button_click(username, password)
+        self.controller.on_login_query(username, password)
 
 # Code runner, di ko kasi maayos yung main()
 # if __name__ == "__main__":
