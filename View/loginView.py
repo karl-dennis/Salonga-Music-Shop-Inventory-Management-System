@@ -24,9 +24,9 @@ class loginView(tk.Tk):
         self._username_frame()
         self._username_label()
         self._userName_entry()
-        # self._password_frame()
-        # self._password_label()
-        # self._password_entry()
+        self._password_frame()
+        self._password_label()
+        self._password_entry()
         self._button_frame()
         self._signup_button()
         self._confirm_button()
@@ -49,7 +49,7 @@ class loginView(tk.Tk):
         self.frame = ttk.Frame(self, borderwidth=1, relief='solid')
         # self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, relwidth=0.7, relheight=0.7)
         self.frame.place(x=200, y=150, anchor=tk.CENTER, width=280, height=210)
-        # Shadow(self.frame, color='#888888', size=1.015, offset_y=4)
+        Shadow(self.frame, color='#888888', size=1.015, offset_y=4)
         
         
         
@@ -92,7 +92,7 @@ class loginView(tk.Tk):
         self.usernameLabel.pack(side='left', padx=5, pady=5)
 
     def _password_frame(self):
-        self.passwordFrame = ttk.Frame(self.frame)
+        self.passwordFrame = ttk.Frame(self.formFrame)
         self.passwordFrame.pack()
 
     def _password_label(self):
