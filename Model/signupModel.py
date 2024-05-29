@@ -40,7 +40,7 @@ class signupModel:
     def create_table(self):
         try:
             self.create_table_query = '''CREATE TABLE IF NOT EXISTS accounts(
-            username TEXT, password TEXT
+            emplpyee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, birthday TEXT, email_address TEXT, username TEXT, password TEXT
             )'''
             self.cursor.execute(self.create_table_query)
         except sqlite3.Error as e:
