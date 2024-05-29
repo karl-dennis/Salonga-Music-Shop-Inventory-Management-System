@@ -12,11 +12,10 @@ class signupController:
     def main(self):
         self.view.main()
 
-    def on_button_click(self, usernameValue, passwordValue):
-        if usernameValue != '' and passwordValue != '':
-            result = self.model.signup(usernameValue, passwordValue)
-            if result:
-                self.switch_to_login()
+    def on_button_click(self, usernameValue, passwordValue, firstNameValue, lastNameValue, birthdayValue, emailValue):
+        if usernameValue != '' and passwordValue != '' and firstNameValue != '' and lastNameValue != '' and birthdayValue != '' and emailValue != '':
+            result = self.model.signup(usernameValue, passwordValue, firstNameValue, lastNameValue, birthdayValue, emailValue)
+            self.switch_to_login()
         else:
             messagebox.showerror('Warning!','Enter all data')
 

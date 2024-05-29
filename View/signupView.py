@@ -4,8 +4,6 @@ import numpy as np
 
 class signupView(tk.Tk):
 
-    PAD = 10
-
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
@@ -190,7 +188,12 @@ class signupView(tk.Tk):
     def _on_confirm_button_click(self):
         username = self.userName.get()
         password = self.password.get()
-        self.controller.on_button_click(username, password)
+        firstName = self.firstName.get()
+        lastname = self.lastName.get()
+        birthday = self.birthday.get()
+        email = self.email.get()
+
+        self.controller.on_button_click(username, password, firstName, lastname, birthday, email)
 
     def _back_button_clicked(self):
         self.controller.back_button_on_click()

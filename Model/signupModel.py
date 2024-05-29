@@ -10,7 +10,7 @@ class signupModel:
         self.create_database()
         self.create_table()
 
-    def signup(self, username, password):
+    def signup(self, username, password, firstName, lastName, birthday, email):
         try:
             # Check if username already exists
             self.cursor.execute('''SELECT username FROM accounts WHERE username=?''', (username,))
@@ -19,10 +19,11 @@ class signupModel:
             else:
                 # Hash the password
                 encoded_password = password.encode('utf-8')
-                hashed_password = bcrypt.hashpw(encoded_password, bcrypt.gensalt())
+                hashed_password = bcrypt.hashpw(encoded_password, bcrypt.gensalt()).decode('utf-8')
 
                 # Insert username and hashed password into the database
-                self.cursor.execute('''INSERT INTO accounts (username, password) VALUES (?, ?)''', (username, hashed_password))
+                data = (username, hashed_password, firstName, lastName, birthday, email)
+                self.cursor.execute('''INSERT INTO accounts (username, password, first_name, last_name, birthday, email_address) VALUES (?, ?, ?, ?, ?, ?)''', data)
                 self.connectDatabase.commit()
                 print('Success: User signed up successfully.')
                 messagebox.showinfo('Success!', 'User signed up successfully.')
@@ -40,7 +41,7 @@ class signupModel:
     def create_table(self):
         try:
             self.create_table_query = '''CREATE TABLE IF NOT EXISTS accounts(
-            emplpyee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, birthday TEXT, email_address TEXT, username TEXT, password TEXT
+            employee_id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, birthday TEXT, email_address TEXT, username TEXT, password TEXT
             )'''
             self.cursor.execute(self.create_table_query)
         except sqlite3.Error as e:
