@@ -8,6 +8,7 @@ class signupView(tk.Tk):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
+        self.adminNumber = tk.IntVar()
         self.userName = tk.StringVar()
         self.password = tk.StringVar()
         self.title("Salonga Music Shop")
@@ -16,6 +17,9 @@ class signupView(tk.Tk):
         self.center_window()
         self.custom_styles()
         self._signup_label()
+        self._adminnumber_frame()
+        self._adminnumber_label()
+        self._adminNumber_entry()
         self._username_frame()
         self._username_label()
         self._userName_entry()
@@ -54,17 +58,30 @@ class signupView(tk.Tk):
         self.signupLabel = ttk.Label(self.frame, text="Sign Up", font=("Consolas", 12, 'bold'))
         self.signupLabel.pack(pady=(20, 10))
 
+    def _adminnumber_frame(self):
+        self._adminnumberFrame = ttk.Frame(self.frame)
+        self._adminnumberFrame.pack(pady=(10, 0))
+
+    def _adminnumber_label(self):
+        self.adminnumberLabel = ttk.Label(self.usernameFrame, text="Admin Number", style="Text.TLabel")
+        self.adminnumber.pack(side='left', padx=5, pady=5)
+
+    def _adminNumber_entry(self):
+        self.adminnumberEntry = ttk.Entry(self.adminnumberFrame, textvariable=self.adminNumber)
+        self.adminnumberEntry.pack(side='left', padx=5, pady=5)
+    
     def _username_frame(self):
         self.usernameFrame = ttk.Frame(self.frame)
         self.usernameFrame.pack(pady=(10, 0))
+    
+    def _username_label(self):
+        self.usernameLabel = ttk.Label(self.usernameFrame, text="Username", style="Text.TLabel")
+        self.usernameLabel.pack(side='left', padx=5, pady=5)
 
     def _userName_entry(self):
         self.usernameEntry = ttk.Entry(self.usernameFrame, textvariable=self.userName)
         self.usernameEntry.pack(side='left', padx=5, pady=5)
 
-    def _username_label(self):
-        self.usernameLabel = ttk.Label(self.usernameFrame, text="Username", style="Text.TLabel")
-        self.usernameLabel.pack(side='left', padx=5, pady=5)
 
     def _password_frame(self):
         self.passwordFrame = ttk.Frame(self.frame)
@@ -91,9 +108,10 @@ class signupView(tk.Tk):
         self.confirmButton.pack(side='left', padx=5, pady=5)
 
     def _on_confirm_button_click(self):
+        adminNumber = self.adminNumber.get()
         username = self.userName.get()
         password = self.password.get()
-        self.controller.on_button_click(username, password)
+        self.controller.on_button_click(adminNumber, username, password)
 
     def _back_button_clicked(self):
         self.controller.back_button_on_click()
