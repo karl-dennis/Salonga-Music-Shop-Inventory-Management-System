@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import numpy as np
-
+from tkcalendar import DateEntry
 class signupView(tk.Tk):
 
     def __init__(self, controller):
@@ -106,7 +106,7 @@ class signupView(tk.Tk):
         self.usernameFrame.pack(side='left')
 
     def _username_entry(self):
-        self.usernameEntry = ttk.Entry(self.usernameFrame, textvariable=self.userName)
+        self.usernameEntry = ttk.Entry(self.usernameFrame, textvariable=self.userName, width=15)
         self.usernameEntry.pack(side='left', padx=5, pady=5)
 
     def _username_label(self):
@@ -122,7 +122,7 @@ class signupView(tk.Tk):
         self.passwordLabel.pack(side='left', padx=5, pady=5)
 
     def _password_entry(self):
-        self.passwordEntry = ttk.Entry(self.passwordFrame, textvariable=self.password, show='*')
+        self.passwordEntry = ttk.Entry(self.passwordFrame, textvariable=self.password, width=15, show='*')
         self.passwordEntry.pack(side='left', padx=5, pady=5)
 
     def _firstname_frame(self):
@@ -134,7 +134,7 @@ class signupView(tk.Tk):
         self.firstNameLabel.pack(side='left', padx=5, pady=5)
         
     def _firstname_entry(self):
-        self.firstNameEntry = ttk.Entry(self.firstNameFrame, textvariable=self.firstName)
+        self.firstNameEntry = ttk.Entry(self.firstNameFrame, textvariable=self.firstName, width=15)
         self.firstNameEntry.pack(side='left', padx=5, pady=5)
 
     def _lastname_frame(self):
@@ -146,7 +146,7 @@ class signupView(tk.Tk):
         self.lastNameLabel.pack(side='left', padx=5, pady=5)
         
     def _lastname_entry(self):
-        self.lastNameEntry = ttk.Entry(self.lastNameFrame, textvariable=self.lastName)
+        self.lastNameEntry = ttk.Entry(self.lastNameFrame, textvariable=self.lastName, width=15)
         self.lastNameEntry.pack(side='left', padx=5, pady=5)
     
     def _birthday_frame(self): 
@@ -158,10 +158,22 @@ class signupView(tk.Tk):
         self.birthdayLabel.pack(side='left', padx=5, pady=5)
     
     def _birthday_entry(self): # TODO: implement tkcalendar instead of ttk.Entry
-        self.birthdayEntry = ttk.Entry(self.birthdayFrame, textvariable=self.birthday)
-        self.birthdayEntry.pack(side='left', padx=5, pady=5)
+        # self.birthdayEntry = ttk.Entry(self.birthdayFrame, textvariable=self.birthday)
+        # self.birthdayEntry.pack(side='left', padx=5, pady=5)
+        self.calendarEntry = DateEntry(self.birthdayFrame, textvariable=self.birthday, 
+                                       firstweekday='sunday', showweeknumbers=False,
+                                       background='#F7F7F7', foreground='#393939', 
+                                       headersbackground='#92A3AA', headersforeground='#FFFFFF',
+                                       selectbackground='#5089B5', selectforeground='#FFFFFF',
+                                       normalbackground='#FFFFFF', normalforeground='#6D6D6D',
+                                       weekendbackground='#FFFFFF', weekendforeground='#6D6D6D',
+                                       othermonthbackground='#E6E6E6', othermonthforeground='#BFBFBF',
+                                       othermonthwebackground='#E6E6E6', othermonthweforeground='#BFBFBF',
+                                       bordercolor='#92A3AA', 
+                                       )
+        self.calendarEntry.pack(side='left', padx=5, pady=5)
 
-    def _email_frame(self):
+    def _email_frame(self): 
         self.emailFrame = ttk.Frame(self.formRow3, style='CustomForm.TFrame')
         self.emailFrame.pack(side='left')
 
@@ -170,7 +182,7 @@ class signupView(tk.Tk):
         self.emailLabel.pack(side='left', padx=5, pady=5)
         
     def _email_entry(self):
-        self.emailEntry = ttk.Entry(self.emailFrame, textvariable=self.email)
+        self.emailEntry = ttk.Entry(self.emailFrame, textvariable=self.email, width=15)
         self.emailEntry.pack(side='left', padx=5, pady=5)
 
     def _button_frame(self):
