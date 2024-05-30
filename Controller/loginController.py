@@ -16,6 +16,7 @@ class loginController:
             loginConfirm = self.model.login(username, password)
             if loginConfirm:
                 print(loginConfirm)
+                messagebox.showinfo('Success', 'Login Successful')
         else:
             messagebox.showerror('Warning!','Enter all data')
 

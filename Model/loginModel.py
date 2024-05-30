@@ -1,5 +1,7 @@
 import sqlite3
 import bcrypt
+import tkinter as tk
+from tkinter import messagebox
 
 class loginModel:
     def __init__(self):
@@ -12,7 +14,7 @@ class loginModel:
             result = self.cursor.fetchone()
             
             if result is None:
-                print('Error: Username does not exist.')
+                messagebox.showerror('Invalid', 'Username does not exist')
                 return False
             
             stored_hashed_password = result[0]
