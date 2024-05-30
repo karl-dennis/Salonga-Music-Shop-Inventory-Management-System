@@ -3,8 +3,8 @@ from tkinter import ttk
 import numpy as np
 
 
-class Controller():
-    pass
+# class Controller():
+#     pass
 
 class dashboardView(tk.Tk):
 
@@ -38,7 +38,7 @@ class dashboardView(tk.Tk):
         Shadow(self.frame, color='#888888', size=1.015, offset_y=4)
     
     def _top_label(self):
-        self.signupLabel = ttk.Label(self.frame, text="Sign Up", font=("Consolas", 14, 'bold'), 
+        self.signupLabel = ttk.Label(self.frame, text="Dashboard", font=("Consolas", 14, 'bold'), 
                                     relief='solid', borderwidth=1, anchor=tk.CENTER, background='#E9E9E9')
         self.signupLabel.place(width=420, height=52, x=-1, y=-1)
 
@@ -201,8 +201,8 @@ class Shadow(tk.Tk):
                         ff.place(x=xx, y=y0-ii+1+diff_size['u'])
 
 
-if __name__ == "__main__":
-    controller = Controller()
-    app = dashboardView(controller)
-    app.main()
+# if __name__ == "__main__":
+#     controller = Controller()
+#     app = dashboardView(controller)
+#     app.main()
     

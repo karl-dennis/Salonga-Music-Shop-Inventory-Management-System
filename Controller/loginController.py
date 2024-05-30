@@ -17,9 +17,14 @@ class loginController:
             if loginConfirm:
                 print(loginConfirm)
                 messagebox.showinfo('Success', 'Login Successful')
+                from Controller.dashboardController import dashboardController
+                self.view.destroy()
+                dashboard_controller = dashboardController()
+                dashboard_controller.main()
         else:
             messagebox.showerror('Warning!','Enter all data')
 
+    
     def switch_to_signup(self):
         from Controller.signupController import signupController
         self.view.destroy()

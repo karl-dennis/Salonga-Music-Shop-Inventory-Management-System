@@ -1,6 +1,5 @@
 from Model.signupModel import signupModel
 from View.signupView import signupView
-# from Controller.loginController import loginController
 import tkinter as tk
 from tkinter import messagebox
 

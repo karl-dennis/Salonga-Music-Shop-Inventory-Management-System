@@ -81,15 +81,15 @@ class signupView(tk.Tk):
         
     def _formrow1_frame(self):
         self.formRow1 = ttk.Frame(self.formFrame)
-        self.formRow1.pack(pady=(10,0))
+        self.formRow1.place(x=20, y=28)
     
     def _formrow2_frame(self):
         self.formRow2 = ttk.Frame(self.formFrame)
-        self.formRow2.pack(pady=(10,0))
+        self.formRow2.place(x=20, y=78)
     
     def _formrow3_frame(self):
         self.formRow3 = ttk.Frame(self.formFrame)
-        self.formRow3.pack(pady=(10,0))
+        self.formRow3.place(x=20, y=128)
     
     def _bottom_frame(self):
         self.bottomFrame = ttk.Frame(self.frame, borderwidth=1, relief='solid')
@@ -99,7 +99,9 @@ class signupView(tk.Tk):
         self.style = ttk.Style()
         self.style.configure("Text.TLabel", font=('Consolas', 10), background='#F7F7F7')
         self.style.configure("Custom.TButton", font=('Consolas', 10))
-        self.style.configure("CustomForm.TFrame", background='#F7F7F7', borderwidth=1, relief='solid')
+        self.style.configure("CustomForm.TFrame", background='#F7F7F7', 
+                             borderwidth=1, relief='solid',
+                             )
     
     def _username_frame(self):
         self.usernameFrame = ttk.Frame(self.formRow1, style='CustomForm.TFrame')
@@ -107,10 +109,11 @@ class signupView(tk.Tk):
 
     def _username_entry(self):
         self.usernameEntry = ttk.Entry(self.usernameFrame, textvariable=self.userName, width=15)
+        self.usernameEntry.insert(0, "Username")
         self.usernameEntry.pack(side='left', padx=5, pady=5)
 
     def _username_label(self):
-        self.usernameLabel = ttk.Label(self.usernameFrame, text="Username", style="Text.TLabel")
+        self.usernameLabel = ttk.Label(self.usernameFrame, text="Username", style="Text.TLabel", width=10)
         self.usernameLabel.pack(side='left', padx=5, pady=5)
 
     def _password_frame(self):
@@ -118,7 +121,7 @@ class signupView(tk.Tk):
         self.passwordFrame.pack(side='left')
 
     def _password_label(self):
-        self.passwordLabel = ttk.Label(self.passwordFrame, text="Password", style="Text.TLabel")
+        self.passwordLabel = ttk.Label(self.passwordFrame, text="Password", style="Text.TLabel", width=10)
         self.passwordLabel.pack(side='left', padx=5, pady=5)
 
     def _password_entry(self):
@@ -130,7 +133,7 @@ class signupView(tk.Tk):
         self.firstNameFrame.pack(side='left')
 
     def _firstname_label(self):
-        self.firstNameLabel = ttk.Label(self.firstNameFrame, text="First Name", style="Text.TLabel")
+        self.firstNameLabel = ttk.Label(self.firstNameFrame, text="First Name", style="Text.TLabel", width=10)
         self.firstNameLabel.pack(side='left', padx=5, pady=5)
         
     def _firstname_entry(self):
@@ -142,7 +145,7 @@ class signupView(tk.Tk):
         self.lastNameFrame.pack(side='left')
 
     def _lastname_label(self):
-        self.lastNameLabel = ttk.Label(self.lastNameFrame, text="First Name", style="Text.TLabel")
+        self.lastNameLabel = ttk.Label(self.lastNameFrame, text="Last Name", style="Text.TLabel", width=10)
         self.lastNameLabel.pack(side='left', padx=5, pady=5)
         
     def _lastname_entry(self):
@@ -154,7 +157,7 @@ class signupView(tk.Tk):
         self.birthdayFrame.pack(side='left')
     
     def _birthday_label(self):
-        self.birthdayLabel = ttk.Label(self.birthdayFrame, text="Birthday", style="Text.TLabel")
+        self.birthdayLabel = ttk.Label(self.birthdayFrame, text="Birthday", style="Text.TLabel", width=10)
         self.birthdayLabel.pack(side='left', padx=5, pady=5)
     
     def _birthday_entry(self): # TODO: implement tkcalendar instead of ttk.Entry
@@ -178,7 +181,7 @@ class signupView(tk.Tk):
         self.emailFrame.pack(side='left')
 
     def _email_label(self):
-        self.emailLabel = ttk.Label(self.emailFrame, text="Email Address", style="Text.TLabel")
+        self.emailLabel = ttk.Label(self.emailFrame, text="Email", style="Text.TLabel", width=10)
         self.emailLabel.pack(side='left', padx=5, pady=5)
         
     def _email_entry(self):
