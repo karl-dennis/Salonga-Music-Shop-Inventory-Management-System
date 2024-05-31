@@ -1,10 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 import numpy as np
-
-
-class Controller():
-    pass
+from ctypes import windll
+# windll.shcore.SetProcessDpiAwareness(1)
 
 class dashboardView(tk.Tk):
 
@@ -13,45 +11,94 @@ class dashboardView(tk.Tk):
         self.controller = controller
         self.title("Salonga Music Shop")
         
-        self.mainframe() # Main/Root Frame
         self.set_window() 
         self.custom_styles()
-        self._top_label() # Top Bar + Heading   
-        self._bottom_frame() 
+        self._top_frame() 
+        self._left_frame()
+        self._dashboard_frame() # Main Frame
+        self._top_label()
+        
+        self._app_icon()
+        self._selection_1()
+        self._selection_2()
+        self._selection_3()
+        self._selection_4()
+        self._selection_5()
+
         
     def main(self):
         self.mainloop()
 
     def set_window(self):
-        set_width = 600
-        set_height = 400
+        set_width = 760
+        set_height = 500
         x = int((self.winfo_screenwidth() / 2) - (set_width / 2))
         y = int((self.winfo_screenheight() / 2) - (set_height / 2))
         self.geometry(f'{set_width}x{set_height}+{x}+{y}')
-        self.configure(bg='#FFFFFF')
+        self.configure(bg='#DFDFDF')
         self.minsize(set_width, set_height)
         self.maxsize(set_width, set_height)
-
-    def mainframe(self):
-        self.frame = ttk.Frame(self, borderwidth=1, relief='solid')
-        self.frame.place(x=300, y=200, anchor=tk.CENTER, width=420, height=280)
-        Shadow(self.frame, color='#888888', size=1.015, offset_y=4)
     
-    def _top_label(self):
-        self.signupLabel = ttk.Label(self.frame, text="Sign Up", font=("Consolas", 14, 'bold'), 
-                                    relief='solid', borderwidth=1, anchor=tk.CENTER, background='#E9E9E9')
-        self.signupLabel.place(width=420, height=52, x=-1, y=-1)
+    def _top_frame(self):
+        self.topFrame = ttk.Frame(self, style='TopFrame.TFrame')
+        self.topFrame.place(x=446, y=24, anchor=tk.CENTER, width=628, height=48)
+        Shadow(self.topFrame, color='#A1A1A1', size=1.015, offset_x=0, offset_y=1)
 
-    def _bottom_frame(self):
-        self.bottomFrame = ttk.Frame(self.frame, borderwidth=1, relief='solid')
-        self.bottomFrame.place(relx=0.5, y=257, anchor=tk.CENTER, width=420, height=44)
+    def _left_frame(self):
+        self.leftFrame = ttk.Frame(self, style='LeftFrame.TFrame')
+        self.leftFrame.place(x=66, y=250, anchor=tk.CENTER, width=132, height=500)
+        Shadow(self.leftFrame, color='#9F9F9F', size=1.015, offset_x=1, offset_y=0)
+
+    def _dashboard_frame(self):
+        self.dashboardFrame = ttk.Frame(self, style='DashboardFrame.TFrame')
+        self.dashboardFrame.place(x=448, y=276, anchor=tk.CENTER, width=623, height=447)
         
     def custom_styles(self):
         self.style = ttk.Style()
-        self.style.configure("Text.TLabel", font=('Consolas', 10), background='#F7F7F7')
-        self.style.configure("Custom.TButton", font=('Consolas', 10))
-        self.style.configure("CustomForm.TFrame", background='#F7F7F7', borderwidth=1, relief='solid')
+        self.style.configure("Custom.TLabel", font=('Consolas', 12, 'bold'))    # Bigger fontsize
+        self.style.configure("Custom2.TLabel", font=('Consolas', 10, 'italic')) # Smaller fontsize
+
+        self.style.configure("Custom.TButton", font=('Consolas', 12, 'bold'), foreground="#2D2D2D")  # Active Selection
+        self.style.configure("Custom2.TButton", font=('Consolas', 12, 'bold'), foreground="#595959") # Inactive Selection
+
+        self.style.configure("TopFrame.TFrame", background='#FFFFFF')
+        self.style.configure("LeftFrame.TFrame", background='#EDEDED')
+        self.style.configure("DashboardFrame.TFrame", background='#DFDFDF')
+
+    def _top_label(self):
+        self.topLabel = ttk.Label(self.topFrame, text='Admin', style='Custom.TLabel', background='#FFFFFF')
+        self.topLabel.place(x=20, y=10)
     
+    def _app_icon(self): # Icon + Name placeholder
+        self.appIcon = ttk.Label(self.leftFrame, text="Icon: Name", foreground='#595959', style='Custom2.TLabel')
+        self.appIcon.place(x=20, y=12)
+    
+    def _selection_1(self):
+        self.selection1 = tk.Button(self.leftFrame, text="Dashboard", font=('Consolas', 12, 'bold'), foreground="#2D2D2D", background='#FFFFFF', relief=tk.FLAT)
+        self.selection1.place(x=6, y=50, width=116, height=36)
+        Shadow(self.selection1, color='#7F7F7F', size=1.1, offset_x=1, offset_y=1)
+        
+    def _selection_2(self):
+        self.selection2 = tk.Button(self.leftFrame, text="Products", font=('Consolas', 12, 'bold'), foreground="#595959", background='#E2E2E2', relief=tk.FLAT)
+        self.selection2.place(x=8, y=95, width=116, height=36)
+        # Shadow(self.selection2, color='#7F7F7F', size=1.1, offset_x=1, offset_y=1)
+        
+    def _selection_3(self):
+        self.selection3 = tk.Button(self.leftFrame, text="Reports", font=('Consolas', 12, 'bold'), foreground="#595959", background='#E2E2E2', relief=tk.FLAT)
+        self.selection3.place(x=8, y=140, width=116, height=36)
+        # Shadow(self.selection2, color='#7F7F7F', size=1.1, offset_x=1, offset_y=1)
+        
+    def _selection_4(self):
+        self.selection4 = tk.Button(self.leftFrame, text="Delivery", font=('Consolas', 12, 'bold'), foreground="#595959", background='#E2E2E2', relief=tk.FLAT)
+        self.selection4.place(x=8, y=185, width=116, height=36)
+        # Shadow(self.selection2, color='#7F7F7F', size=1.1, offset_x=1, offset_y=1)
+        
+    def _selection_5(self):
+        self.selection5 = tk.Button(self.leftFrame, text="Employees", font=('Consolas', 12, 'bold'), foreground="#595959", background='#E2E2E2', relief=tk.FLAT)
+        self.selection5.place(x=8, y=230, width=116, height=36)
+        # Shadow(self.selection2, color='#7F7F7F', size=1.1, offset_x=1, offset_y=1)
+
+
 
 
 
@@ -102,7 +149,8 @@ class Shadow(tk.Tk):
         
         # Get master and master's background
         self.master = widget.master
-        self.to_rgb = tuple([el//257 for el in self.master.winfo_rgb(self.master.cget('bg'))])
+        self.to_rgb = tuple([int(x) for x in self.master.winfo_rgb(self.master.tk.call('ttk::style', 'lookup', self.master.winfo_class(), '-background'))]) # Updated line to account for button
+
         
         # Start with normal view
         self.__lines = []
@@ -201,8 +249,5 @@ class Shadow(tk.Tk):
                         ff.place(x=xx, y=y0-ii+1+diff_size['u'])
 
 
-if __name__ == "__main__":
-    controller = Controller()
-    app = dashboardView(controller)
-    app.main()
+
     
