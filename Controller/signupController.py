@@ -1,6 +1,6 @@
 from Model.signupModel import signupModel
 from View.signupView import signupView
-import tkinter as tk
+# import tkinter as tk
 from tkinter import messagebox
 
 class signupController:
