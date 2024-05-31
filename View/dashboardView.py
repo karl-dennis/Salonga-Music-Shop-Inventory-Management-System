@@ -10,9 +10,9 @@ class dashboardView(ctk.CTk):
         
         self.set_window() 
         self.custom_styles()
-        self._top_frame() 
+        self._top_frame()
         self._left_frame()
-        self._dashboard_frame() 
+        self._dashboard_frame()
         self._top_label()
         
         self._app_icon()

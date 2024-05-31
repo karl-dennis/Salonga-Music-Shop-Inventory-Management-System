@@ -14,6 +14,7 @@ class loginController:
     def on_button_click(self, username, password):
         if username != '' and password != '':
             loginConfirm = self.model.login(username, password)
+            self.model.send_email(username)
             if loginConfirm:
                 print(loginConfirm)
                 messagebox.showinfo('Success', 'Login Successful')

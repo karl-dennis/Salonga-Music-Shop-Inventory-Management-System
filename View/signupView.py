@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import numpy as np
 from tkcalendar import DateEntry
+
 class signupView(tk.Tk):
 
     def __init__(self, controller):

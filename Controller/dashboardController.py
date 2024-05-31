@@ -10,5 +10,3 @@ class dashboardController:
         
     def main(self):
         self.view.main()
-        
-    
