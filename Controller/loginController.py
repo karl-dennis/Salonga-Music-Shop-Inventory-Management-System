@@ -1,6 +1,6 @@
 from Model.loginModel import loginModel
 from View.loginView import loginView
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import messagebox
 
 class loginController:
