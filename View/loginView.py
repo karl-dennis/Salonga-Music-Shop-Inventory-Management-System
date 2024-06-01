@@ -65,7 +65,7 @@ class loginView(ctk.CTk):
     def _top_label(self):
         self.signupLabel = ctk.CTkLabel(self.topFrame, text="Log In", width=280, height=37, bg_color='#E9E9E9',
                                         font=("Consolas", 14, 'bold'), anchor='center')
-        self.signupLabel.place(x=-1, y=-1) 
+        self.signupLabel.place(x=0, y=0) 
     
     def _username_frame(self):
         self.usernameFrame = ctk.CTkFrame(self.formFrame, border_width=0, bg_color='#F7F7F7', fg_color='#F7F7F7')
