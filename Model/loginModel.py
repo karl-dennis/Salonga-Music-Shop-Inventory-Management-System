@@ -51,7 +51,10 @@ class loginModel:
     def send_email(self, username):
         self.server = smtplib.SMTP('smtp.gmail.com', 587)
         self.server.starttls()
-        self.server.login('salongamusic40@gmail.com', 'ykqz ccoh cmpa rrii')
+        self.server.login('salongamusic40@gmail.com', 
+                        #   'ykqz ccoh cmpa rrii',
+                          'ebef pjjt eovv dkwe',
+                          )
 
         employee_id = self.get_id_account(username)
 
