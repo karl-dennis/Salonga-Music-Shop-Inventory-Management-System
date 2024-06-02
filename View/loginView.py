@@ -43,7 +43,7 @@ class loginView(ctk.CTk):
         self.maxsize(set_width, set_height)
 
     def mainframe(self):
-        self.frame = ctk.CTkFrame(self, width=280, height=210, fg_color='#F7F7F7', border_width=2,) 
+        self.frame = ctk.CTkFrame(self, width=280, height=210, fg_color='#F7F7F7', border_width=2) 
         self.frame.place(x=200, y=150, anchor='center')
             
     def _top_frame(self):
@@ -51,8 +51,8 @@ class loginView(ctk.CTk):
         self.topFrame.place(x=200, y=66, anchor='center')
     
     def _form_frame(self):
-        self.formFrame = ctk.CTkFrame(self.frame, width=280, height=138, border_width=0)
-        self.formFrame.place(x=139, y=103, anchor='center')
+        self.formFrame = ctk.CTkFrame(self, width=280, height=138, border_width=0)
+        self.formFrame.place(x=200, y=150, anchor='center')
     
     def _bottom_frame(self):
         self.bottomFrame = ctk.CTkFrame(self, width=280, height=37, border_width=0) 

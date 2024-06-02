@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
+import tkinter as ttk # DateEntry style
 from tkcalendar import DateEntry
 class signupView(ctk.CTk):
 
@@ -19,12 +20,14 @@ class signupView(ctk.CTk):
         self.custom_styles()
 
         self.mainframe() # Main/Root Frame
-        self._top_label() # Top Bar + Heading
+        self._top_frame()
         self._form_frame() 
         self._formrow1_frame()
         self._formrow2_frame()
         self._formrow3_frame()       
         self._bottom_frame()
+        self._top_label() 
+
         
         self._username_frame()
         self._username_label()
@@ -47,7 +50,6 @@ class signupView(ctk.CTk):
         self._email_label()
         self._email_entry()
         
-        self._button_frame()
         self._back_button()
         self._confirm_button()
         
@@ -65,34 +67,37 @@ class signupView(ctk.CTk):
         self.maxsize(set_width, set_height)
 
     def mainframe(self):
-        self.frame = ctk.CTkFrame(self, border_width=1, width=420, height=280) 
+        self.frame = ctk.CTkFrame(self, width=420, height=280, fg_color='#F7F7F7', border_width=2) 
         self.frame.place(x=300, y=200, anchor='center')
     
+    def _top_frame(self):
+        self.topFrame = ctk.CTkFrame(self, width=416, height=52, bg_color='#E9E9E9', border_width=2, corner_radius=0)
+        self.topFrame.place(x=300, y=88, anchor='center')
+        
     def _top_label(self):
-        self.signupLabel = ctk.CTkLabel(self.frame, text="Sign Up", font=("Consolas", 14, 'bold'), 
-                                    anchor='center', bg_color='#E9E9E9',
-                                    width=420, height=52)
-        self.signupLabel.place(x=-1, y=-1)
+        self.signupLabel = ctk.CTkLabel(self.topFrame, text="Sign Up", width=420, height=52, bg_color='#E9E9E9',
+                                        font=("Consolas", 14, 'bold'), anchor='center')
+        self.signupLabel.place(x=0, y=-5)
 
     def _form_frame(self):
-        self.formFrame = ctk.CTkFrame(self.frame, width=420, height=186)
-        self.formFrame.place(x=209, y=143, anchor='center')
+        self.formFrame = ctk.CTkFrame(self, width=416, height=186, fg_color='#F7F7F7', corner_radius=0)
+        self.formFrame.place(x=300, y=200, anchor='center')
         
     def _formrow1_frame(self):
-        self.formRow1 = ctk.CTkFrame(self.formFrame)
-        self.formRow1.place(x=20, y=28)
+        self.formRow1 = ctk.CTkFrame(self.formFrame, fg_color='transparent')
+        self.formRow1.place(x=210, y=38, anchor='center')
     
     def _formrow2_frame(self):
-        self.formRow2 = ctk.CTkFrame(self.formFrame)
-        self.formRow2.place(x=20, y=78)
+        self.formRow2 = ctk.CTkFrame(self.formFrame, fg_color='transparent')
+        self.formRow2.place(x=210, y=88, anchor='center')
     
     def _formrow3_frame(self):
-        self.formRow3 = ctk.CTkFrame(self.formFrame)
-        self.formRow3.place(x=20, y=128)
+        self.formRow3 = ctk.CTkFrame(self.formFrame, fg_color='transparent')
+        self.formRow3.place(x=210, y=138, anchor='center')
     
     def _bottom_frame(self):
-        self.bottomFrame = ctk.CTkFrame(self.frame, border_width=1, width=420, height=44)
-        self.bottomFrame.place(relx=0.5, y=257, anchor='center')
+        self.bottomFrame = ctk.CTkFrame(self.frame, border_width=0, width=420, height=44)
+        self.bottomFrame.place(relx=0.5, y=250, anchor='center')
         
     def custom_styles(self):
         pass
@@ -102,8 +107,8 @@ class signupView(ctk.CTk):
         self.usernameFrame.pack(side='left')
 
     def _username_entry(self):
-        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, textvariable=self.userName, width=15)
-        self.usernameEntry.insert(0, "Username")
+        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, textvariable=self.userName, width=110)
+        # self.usernameEntry.insert(0, "Username") # Placeholder, unfinished
         self.usernameEntry.pack(side='left', padx=5, pady=5)
 
     def _username_label(self):
@@ -119,7 +124,7 @@ class signupView(ctk.CTk):
         self.passwordLabel.pack(side='left', padx=5, pady=5)
 
     def _password_entry(self):
-        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, textvariable=self.password, width=15, show='*')
+        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, textvariable=self.password, width=110, show='*')
         self.passwordEntry.pack(side='left', padx=5, pady=5)
 
     def _firstname_frame(self):
@@ -131,7 +136,7 @@ class signupView(ctk.CTk):
         self.firstNameLabel.pack(side='left', padx=5, pady=5)
         
     def _firstname_entry(self):
-        self.firstNameEntry = ctk.CTkEntry(self.firstNameFrame, textvariable=self.firstName, width=15)
+        self.firstNameEntry = ctk.CTkEntry(self.firstNameFrame, textvariable=self.firstName, width=110)
         self.firstNameEntry.pack(side='left', padx=5, pady=5)
 
     def _lastname_frame(self):
@@ -143,7 +148,7 @@ class signupView(ctk.CTk):
         self.lastNameLabel.pack(side='left', padx=5, pady=5)
         
     def _lastname_entry(self):
-        self.lastNameEntry = ctk.CTkEntry(self.lastNameFrame, textvariable=self.lastName, width=15)
+        self.lastNameEntry = ctk.CTkEntry(self.lastNameFrame, textvariable=self.lastName, width=110)
         self.lastNameEntry.pack(side='left', padx=5, pady=5)
     
     def _birthday_frame(self): 
@@ -152,7 +157,7 @@ class signupView(ctk.CTk):
     
     def _birthday_label(self):
         self.birthdayLabel = ctk.CTkLabel(self.birthdayFrame, text="Birthday", width=10)
-        self.birthdayLabel.pack(side='left', padx=5, pady=5)
+        self.birthdayLabel.pack(side='left', padx=(5,35), pady=5)
     
     def _birthday_entry(self): # TODO: implement tkcalendar instead of ctk.CTkEntry
         # self.birthdayEntry = ctk.CTkEntry(self.birthdayFrame, textvariable=self.birthday)
@@ -176,23 +181,21 @@ class signupView(ctk.CTk):
 
     def _email_label(self):
         self.emailLabel = ctk.CTkLabel(self.emailFrame, text="Email", width=10)
-        self.emailLabel.pack(side='left', padx=5, pady=5)
+        self.emailLabel.pack(side='left', padx=(5,15), pady=5)
         
     def _email_entry(self):
-        self.emailEntry = ctk.CTkEntry(self.emailFrame, textvariable=self.email, width=15)
+        self.emailEntry = ctk.CTkEntry(self.emailFrame, textvariable=self.email, width=110)
         self.emailEntry.pack(side='left', padx=5, pady=5)
 
-    def _button_frame(self):
-        self.buttonFrame = ctk.CTkFrame(self.bottomFrame, fg_color="#F0F0F0")
-        self.buttonFrame.pack(anchor='e')
-
     def _back_button(self):
-        self.backButton = ctk.CTkButton(self.buttonFrame, text="Back", command=self._back_button_clicked)
-        self.backButton.pack(side='left', padx=5, pady=7)
+        self.backButton = ctk.CTkButton(self.bottomFrame, width=85, height=25, fg_color='#E9E9E9', hover_color='#cdcdcd',
+                                          text="Back", font=("Consolas", 12), text_color='#595959', command=self._back_button_clicked)
+        self.backButton.pack(side='left', padx=7, pady=5)
 
     def _confirm_button(self):
-        self.confirmButton = ctk.CTkButton(self.buttonFrame, text="Confirm", command=self._on_confirm_button_click)
-        self.confirmButton.pack(side='left', padx=(5,10), pady=7)
+        self.confirmButton = ctk.CTkButton(self.bottomFrame, width=85, height=25, fg_color='#1FB2E7', hover_color='#2193BC',
+                                           text="Confirm", font=("Consolas", 12), text_color='#F7F7F7', command=self._on_confirm_button_click)
+        self.confirmButton.pack(side='left', padx=7, pady=5)
 
     def _on_confirm_button_click(self):
         username = self.userName.get()

@@ -1,5 +1,5 @@
 from Controller import *
-import View 
+import View     
 import Model
 
 if __name__ == '__main__':
