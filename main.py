@@ -3,9 +3,11 @@ import View
 import Model
 
 if __name__ == '__main__':
-    signUp = signupController()
-    signUp.main()
+    # signUp = signupController()
+    # signUp.main()
     # login = loginController()
     # login.main()    
     # dashboard = dashboardController()
-    # dashboard.main()    
+    # dashboard.main()   
+    product = productController()
+    product.main()
