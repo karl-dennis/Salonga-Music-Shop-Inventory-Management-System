@@ -1,5 +1,5 @@
 import customtkinter as ctk
-import numpy as np
+
 
 class dashboardView(ctk.CTk):
 
@@ -8,8 +8,10 @@ class dashboardView(ctk.CTk):
         self.controller = controller
         self.title("Salonga Music Shop")
         
+        ctk.set_appearance_mode("light")
         self.set_window() 
         self.custom_styles()
+
         self._top_frame() 
         self._left_frame()
         self._dashboard_frame() 
@@ -36,44 +38,47 @@ class dashboardView(ctk.CTk):
         self.maxsize(set_width, set_height)
     
     def _top_frame(self):
-        self.topFrame = ctk.CTkFrame(self, width=628, height=48, fg_color='#DFDFDF')
-        self.topFrame.place(x=446, y=24, anchor='center')
+        self.topFrame = ctk.CTkFrame(self, width=628, height=48, fg_color='#FFFFFF', corner_radius=0)
+        self.topFrame.place(x=446, y=25, anchor='center')
 
     def _left_frame(self):
-        self.leftFrame = ctk.CTkFrame(self, width=132, height=500, fg_color='#DFDFDF')
+        self.leftFrame = ctk.CTkFrame(self, width=132, height=500, fg_color='#E2E2E2', corner_radius=0)
         self.leftFrame.place(x=66, y=250, anchor='center')
 
     def _dashboard_frame(self):
-        self.dashboardFrame = ctk.CTkFrame(self, width=623, height=447, fg_color='#DFDFDF')
-        self.dashboardFrame.place(x=448, y=276, anchor='center')
+        self.dashboardFrame = ctk.CTkFrame(self, width=628, height=452, fg_color='#DFDFDF', corner_radius=0)
+        self.dashboardFrame.place(x=446, y=275, anchor='center')
         
     def custom_styles(self):
         pass
 
     def _top_label(self):
-        self.topLabel = ctk.CTkLabel(self.topFrame, text='Admin', text_color='#2D2D2D', bg_color='#FFFFFF')
+        self.topLabel = ctk.CTkLabel(self.topFrame, text='Admin', font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
         self.topLabel.place(x=20, y=10)
     
     def _app_icon(self):
         self.appIcon = ctk.CTkLabel(self.leftFrame, text="Icon: Name", text_color='#595959')
-        self.appIcon.place(x=20, y=12)
+        self.appIcon.place(x=30, y=12)
     
     def _selection_1(self):
-        self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 12, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', width=116, height=36)
-        self.selection1.place(x=6, y=50)
+        self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 12, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd', width=116, height=36)
+        self.selection1.place(x=8, y=50)
 
     def _selection_2(self):
-        self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', width=116, height=36)
+        self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36)
         self.selection2.place(x=8, y=95)
         
     def _selection_3(self):
-        self.selection3 = ctk.CTkButton(self.leftFrame, text="Reports", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', width=116, height=36)
+        self.selection3 = ctk.CTkButton(self.leftFrame, text="Reports", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36)
         self.selection3.place(x=8, y=140)
         
     def _selection_4(self):
-        self.selection4 = ctk.CTkButton(self.leftFrame, text="Delivery", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', width=116, height=36)
+        self.selection4 = ctk.CTkButton(self.leftFrame, text="Delivery", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36)
         self.selection4.place(x=8, y=185)
         
     def _selection_5(self):
-        self.selection5 = ctk.CTkButton(self.leftFrame, text="Employees", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', width=116, height=36)
+        self.selection5 = ctk.CTkButton(self.leftFrame, text="Employees", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36)
         self.selection5.place(x=8, y=230)
+
+
+    
