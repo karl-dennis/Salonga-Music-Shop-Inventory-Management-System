@@ -11,4 +11,13 @@ class dashboardController:
     def main(self):
         self.view.main()
         
-    
+    def show_dashboard(self):
+        self.view.destroy()
+        self.view = dashboardView(self)
+        self.view.main()
+
+    def show_products(self):
+        from Controller.productController import productController
+        self.view.destroy()
+        product_controller = productController()
+        product_controller.main()
