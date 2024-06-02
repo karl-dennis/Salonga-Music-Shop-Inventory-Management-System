@@ -11,7 +11,7 @@ class dashboardController:
     def main(self):
         self.view.main()
         
-    def show_dashboard(self):
+    def show_dashboard(self): # Not used
         self.view.destroy()
         self.view = dashboardView(self)
         self.view.main()
@@ -21,3 +21,9 @@ class dashboardController:
         self.view.destroy()
         product_controller = productController()
         product_controller.main()
+
+    def show_reports(self):
+        from Controller.reportController import reportController
+        self.view.destroy()
+        report_controller = reportController()
+        report_controller.main()

@@ -2,5 +2,6 @@ from Model.signupModel import *
 from Model.loginModel import *
 from Model.dashboardModel import *
 from Model.productModel import *
+from Model.reportModel import *
 
-__all__ = ["signupModel", "loginModel", "dashboardModel", "productModel"]
+__all__ = ["signupModel", "loginModel", "dashboardModel", "productModel", "reportModel"]
