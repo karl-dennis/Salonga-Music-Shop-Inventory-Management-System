@@ -17,6 +17,8 @@ class dashboardView(ctk.CTk):
         self._left_frame()
         self._base_frame()
         self._top_label()
+        
+        self.show_inventory()
 
         self._app_icon()
         self._selection_1()
@@ -85,13 +87,13 @@ class dashboardView(ctk.CTk):
         self.clear_base_frame()  # Clear the base frame before showing the new view
         inventory_controller = inventoryController()  # Instantiate the inventory controller
         inventory_view = inventoryView(self.baseFrame, inventory_controller)
-        inventory_view.pack(expand=True, fill="both")
-        print("Inventory view should now be visible")
+        inventory_view.place(x=0, y=0)
+        # print("Inventory view should now be visible")
 
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
-        print("Base frame cleared")
+        # print("Base frame cleared")
 
 
 
