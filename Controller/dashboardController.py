@@ -1,5 +1,7 @@
 from Model.dashboardModel import dashboardModel
 from View.dashboardView import dashboardView
+# controller of inventory
+
 import tkinter as tk
 from tkinter import messagebox
 
@@ -39,3 +41,5 @@ class dashboardController:
         self.view.destroy()
         maintenance_controller = maintenanceController()
         maintenance_controller.main()
+
+

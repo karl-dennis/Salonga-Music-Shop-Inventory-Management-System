@@ -1,5 +1,6 @@
 import customtkinter as ctk
-
+from Controller.inventoryController import inventoryController
+from View.inventoryView import inventoryView
 
 class dashboardView(ctk.CTk):
 
@@ -7,16 +8,18 @@ class dashboardView(ctk.CTk):
         super().__init__()
         self.controller = controller
         self.title("Salonga Music Shop")
-        
+
         ctk.set_appearance_mode("light")
-        self.set_window() 
+        self.set_window()
         self.custom_styles()
 
-        self._top_frame() 
+        self._top_frame()
         self._left_frame()
-        self._base_frame() 
+        self._base_frame()
         self._top_label()
         
+        self.show_inventory()
+
         self._app_icon()
         self._selection_1()
         self._selection_2()
@@ -36,7 +39,7 @@ class dashboardView(ctk.CTk):
         self.configure(bg_color='#DFDFDF')
         self.minsize(set_width, set_height)
         self.maxsize(set_width, set_height)
-    
+
     def _top_frame(self):
         self.topFrame = ctk.CTkFrame(self, width=628, height=48, fg_color='#FFFFFF', corner_radius=0)
         self.topFrame.place(x=446, y=25, anchor='center')
@@ -48,18 +51,18 @@ class dashboardView(ctk.CTk):
     def _base_frame(self):
         self.baseFrame = ctk.CTkFrame(self, width=628, height=452, fg_color='#DFDFDF', corner_radius=0)
         self.baseFrame.place(x=446, y=275, anchor='center')
-        
+
     def custom_styles(self):
         pass
 
     def _top_label(self):
         self.topLabel = ctk.CTkLabel(self.topFrame, text='Admin', font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
         self.topLabel.place(x=20, y=10)
-    
+
     def _app_icon(self):
         self.appIcon = ctk.CTkLabel(self.leftFrame, text="Icon: Name", text_color='#595959')
         self.appIcon.place(x=30, y=12)
-    
+
     def _selection_1(self):
         self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 12, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd', width=116, height=36)
         self.selection1.place(x=8, y=50)
@@ -67,18 +70,31 @@ class dashboardView(ctk.CTk):
     def _selection_2(self):
         self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36, command=self.controller.show_products)
         self.selection2.place(x=8, y=95)
-        
+
     def _selection_3(self):
         self.selection3 = ctk.CTkButton(self.leftFrame, text="Reports", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36, command=self.controller.show_reports)
         self.selection3.place(x=8, y=140)
-        
+
     def _selection_4(self):
         self.selection4 = ctk.CTkButton(self.leftFrame, text="Delivery", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36, command=self.controller.show_deliveries)
         self.selection4.place(x=8, y=185)
-        
+
     def _selection_5(self):
         self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36, command=self.controller.show_maintenance)
         self.selection5.place(x=8, y=230)
 
+    def show_inventory(self):
+        self.clear_base_frame()  # Clear the base frame before showing the new view
+        inventory_controller = inventoryController()  # Instantiate the inventory controller
+        inventory_view = inventoryView(self.baseFrame, inventory_controller)
+        inventory_view.place(x=0, y=0)
+        # print("Inventory view should now be visible")
 
-    
+    def clear_base_frame(self):
+        for widget in self.baseFrame.winfo_children():
+            widget.destroy()
+        # print("Base frame cleared")
+
+
+
+
