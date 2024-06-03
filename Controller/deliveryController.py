@@ -1,20 +1,21 @@
-from Model.dashboardModel import dashboardModel
-from View.dashboardView import dashboardView
+from Model.deliveryModel import deliveryModel
+from View.deliveryView import deliveryView
 import tkinter as tk
 from tkinter import messagebox
 
-class dashboardController:
+class deliveryController:
     def __init__(self):
-        self.model = dashboardModel()
-        self.view = dashboardView(self)
+        self.model = deliveryModel()
+        self.view = deliveryView(self)
         
     def main(self):
         self.view.main()
         
-    def show_dashboard(self): # Not used
+    def show_dashboard(self):
+        from Controller.dashboardController import dashboardController
         self.view.destroy()
-        self.view = dashboardView(self)
-        self.view.main()
+        dashboard_controller = dashboardController()
+        dashboard_controller.main()
 
     def show_products(self):
         from Controller.productController import productController
@@ -27,9 +28,11 @@ class dashboardController:
         self.view.destroy()
         report_controller = reportController()
         report_controller.main()
-        
-    def show_deliveries(self): 
-        from Controller.deliveryController import deliveryController
+    
+    def show_deliveries(self): # Not used
         self.view.destroy()
-        delivery_controller = deliveryController()
-        delivery_controller.main()
+        self.view = deliveryView(self)
+        self.view.main()
+
+    
+

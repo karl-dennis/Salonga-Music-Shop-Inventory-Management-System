@@ -28,4 +28,8 @@ class productController:
         report_controller = reportController()
         report_controller.main()
 
-
+    def show_deliveries(self): 
+        from Controller.deliveryController import deliveryController
+        self.view.destroy()
+        delivery_controller = deliveryController()
+        delivery_controller.main()

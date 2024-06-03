@@ -28,5 +28,10 @@ class reportController:
         self.view = reportView(self)
         self.view.main()
 
+    def show_deliveries(self): 
+        from Controller.deliveryController import deliveryController
+        self.view.destroy()
+        delivery_controller = deliveryController()
+        delivery_controller.main()
     
 
