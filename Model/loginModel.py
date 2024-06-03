@@ -52,6 +52,7 @@ class loginModel:
         self.server = smtplib.SMTP('smtp.gmail.com', 587)
         self.server.starttls()
         self.server.login('salongamusic40@gmail.com', 'ebef pjjt eovv dkwe')
+        #ebef pjjt eovv dkwe - karl's app password
 
         employee_id = self.get_id_account(username)
 

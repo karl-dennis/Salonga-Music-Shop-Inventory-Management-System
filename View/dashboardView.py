@@ -1,4 +1,6 @@
 import customtkinter as ctk
+from Controller.inventoryController import *
+from View.inventoryView import *
 
 
 class dashboardView(ctk.CTk):
@@ -23,6 +25,8 @@ class dashboardView(ctk.CTk):
         self._selection_3()
         self._selection_4()
         self._selection_5()
+
+        self.inventory_frame()
 
     def main(self):
         self.mainloop()
@@ -80,5 +84,7 @@ class dashboardView(ctk.CTk):
         self.selection5 = ctk.CTkButton(self.leftFrame, text="Employees", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36)
         self.selection5.place(x=8, y=230)
 
-
-    
+    def inventory_frame(self):
+        inventory_controller = inventoryController()
+        inventory_frame = inventory_controller.view  # Using the view from the inventory controller
+        inventory_frame.place(x=0, y=0, relwidth=1, relheight=1)
