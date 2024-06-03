@@ -1,6 +1,10 @@
 import customtkinter as ctk
 from Controller.inventoryController import inventoryController
 from View.inventoryView import inventoryView
+from View.graphSalesVIew import graphSalesView
+from Controller.graphSalesController import graphSalesController
+from View.stockAlertsView import stockAlertsView
+from Controller.stockAlertsController import stockAlertsController
 
 class dashboardView(ctk.CTk):
 
@@ -19,6 +23,8 @@ class dashboardView(ctk.CTk):
         self._top_label()
         
         self.show_inventory()
+        self.show_graph_of_sales()
+        self.show_stock_alerts()
 
         self._app_icon()
         self._selection_1()
@@ -83,18 +89,26 @@ class dashboardView(ctk.CTk):
         self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36, command=self.controller.show_maintenance)
         self.selection5.place(x=8, y=230)
 
+
+    # Can be moved to dashboard controller (i think)
     def show_inventory(self):
-        self.clear_base_frame()  # Clear the base frame before showing the new view
-        inventory_controller = inventoryController()  # Instantiate the inventory controller
+        # self.clear_base_frame()
+        inventory_controller = inventoryController()
         inventory_view = inventoryView(self.baseFrame, inventory_controller)
-        inventory_view.place(x=0, y=0)
+        inventory_view.place(x=450, y=10)
         # print("Inventory view should now be visible")
+    def show_graph_of_sales(self):
+        # self.clear_base_frame()
+        graph_of_sales_controller = graphSalesController()
+        graph_of_sales_view = graphSalesView(self.baseFrame, graph_of_sales_controller)
+        graph_of_sales_view.place(x=10, y=10)
+
+    def show_stock_alerts(self):
+        stock_alerts_controller = stockAlertsController()
+        stock_alerts_view = stockAlertsView(self.baseFrame, stock_alerts_controller)
+        stock_alerts_view.place(x = 10, y = 100)
 
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
         # print("Base frame cleared")
-
-
-
-
