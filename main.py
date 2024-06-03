@@ -8,6 +8,4 @@ if __name__ == '__main__':
     # login = loginController()
     # login.main()    
     dashboard = dashboardController()
-    dashboard.main()   
-    # product = productController()
-    # product.main()
+    dashboard.main()

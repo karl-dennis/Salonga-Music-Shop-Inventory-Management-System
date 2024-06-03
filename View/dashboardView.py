@@ -77,7 +77,7 @@ class dashboardView(ctk.CTk):
         self.selection4.place(x=8, y=185)
         
     def _selection_5(self):
-        self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36)
+        self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36, command=self.controller.show_maintenance)
         self.selection5.place(x=8, y=230)
 
 

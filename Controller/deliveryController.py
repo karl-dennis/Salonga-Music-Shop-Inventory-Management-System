@@ -34,5 +34,9 @@ class deliveryController:
         self.view = deliveryView(self)
         self.view.main()
 
-    
+    def show_maintenance(self): 
+        from Controller.maintenanceController import maintenanceController
+        self.view.destroy()
+        maintenance_controller = maintenanceController()
+        maintenance_controller.main()
 

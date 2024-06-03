@@ -34,4 +34,9 @@ class reportController:
         delivery_controller = deliveryController()
         delivery_controller.main()
     
+    def show_maintenance(self): 
+        from Controller.maintenanceController import maintenanceController
+        self.view.destroy()
+        maintenance_controller = maintenanceController()
+        maintenance_controller.main()
 
