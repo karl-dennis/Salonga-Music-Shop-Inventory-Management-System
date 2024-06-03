@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class productView(ctk.CTk):
+class reportView(ctk.CTk):
 
     def __init__(self, controller):
         super().__init__()
@@ -64,11 +64,11 @@ class productView(ctk.CTk):
         self.selection1.place(x=8, y=50)
 
     def _selection_2(self):
-        self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 12, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd', width=116, height=36)
+        self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36, command=self.controller.show_products)
         self.selection2.place(x=8, y=95)
         
     def _selection_3(self):
-        self.selection3 = ctk.CTkButton(self.leftFrame, text="Reports", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36, command=self.controller.show_reports)
+        self.selection3 = ctk.CTkButton(self.leftFrame, text="Reports", font=('Consolas', 12, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd', width=116, height=36)
         self.selection3.place(x=8, y=140)
         
     def _selection_4(self):

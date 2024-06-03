@@ -17,9 +17,25 @@ class productController:
         dashboard_controller = dashboardController()
         dashboard_controller.main()
 
-    def show_products(self):
+    def show_products(self): # Not used
         self.view.destroy()
         self.view = productView(self)
         self.view.main()
+        
+    def show_reports(self): 
+        from Controller.reportController import reportController
+        self.view.destroy()
+        report_controller = reportController()
+        report_controller.main()
 
-
+    def show_deliveries(self): 
+        from Controller.deliveryController import deliveryController
+        self.view.destroy()
+        delivery_controller = deliveryController()
+        delivery_controller.main()
+        
+    def show_maintenance(self): 
+        from Controller.maintenanceController import maintenanceController
+        self.view.destroy()
+        maintenance_controller = maintenanceController()
+        maintenance_controller.main()
