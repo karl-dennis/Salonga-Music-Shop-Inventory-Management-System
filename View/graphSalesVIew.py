@@ -2,7 +2,7 @@ import customtkinter as ctk
 
 class graphSalesView(ctk.CTkFrame):
     def __init__(self, master, controller):
-        super().__init__(master, width=900, height=352, fg_color='#FFF', corner_radius=0)
+        super().__init__(master, width=400, height=352, fg_color='#FFF', corner_radius=0)
         self.controller = controller
         self.create_widgets()
 
