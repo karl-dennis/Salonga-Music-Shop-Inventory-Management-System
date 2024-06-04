@@ -1,10 +1,14 @@
 import customtkinter as ctk
 from Controller.inventoryController import inventoryController
+from Controller.graphSalesController import graphSalesController
+from Controller.stockAlertsController import stockAlertsController
+from Controller.statisticController import statisticController
+from Controller.calendarController import calendarController
 from View.inventoryView import inventoryView
 from View.graphSalesVIew import graphSalesView
-from Controller.graphSalesController import graphSalesController
 from View.stockAlertsView import stockAlertsView
-from Controller.stockAlertsController import stockAlertsController
+from View.statisticView import statisticView
+from View.calendarView import calendarView
 
 class dashboardView(ctk.CTk):
 
@@ -22,6 +26,8 @@ class dashboardView(ctk.CTk):
         self._base_frame()
         self._top_label()
         
+        self.show_calendar()
+        self.show_statistic()
         self.show_inventory()
         self.show_graph_of_sales()
         self.show_stock_alerts()
@@ -47,23 +53,23 @@ class dashboardView(ctk.CTk):
         self.maxsize(set_width, set_height)
 
     def _top_frame(self):
-        self.topFrame = ctk.CTkFrame(self, width=628, height=48, fg_color='#FFFFFF', corner_radius=0)
-        self.topFrame.place(x=446, y=25, anchor='center')
+        self.topFrame = ctk.CTkFrame(self, width=628, height=39, fg_color='#FFFFFF', corner_radius=0)
+        self.topFrame.place(x=446, y=16, anchor='center')
 
     def _left_frame(self):
         self.leftFrame = ctk.CTkFrame(self, width=132, height=504, fg_color='#E2E2E2', corner_radius=0, border_width=2)
         self.leftFrame.place(x=66, y=250, anchor='center')
 
     def _base_frame(self):
-        self.baseFrame = ctk.CTkFrame(self, width=628, height=452, fg_color='#DFDFDF', corner_radius=0)
-        self.baseFrame.place(x=446, y=275, anchor='center')
+        self.baseFrame = ctk.CTkFrame(self, width=628, height=461, fg_color='#DFDFDF', corner_radius=0)
+        self.baseFrame.place(x=446, y=266, anchor='center')
 
     def custom_styles(self):
         pass
 
     def _top_label(self):
         self.topLabel = ctk.CTkLabel(self.topFrame, text='Admin', font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
-        self.topLabel.place(x=20, y=10)
+        self.topLabel.place(x=16, y=6)
 
     def _app_icon(self):
         self.appIcon = ctk.CTkLabel(self.leftFrame, text="Icon: Name", text_color='#595959')
@@ -89,24 +95,33 @@ class dashboardView(ctk.CTk):
         self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 12, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', width=116, height=36, command=self.controller.show_maintenance)
         self.selection5.place(x=8, y=230)
 
-
-    # Can be moved to dashboard controller (i think)
+    def show_statistic(self):
+        statistic_controller = statisticController()
+        statistic_view = statisticView(self.baseFrame, statistic_controller)
+        statistic_view.place(x=10, y=146)
+    
+    def show_calendar(self):
+        # self.clear_base_frame()
+        calendar_controller = calendarController()
+        calendar_view = calendarView(self.baseFrame, calendar_controller)
+        calendar_view.place(x=10, y=10)
+    
     def show_inventory(self):
         # self.clear_base_frame()
         inventory_controller = inventoryController()
         inventory_view = inventoryView(self.baseFrame, inventory_controller)
-        inventory_view.place(x=450, y=10)
-        # print("Inventory view should now be visible")
+        inventory_view.place(x=227, y=10)
+
     def show_graph_of_sales(self):
         # self.clear_base_frame()
         graph_of_sales_controller = graphSalesController()
         graph_of_sales_view = graphSalesView(self.baseFrame, graph_of_sales_controller)
-        graph_of_sales_view.place(x=10, y=10)
+        graph_of_sales_view.place(x=227, y=255)
 
     def show_stock_alerts(self):
         stock_alerts_controller = stockAlertsController()
         stock_alerts_view = stockAlertsView(self.baseFrame, stock_alerts_controller)
-        stock_alerts_view.place(x = 400, y = 10)
+        stock_alerts_view.place(x=10, y=240)
 
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():

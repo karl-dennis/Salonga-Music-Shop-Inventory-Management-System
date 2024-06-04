@@ -7,7 +7,10 @@ from Controller.deliveryController import *
 from Controller.maintenanceController import *
 from Controller.inventoryController import *
 from Controller.graphSalesController import *
-
+from Controller.statisticController import *
+from Controller.stockAlertsController import *
+from Controller.calendarController import *
 __all__ = ["signupController", "loginController", "dashboardController",
            "productController", "reportController", "deliveryController",
-           "maintenanceController", "inventoryController", "graphSalesController"]
+           "inventoryController", "maintenanceController",  "graphSalesController",
+           "stockAlertsController", "statisticController", "calendarController"]
