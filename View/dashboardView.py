@@ -106,7 +106,7 @@ class dashboardView(ctk.CTk):
     def show_stock_alerts(self):
         stock_alerts_controller = stockAlertsController()
         stock_alerts_view = stockAlertsView(self.baseFrame, stock_alerts_controller)
-        stock_alerts_view.place(x=10, y=100)
+        stock_alerts_view.place(x = 10, y = 100)
 
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():

@@ -37,23 +37,23 @@ class deliveryView(ctk.CTk):
         self.maxsize(set_width, set_height)
     
     def _top_frame(self):
-        self.topFrame = ctk.CTkFrame(self, width=628, height=48, fg_color='#FFFFFF', corner_radius=0)
-        self.topFrame.place(x=446, y=25, anchor='center')
+        self.topFrame = ctk.CTkFrame(self, width=628, height=39, fg_color='#FFFFFF', corner_radius=0)
+        self.topFrame.place(x=446, y=16, anchor='center')
 
     def _left_frame(self):
         self.leftFrame = ctk.CTkFrame(self, width=132, height=504, fg_color='#E2E2E2', corner_radius=0, border_width=2)
         self.leftFrame.place(x=66, y=250, anchor='center')
 
     def _base_frame(self):
-        self.baseFrame = ctk.CTkFrame(self, width=628, height=452, fg_color='#DFDFDF', corner_radius=0)
-        self.baseFrame.place(x=446, y=275, anchor='center')
-        
+        self.baseFrame = ctk.CTkFrame(self, width=628, height=461, fg_color='#DFDFDF', corner_radius=0)
+        self.baseFrame.place(x=446, y=266, anchor='center')
+
     def custom_styles(self):
         pass
 
     def _top_label(self):
         self.topLabel = ctk.CTkLabel(self.topFrame, text='Admin', font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
-        self.topLabel.place(x=20, y=10)
+        self.topLabel.place(x=16, y=6)
     
     def _app_icon(self):
         self.appIcon = ctk.CTkLabel(self.leftFrame, text="Icon: Name", text_color='#595959')
