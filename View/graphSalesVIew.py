@@ -9,4 +9,7 @@ class graphSalesView(ctk.CTkFrame):
     def create_widgets(self):
         # Add your widgets here
         label = ctk.CTkLabel(self, text="Graph of Sales View", font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
-        label.pack(padx=20, pady=20)
+        label.pack(padx=5, pady=5)
+
+        inner_frame = ctk.CTkFrame(self, width=300, height=200, fg_color='#F0F0F0')
+        inner_frame.pack(padx=5, pady=5)
