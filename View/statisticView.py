@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class graphSalesView(ctk.CTkFrame):
+class statisticView(ctk.CTkFrame):
     def __init__(self, master, controller):
         super().__init__(master, 
                         #  width=400, height=352, 
@@ -10,11 +10,11 @@ class graphSalesView(ctk.CTkFrame):
 
     def create_widgets(self):
         # Add your widgets here
-        inner_frame = ctk.CTkFrame(self, width=387, height=193, fg_color='#F7F7F7')
+        inner_frame = ctk.CTkFrame(self, width=200, height=82, fg_color='#F7F7F7')
         inner_frame.pack_propagate(0)
         inner_frame.pack()
         
-        label = ctk.CTkLabel(inner_frame, text="Sales Graph", font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
+        label = ctk.CTkLabel(inner_frame, text="Total Revenue", font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
         label.pack(padx=20, pady=20)
 
         

@@ -7,7 +7,11 @@ from Model.deliveryModel import *
 from Model.inventoryModel import *
 from Model.maintenanceModel import *
 from Model.graphSalesModel import *
+from Model.statisticModel import *
+from Model.stockAlertsModel import *
+from Model.calendarModel import *
 
 __all__ = ["signupModel", "loginModel", "dashboardModel",
            "productModel", "reportModel", "deliveryModel",
-           "maintenanceModel", "inventoryModel", "graphSalesModel"]
+           "inventoryModel", "maintenanceModel", "graphSalesModel",
+           "stockAlertsModel", "statisticModel", "calendarModel"]
