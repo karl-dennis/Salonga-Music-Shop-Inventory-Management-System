@@ -1,8 +1,5 @@
-import sys
-
 from Model.dashboardModel import dashboardModel
 from View.dashboardView import dashboardView
-# controller of inventory
 
 import tkinter as tk
 from tkinter import messagebox
