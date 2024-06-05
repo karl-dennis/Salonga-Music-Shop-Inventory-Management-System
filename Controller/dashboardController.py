@@ -1,3 +1,5 @@
+import sys
+
 from Model.dashboardModel import dashboardModel
 from View.dashboardView import dashboardView
 # controller of inventory
@@ -12,7 +14,16 @@ class dashboardController:
         
     def main(self):
         self.view.main()
-        
+
+    def close_window(self):
+        if messagebox.askyesno('Wait','Do you want to Quit?'):
+            self.view.quit()
+            self.view.destroy()
+            print("Cleanup completed. Program terminated.")
+        else:
+            print('Continuing Program')
+
+
     def show_dashboard(self): # Not used
         self.view.destroy()
         self.view = dashboardView(self)

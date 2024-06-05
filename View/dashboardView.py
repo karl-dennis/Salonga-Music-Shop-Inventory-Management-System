@@ -21,6 +21,9 @@ class dashboardView(ctk.CTk):
         self.set_window()
         self.custom_styles()
 
+        self.protocol("WM_DELETE_WINDOW",
+                      controller.close_window)  # Bind the close event to controller's on_closing method
+
         self._top_frame()
         self._left_frame()
         self._base_frame()
