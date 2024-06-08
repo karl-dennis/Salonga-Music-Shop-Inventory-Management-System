@@ -20,15 +20,17 @@ class verifyEmailView(ctk.CTk):
         self._form_frame() 
         self._bottom_frame()
         self._top_label() # Top Bar + Heading
+        self._text_box()
         self._username_frame()
         self._username_label()
         self._userName_entry()
         self._password_frame()
         self._password_label()
         self._password_entry()
-        self._forgot_password()
+        self._otp_button()
         self._button_frame()
-        self._confirm_button()
+        self._return_button()
+        self._verify_button()
     
     def main(self):
         self.mainloop()
@@ -64,47 +66,59 @@ class verifyEmailView(ctk.CTk):
         pass  
     
     def _top_label(self):
-        self.signupLabel = ctk.CTkLabel(self.topFrame, text="Login", bg_color='transparent',
+        self.signupLabel = ctk.CTkLabel(self.topFrame, text="Reset Password", bg_color='transparent',
                                         font=("Consolas", 27, 'bold'), anchor='center')
-        self.signupLabel.place(x=248, y=22) 
+        self.signupLabel.place(x=178, y=22) 
+        
+    def _text_box(self):
+        self.signupLabel = ctk.CTkLabel(self.formFrame, text="Enter your email to receive a\nverification code.",
+                                        bg_color='transparent', font=("Consolas", 16), text_color='#535353', width=310, height=40)
+        self.signupLabel.pack(pady=(10,0))
       
     def _username_frame(self):
         self.usernameFrame = ctk.CTkFrame(self.formFrame, border_width=0, bg_color='transparent', fg_color='transparent')
         self.usernameFrame.pack(pady=(10,0))
 
     def _userName_entry(self):
-        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, width=360, height=48, font=("Consolas", 20), textvariable=self.userName, border_width=2)
+        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.userName, border_width=2)
         self.usernameEntry.pack(side='top', padx=5, pady=5)
 
     def _username_label(self):
-        self.usernameLabel = ctk.CTkLabel(self.usernameFrame, text="Username", font=("Consolas", 22))
+        self.usernameLabel = ctk.CTkLabel(self.usernameFrame, text="Email Address", font=("Consolas", 18), text_color='#595959')
         self.usernameLabel.pack(side='top', anchor='w', padx=5)
 
     def _password_frame(self):
         self.passwordFrame = ctk.CTkFrame(self.formFrame, border_width=0, bg_color='transparent', fg_color='transparent')
-        self.passwordFrame.pack(pady=(20,0))
+        self.passwordFrame.pack(pady=(10,10))
 
     def _password_entry(self):
-        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), textvariable=self.password, show='*', border_width=2)
+        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.password, border_width=2)
         self.passwordEntry.pack(side='top', padx=5, pady=5)
         
     def _password_label(self):
-        self.passwordLabel = ctk.CTkLabel(self.passwordFrame, text="Password", font=("Consolas", 22))
+        self.passwordLabel = ctk.CTkLabel(self.passwordFrame, text="One-Time Pin", font=("Consolas", 18), text_color='#595959')
         self.passwordLabel.pack(side='top', anchor='w', padx=5)
-        
-    def _forgot_password(self):
-        self.forgotPassword = ctk.CTkButton(self.passwordFrame, text="Forgot Password", font=("Consolas", 14, 'underline'), text_color="#535353", fg_color='transparent', hover_color='#F7F7F7')
-        self.forgotPassword.pack(side='top', anchor='e')
+    
+    def _otp_button(self):
+        self.confirmButton = ctk.CTkButton(self.formFrame, width=94, height=28, bg_color='transparent', fg_color='#EBEBEB', hover_color='#e0e0e0', 
+                                           corner_radius=16, border_width=2, border_color='#B5B5B5',
+                                           text="Send OTP", font=("Consolas", 12), text_color='#595959', command=self._on_confirm_button_click)
+        self.confirmButton.place(x=260, y=200)
     
     def _button_frame(self):
         self.buttonFrame = ctk.CTkFrame(self.bottomFrame, width=568, height=80, fg_color="#F0F0F0", border_width=2, corner_radius=0)
         self.buttonFrame.pack_propagate(0)
         self.buttonFrame.pack(side='left', anchor='s')
 
-    def _confirm_button(self):
-        self.confirmButton = ctk.CTkButton(self.buttonFrame, width=264, height=46, fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=16,
-                                           text="Confirm", font=("Consolas", 21), text_color='#F7F7F7', command=self._on_confirm_button_click)
-        self.confirmButton.place(x=151, y=16)
+    def _return_button(self):
+        self.confirmButton = ctk.CTkButton(self.buttonFrame, width=174, height=46, fg_color='#E2E2E2', hover_color='#d5d5d5', corner_radius=16,
+                                           text="Return", font=("Consolas", 21), text_color='#595959', command=self._on_confirm_button_click)
+        self.confirmButton.place(x=95, y=16)
+    
+    def _verify_button(self):
+        self.confirmButton = ctk.CTkButton(self.buttonFrame, width=174, height=46, fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=16,
+                                           text="Verify", font=("Consolas", 21), text_color='#F7F7F7', command=self._on_confirm_button_click)
+        self.confirmButton.place(x=300, y=16)
                 
     def _on_confirm_button_click(self):
         username = self.userName.get()

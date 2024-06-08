@@ -73,11 +73,11 @@ class loginView(ctk.CTk):
         self.usernameFrame.pack(pady=(10,0))
 
     def _userName_entry(self):
-        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, width=360, height=48, font=("Consolas", 20), textvariable=self.userName, border_width=2)
+        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', textvariable=self.userName, border_width=2)
         self.usernameEntry.pack(side='top', padx=5, pady=5)
 
     def _username_label(self):
-        self.usernameLabel = ctk.CTkLabel(self.usernameFrame, text="Username", font=("Consolas", 22))
+        self.usernameLabel = ctk.CTkLabel(self.usernameFrame, text="Username", font=("Consolas", 18))
         self.usernameLabel.pack(side='top', anchor='w', padx=5)
 
     def _password_frame(self):
@@ -85,11 +85,11 @@ class loginView(ctk.CTk):
         self.passwordFrame.pack(pady=(20,0))
 
     def _password_entry(self):
-        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), textvariable=self.password, show='*', border_width=2)
+        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', textvariable=self.password, show='*', border_width=2)
         self.passwordEntry.pack(side='top', padx=5, pady=5)
         
     def _password_label(self):
-        self.passwordLabel = ctk.CTkLabel(self.passwordFrame, text="Password", font=("Consolas", 22))
+        self.passwordLabel = ctk.CTkLabel(self.passwordFrame, text="Password", font=("Consolas", 18))
         self.passwordLabel.pack(side='top', anchor='w', padx=5)
         
     def _forgot_password(self):
