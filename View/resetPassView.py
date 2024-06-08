@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 
-class verifyEmailView(ctk.CTk):
+class resetPassView(ctk.CTk):
 
     def __init__(self, controller):
         
@@ -21,16 +21,15 @@ class verifyEmailView(ctk.CTk):
         self._bottom_frame()
         self._top_label() # Top Bar + Heading
         self._text_box()
-        self._email_frame()
-        self._email_label()
-        self._email_entry()
-        self._otp_frame()
-        self._otp_label()
-        self._otp_entry()
-        self._otp_button()
+        self._newPass_frame()
+        self._newPass_label()
+        self._newPass_entry()
+        self._password_frame()
+        self._password_label()
+        self._password_entry()
         self._button_frame()
         self._return_button()
-        self._verify_button()
+        self._save_button()
     
     def main(self):
         self.mainloop()
@@ -71,39 +70,33 @@ class verifyEmailView(ctk.CTk):
         self.signupLabel.place(x=178, y=22) 
         
     def _text_box(self):
-        self.signupLabel = ctk.CTkLabel(self.formFrame, text="Enter your email to receive a\nverification code.",
+        self.signupLabel = ctk.CTkLabel(self.formFrame, text="Enter your new password!",
                                         bg_color='transparent', font=("Consolas", 16), text_color='#535353', width=310, height=40)
         self.signupLabel.pack(pady=(10,0))
       
-    def _email_frame(self):
-        self.emailFrame = ctk.CTkFrame(self.formFrame, border_width=0, bg_color='transparent', fg_color='transparent')
-        self.emailFrame.pack(pady=(10,0))
+    def _newPass_frame(self):
+        self.newPassFrame = ctk.CTkFrame(self.formFrame, border_width=0, bg_color='transparent', fg_color='transparent')
+        self.newPassFrame.pack(pady=(10,0))
 
-    def _email_entry(self):
-        self.emailEntry = ctk.CTkEntry(self.emailFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.userName, border_width=2)
-        self.emailEntry.pack(side='top', padx=5, pady=5)
+    def _newPass_entry(self):
+        self.newPassEntry = ctk.CTkEntry(self.newPassFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.userName, border_width=2)
+        self.newPassEntry.pack(side='top', padx=5, pady=5)
 
-    def _email_label(self):
-        self.emailLabel = ctk.CTkLabel(self.emailFrame, text="Email Address", font=("Consolas", 18), text_color='#595959')
-        self.emailLabel.pack(side='top', anchor='w', padx=5)
+    def _newPass_label(self):
+        self.newPassLabel = ctk.CTkLabel(self.newPassFrame, text="New Password", font=("Consolas", 18), text_color='#595959')
+        self.newPassLabel.pack(side='top', anchor='w', padx=5)
 
-    def _otp_frame(self):
-        self.otpFrame = ctk.CTkFrame(self.formFrame, border_width=0, bg_color='transparent', fg_color='transparent')
-        self.otpFrame.pack(pady=(10,10))
+    def _password_frame(self):
+        self.passwordFrame = ctk.CTkFrame(self.formFrame, border_width=0, bg_color='transparent', fg_color='transparent')
+        self.passwordFrame.pack(pady=(10,10))
 
-    def _otp_entry(self):
-        self.otpEntry = ctk.CTkEntry(self.otpFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.password, border_width=2)
-        self.otpEntry.pack(side='top', padx=5, pady=5)
+    def _password_entry(self):
+        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.password, border_width=2)
+        self.passwordEntry.pack(side='top', padx=5, pady=5)
         
-    def _otp_label(self):
-        self.otpLabel = ctk.CTkLabel(self.otpFrame, text="One-Time Pin", font=("Consolas", 18), text_color='#595959')
-        self.otpLabel.pack(side='top', anchor='w', padx=5)
-    
-    def _otp_button(self):
-        self.confirmButton = ctk.CTkButton(self.formFrame, width=94, height=28, bg_color='transparent', fg_color='#EBEBEB', hover_color='#e0e0e0', 
-                                           corner_radius=16, border_width=2, border_color='#B5B5B5',
-                                           text="Send OTP", font=("Consolas", 12), text_color='#595959', command=self._on_confirm_button_click)
-        self.confirmButton.place(x=260, y=200)
+    def _password_label(self):
+        self.passwordLabel = ctk.CTkLabel(self.passwordFrame, text="Confirm Password", font=("Consolas", 18), text_color='#595959')
+        self.passwordLabel.pack(side='top', anchor='w', padx=5)
     
     def _button_frame(self):
         self.buttonFrame = ctk.CTkFrame(self.bottomFrame, width=568, height=80, fg_color="#F0F0F0", border_width=2, corner_radius=0)
@@ -115,9 +108,9 @@ class verifyEmailView(ctk.CTk):
                                            text="Return", font=("Consolas", 21), text_color='#595959', command=self._on_confirm_button_click)
         self.confirmButton.place(x=95, y=16)
     
-    def _verify_button(self):
+    def _save_button(self):
         self.confirmButton = ctk.CTkButton(self.buttonFrame, width=174, height=46, fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=16,
-                                           text="Verify", font=("Consolas", 21), text_color='#F7F7F7', command=self._on_confirm_button_click)
+                                           text="Save", font=("Consolas", 21), text_color='#F7F7F7', command=self._on_confirm_button_click)
         self.confirmButton.place(x=300, y=16)
                 
     def _on_confirm_button_click(self):

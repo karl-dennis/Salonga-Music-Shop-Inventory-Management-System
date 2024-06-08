@@ -11,9 +11,10 @@ from Model.statisticModel import *
 from Model.stockAlertsModel import *
 from Model.calendarModel import *
 from Model.verifyEmailModel import *
+from Model.resetPassModel import *
 
 __all__ = ["signupModel", "loginModel", "dashboardModel",
            "productModel", "reportModel", "deliveryModel",
            "inventoryModel", "maintenanceModel", "graphSalesModel",
            "stockAlertsModel", "statisticModel", "calendarModel",
-           "verifyEmailModel"]
+           "verifyEmailModel", "resetPassModel"]
