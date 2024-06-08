@@ -1,6 +1,6 @@
 from Controller import *
 import View     
-import Model
+from Model.inventoryModel import inventoryModel
 
 if __name__ == '__main__':
     #signUp = signupController()
@@ -9,3 +9,4 @@ if __name__ == '__main__':
     #login.main()
     dashboard = dashboardController()
     dashboard.main()
+    # model = inventoryModel()
