@@ -33,4 +33,4 @@ class inventoryView(ctk.CTkFrame):
         fig.subplots_adjust(left=0, right=1, bottom=0, top=1, wspace=0, hspace=0)
         canvas = FigureCanvasTkAgg(fig, self)
         canvas.draw()
-        canvas.get_tk_widget().place(x=70, y=50)
+        canvas.get_tk_widget().place(x=140, y=100)

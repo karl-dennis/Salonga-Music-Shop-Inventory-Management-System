@@ -1,6 +1,5 @@
 import sqlite3
 import bcrypt
-import tkinter as tk
 from tkinter import messagebox
 import random
 import smtplib
