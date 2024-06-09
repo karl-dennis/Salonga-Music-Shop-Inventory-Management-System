@@ -102,7 +102,7 @@ class verifyEmailView(ctk.CTk):
     def _otp_button(self):
         self.confirmButton = ctk.CTkButton(self.formFrame, width=94, height=28, bg_color='transparent', fg_color='#EBEBEB', hover_color='#e0e0e0', 
                                            corner_radius=16, border_width=2, border_color='#B5B5B5',
-                                           text="Send OTP", font=("Consolas", 12), text_color='#595959', command=self._on_confirm_button_click)
+                                           text="Send OTP", font=("Consolas", 12), text_color='#595959')
         self.confirmButton.place(x=260, y=200)
     
     def _button_frame(self):
@@ -112,19 +112,10 @@ class verifyEmailView(ctk.CTk):
 
     def _return_button(self):
         self.confirmButton = ctk.CTkButton(self.buttonFrame, width=174, height=46, fg_color='#E2E2E2', hover_color='#d5d5d5', corner_radius=16,
-                                           text="Return", font=("Consolas", 21), text_color='#595959', command=self._on_confirm_button_click)
+                                           text="Return", font=("Consolas", 21), text_color='#595959', command=self.controller.show_login)
         self.confirmButton.place(x=95, y=16)
     
     def _verify_button(self):
         self.confirmButton = ctk.CTkButton(self.buttonFrame, width=174, height=46, fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=16,
-                                           text="Verify", font=("Consolas", 21), text_color='#F7F7F7', command=self._on_confirm_button_click)
+                                           text="Verify", font=("Consolas", 21), text_color='#F7F7F7', command=self.controller.show_resetPass)
         self.confirmButton.place(x=300, y=16)
-                
-    def _on_confirm_button_click(self):
-        username = self.userName.get()
-        password = self.password.get()
-        self.controller.on_button_click(username, password)
-
-    def _signup_button_clicked(self):
-        self.controller.switch_to_signup()
-

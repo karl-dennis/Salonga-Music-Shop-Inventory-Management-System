@@ -105,19 +105,11 @@ class resetPassView(ctk.CTk):
 
     def _return_button(self):
         self.confirmButton = ctk.CTkButton(self.buttonFrame, width=174, height=46, fg_color='#E2E2E2', hover_color='#d5d5d5', corner_radius=16,
-                                           text="Return", font=("Consolas", 21), text_color='#595959', command=self._on_confirm_button_click)
+                                           text="Return", font=("Consolas", 21), text_color='#595959', command=self.controller.show_verifyEmail)
         self.confirmButton.place(x=95, y=16)
     
     def _save_button(self):
         self.confirmButton = ctk.CTkButton(self.buttonFrame, width=174, height=46, fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=16,
-                                           text="Save", font=("Consolas", 21), text_color='#F7F7F7', command=self._on_confirm_button_click)
+                                           text="Save", font=("Consolas", 21), text_color='#F7F7F7', command=self.controller.show_login)
         self.confirmButton.place(x=300, y=16)
                 
-    def _on_confirm_button_click(self):
-        username = self.userName.get()
-        password = self.password.get()
-        self.controller.on_button_click(username, password)
-
-    def _signup_button_clicked(self):
-        self.controller.switch_to_signup()
-

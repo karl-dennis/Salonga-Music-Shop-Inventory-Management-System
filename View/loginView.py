@@ -93,7 +93,8 @@ class loginView(ctk.CTk):
         self.passwordLabel.pack(side='top', anchor='w', padx=5)
         
     def _forgot_password(self):
-        self.forgotPassword = ctk.CTkButton(self.passwordFrame, text="Forgot Password", font=("Consolas", 14, 'underline'), text_color="#535353", fg_color='transparent', hover_color='#F7F7F7')
+        self.forgotPassword = ctk.CTkButton(self.passwordFrame, text="Forgot Password", font=("Consolas", 14, 'underline'), 
+                                            text_color="#535353", fg_color='transparent', hover_color='#F7F7F7', command=self.controller.forgot_pass)
         self.forgotPassword.pack(side='top', anchor='e')
     
     def _button_frame(self):
@@ -110,7 +111,3 @@ class loginView(ctk.CTk):
         username = self.userName.get()
         password = self.password.get()
         self.controller.on_button_click(username, password)
-
-    def _signup_button_clicked(self):
-        self.controller.switch_to_signup()
-
