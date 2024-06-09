@@ -11,8 +11,10 @@ from View.graphSalesVIew import *
 from View.stockAlertsView import *
 from View.statisticView import *
 from View.calendarView import *
+from View.verifyEmailView import *
 
 __all__ = ["signupView", "loginView", "dashboardView",
            "productView", "reportView", "deliveryView",
            "inventoryView", "maintenanceView", "graphSalesView",
-           "stockAlertsView", "statisticView", "calendarView"]
+           "stockAlertsView", "statisticView", "calendarView",
+           "verifyEmailView"]

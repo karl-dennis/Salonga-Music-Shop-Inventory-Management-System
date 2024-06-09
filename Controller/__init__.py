@@ -10,7 +10,11 @@ from Controller.graphSalesController import *
 from Controller.statisticController import *
 from Controller.stockAlertsController import *
 from Controller.calendarController import *
+from Controller.verifyEmailController import *
+from Controller.resetPassController import *
+
 __all__ = ["signupController", "loginController", "dashboardController",
            "productController", "reportController", "deliveryController",
            "inventoryController", "maintenanceController",  "graphSalesController",
-           "stockAlertsController", "statisticController", "calendarController"]
+           "stockAlertsController", "statisticController", "calendarController",
+           "verifyEmailController", "resetPassController"]
