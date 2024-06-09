@@ -26,8 +26,8 @@ class loginController:
             messagebox.showerror('Warning!','Enter all data')
 
     
-    def switch_to_signup(self):
-        from Controller.signupController import signupController
+    def forgot_pass(self):
+        from Controller.verifyEmailController import verifyEmailController
         self.view.destroy()
-        signup_controller = signupController()
-        signup_controller.main()
+        verifyEmail_controller = verifyEmailController()
+        verifyEmail_controller.main()

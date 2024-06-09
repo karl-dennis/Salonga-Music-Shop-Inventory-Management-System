@@ -13,7 +13,7 @@ class dashboardController:
         self.view = dashboardView(self)
         
     def main(self):
-        self.view.main()
+       self.view.main()
 
     def close_window(self):
         if messagebox.askyesno('Wait','Do you want to Quit?'):
