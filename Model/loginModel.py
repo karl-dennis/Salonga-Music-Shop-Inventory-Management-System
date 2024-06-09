@@ -3,6 +3,8 @@ import bcrypt
 from tkinter import messagebox
 import random
 import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 class loginModel:
@@ -40,24 +42,34 @@ class loginModel:
         except sqlite3.Error as e:
             print('Error:', e)
 
-    def generate_otp(self):
+    def _generate_otp(self):
         length = 6
         self.otp = ''
         for _ in range(length):
             self.otp += str(random.randint(0, 9))
         return self.otp
-    
+
     def send_email(self, username):
         self.server = smtplib.SMTP('smtp.gmail.com', 587)
         self.server.starttls()
         self.server.login('salongamusic40@gmail.com', 'ebef pjjt eovv dkwe')
-        #   'ykqz ccoh cmpa rrii' - kurt app password
+        # 'ykqz ccoh cmpa rrii' - kurt app password
 
         employee_id = self.get_id_account(username)
 
         if employee_id:
-                self.server.sendmail('salongamusic40@gmail.com', employee_id, self.generate_otp())
-                print(employee_id)
+            # Create the email
+            msg = MIMEMultipart()
+            msg['From'] = 'salongamusic40@gmail.com'
+            msg['To'] = employee_id
+            msg['Subject'] = 'Your OTP Code'
+
+            body = self._generate_otp()
+            msg.attach(MIMEText(body, 'plain'))
+
+            # Send the email
+            self.server.send_message(msg)
+            print(employee_id)
         else:
             print("Error: Failed to get employee ID")
 
@@ -90,3 +102,6 @@ class loginModel:
         except sqlite3.Error as e:
             print('Error:', e)
             return False
+
+    def get_otp(self):
+        return self.otp
