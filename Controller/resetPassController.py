@@ -3,12 +3,12 @@ from View.resetPassView import resetPassView
 from Controller.verifyEmailController import *
 from tkinter import messagebox
 class resetPassController:
-    def __init__(self):
+    def __init__(self, email):
         self.model = resetPassModel()
         self.view = resetPassView(self)
-        self.verifyEmailController = verifyEmailController()
+        self.verifyEmailController = email
         # self.set_email()
-        # print(self.verifyEmailController.email()) #it will get the users email which will link us to the users account
+        # print(f'Email from last frame: {self.verifyEmailController.email()}')
 
     def main(self):
         self.view.main()
@@ -25,7 +25,8 @@ class resetPassController:
                 messagebox.showerror('Error', 'New Password and Confirm Password do not match')
                 return
             elif newPass == compPass:
-                self.model.resetPass(self.set_email(), newPass)
+                # print(self.verifyEmailController)
+                self.model.resetPass(self.verifyEmailController, newPass)
 
                 from Controller.loginController import loginController
                 self.view.destroy()
@@ -33,5 +34,3 @@ class resetPassController:
                 login_controller.main()
         else:
             messagebox.showerror('Invalid', 'Missing Entries')
-    def set_email(self):
-        self.model.get_employee_id(self.verifyEmailController.email())

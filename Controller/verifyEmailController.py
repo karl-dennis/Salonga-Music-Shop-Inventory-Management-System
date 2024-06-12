@@ -26,7 +26,7 @@ class verifyEmailController:
         if input_otp == generated_otp:
             from Controller.resetPassController import resetPassController
             self.view.destroy()
-            resetPass_controller = resetPassController()
+            resetPass_controller = resetPassController(self.view.get_email_from_view())
             resetPass_controller.main()
         else:
             messagebox.showerror('Warning', 'Incorrect')
