@@ -46,8 +46,8 @@ class dashboardView(ctk.CTk):
         self.mainloop()
 
     def set_window(self):
-        set_width = 760
-        set_height = 500
+        set_width = 1020
+        set_height = 670
         x = int((self.winfo_screenwidth() / 2) - (set_width / 2))
         y = int((self.winfo_screenheight() / 2) - (set_height / 2))
         self.geometry(f'{set_width}x{set_height}+{x}+{y}')
@@ -60,12 +60,12 @@ class dashboardView(ctk.CTk):
         self.topFrame.place(x=446, y=16, anchor='center')
 
     def _left_frame(self):
-        self.leftFrame = ctk.CTkFrame(self, width=132, height=504, fg_color='#E2E2E2', corner_radius=0, border_width=2)
-        self.leftFrame.place(x=66, y=250, anchor='center')
+        self.leftFrame = ctk.CTkFrame(self, width=178, height=674, fg_color='#E2E2E2', corner_radius=0, border_width=2)
+        self.leftFrame.place(x=87, y=335, anchor='center')
 
     def _base_frame(self):
         self.baseFrame = ctk.CTkFrame(self, width=628, height=461, fg_color='#DFDFDF', corner_radius=0)
-        self.baseFrame.place(x=446, y=266, anchor='center')
+        self.baseFrame.place(x=500, y=266, anchor='center')
 
     def custom_styles(self):
         pass
