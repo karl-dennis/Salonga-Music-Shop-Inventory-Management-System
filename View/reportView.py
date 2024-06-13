@@ -70,7 +70,7 @@ class reportView(ctk.CTk):
         self.selection2.place(x=10, y=135)
         
     def _selection_3(self):
-        self.selection3 = ctk.CTkButton(self.leftFrame, text="Reports", font=('Consolas', 18, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd',
+        self.selection3 = ctk.CTkButton(self.leftFrame, text="Sales", font=('Consolas', 18, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd',
                                         width=156, height=48)
         self.selection3.place(x=10, y=200)
         
