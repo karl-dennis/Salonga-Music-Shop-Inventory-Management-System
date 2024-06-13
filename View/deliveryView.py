@@ -71,7 +71,7 @@ class deliveryView(ctk.CTk):
         
     def _selection_3(self):
         self.selection3 = ctk.CTkButton(self.leftFrame, text="Sales", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#F5F5F5',
-                                        width=156, height=48, command=self.controller.show_reports)
+                                        width=156, height=48, command=self.controller.show_sales)
         self.selection3.place(x=10, y=200)
         
     def _selection_4(self):

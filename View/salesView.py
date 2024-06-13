@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class reportView(ctk.CTk):
+class salesView(ctk.CTk):
 
     def __init__(self, controller):
         super().__init__()

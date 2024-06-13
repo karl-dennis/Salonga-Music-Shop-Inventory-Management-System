@@ -22,10 +22,10 @@ class productController:
         self.view = productView(self)
         self.view.main()
         
-    def show_reports(self): 
-        from Controller.reportController import reportController
+    def show_sales(self): 
+        from Controller.salesController import salesController
         self.view.destroy()
-        report_controller = reportController()
+        report_controller = salesController()
         report_controller.main()
 
     def show_deliveries(self): 

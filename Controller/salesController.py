@@ -1,12 +1,12 @@
-from Model.reportModel import reportModel
-from View.reportView import reportView
+from Model.salesModel import salesModel
+from View.salesView import salesView
 import tkinter as tk
 from tkinter import messagebox
 
-class reportController:
+class salesController:
     def __init__(self):
-        self.model = reportModel()
-        self.view = reportView(self)
+        self.model = salesModel()
+        self.view = salesView(self)
         
     def main(self):
         self.view.main()
@@ -23,9 +23,9 @@ class reportController:
         product_controller = productController()
         product_controller.main()
 
-    def show_reports(self): # Not used
+    def show_sales(self): # Not used
         self.view.destroy()
-        self.view = reportView(self)
+        self.view = salesView(self)
         self.view.main()
 
     def show_deliveries(self): 
