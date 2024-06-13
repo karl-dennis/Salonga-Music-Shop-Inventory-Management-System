@@ -10,11 +10,11 @@ class statisticView(ctk.CTkFrame):
 
     def create_widgets(self):
         # Add your widgets here
-        inner_frame = ctk.CTkFrame(self, width=200, height=82, fg_color='#F7F7F7')
+        inner_frame = ctk.CTkFrame(self, width=210, height=88, fg_color='#F7F7F7')
         inner_frame.pack_propagate(0)
         inner_frame.pack()
         
         label = ctk.CTkLabel(inner_frame, text="Total Revenue", font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
-        label.pack(padx=20, pady=20)
+        label.pack(padx=5, pady=5)
 
         

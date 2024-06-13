@@ -10,7 +10,7 @@ class stockAlertsView(ctk.CTkFrame):
 
     def create_widgets(self):
         # Add your widgets here
-        inner_frame = ctk.CTkFrame(self, width=200, height=208, fg_color='#F7F7F7')
+        inner_frame = ctk.CTkFrame(self, width=210, height=215, fg_color='#F7F7F7')
         inner_frame.pack_propagate(0)
         inner_frame.pack()
         
