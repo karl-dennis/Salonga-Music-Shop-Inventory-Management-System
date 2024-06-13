@@ -16,6 +16,8 @@ class productView(ctk.CTk):
         self._base_frame() 
         self._top_label()
         
+        self.show_productReg()
+        
         self._app_icon()
         self._selection_1()
         self._selection_2()
@@ -83,3 +85,6 @@ class productView(ctk.CTk):
         self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=self.controller.show_maintenance)
         self.selection5.place(x=10, y=330)
+
+    def show_productReg(self):
+        pass
