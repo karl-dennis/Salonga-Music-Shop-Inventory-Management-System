@@ -7,8 +7,8 @@ class resetPassView(ctk.CTk):
         
         super().__init__()
         self.controller = controller
-        self.userName = tk.StringVar()
-        self.password = tk.StringVar()
+        self.newPassword = tk.StringVar()
+        self.comparePassword = tk.StringVar()
         self.title("Salonga Music Shop")
         
         ctk.set_appearance_mode("light")
@@ -79,7 +79,7 @@ class resetPassView(ctk.CTk):
         self.newPassFrame.pack(pady=(10,0))
 
     def _newPass_entry(self):
-        self.newPassEntry = ctk.CTkEntry(self.newPassFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.userName, border_width=2)
+        self.newPassEntry = ctk.CTkEntry(self.newPassFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.newPassword, border_width=2)
         self.newPassEntry.pack(side='top', padx=5, pady=5)
 
     def _newPass_label(self):
@@ -91,7 +91,7 @@ class resetPassView(ctk.CTk):
         self.passwordFrame.pack(pady=(10,10))
 
     def _password_entry(self):
-        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.password, border_width=2)
+        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.comparePassword, border_width=2)
         self.passwordEntry.pack(side='top', padx=5, pady=5)
         
     def _password_label(self):
@@ -110,6 +110,10 @@ class resetPassView(ctk.CTk):
     
     def _save_button(self):
         self.confirmButton = ctk.CTkButton(self.buttonFrame, width=174, height=46, fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=16,
-                                           text="Save", font=("Consolas", 21), text_color='#F7F7F7', command=self.controller.show_login)
+                                           text="Save", font=("Consolas", 21), text_color='#F7F7F7', command=self.save_button_clicked)
         self.confirmButton.place(x=300, y=16)
-                
+
+    def save_button_clicked(self):
+        new_password = self.newPassword.get()
+        compare_password = self.comparePassword.get()
+        self.controller.show_login(new_password, compare_password)
