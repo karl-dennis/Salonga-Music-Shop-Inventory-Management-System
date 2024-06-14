@@ -14,5 +14,11 @@ class stockAlertsView(ctk.CTkFrame):
         inner_frame.pack_propagate(0)
         inner_frame.pack()
         
-        label = ctk.CTkLabel(inner_frame, text="Sales History", font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
-        label.pack(padx=20, pady=20)
+        label = ctk.CTkLabel(inner_frame, text="Sales History", font=('Inter Medium', 12), text_color='#2E2E2E',
+                             width=80, height=14)
+        label.place(x=13, y=12)
+        
+        view_all = ctk.CTkButton(inner_frame, text="View All", font=("Inter Medium", 12, 'underline'), 
+                                            text_color="#2E8EC4", fg_color='transparent', hover_color='#F7F7F7',
+                                            width=60, height=14)
+        view_all.place(x=290, y=9)

@@ -10,7 +10,6 @@ class graphSalesView(ctk.CTkFrame):
                          fg_color='transparent', corner_radius=7)
         self.controller = controller
         self.create_widgets()
-        self.plot()
         
     def create_widgets(self):
         # Add your widgets here
@@ -18,14 +17,27 @@ class graphSalesView(ctk.CTkFrame):
         inner_frame.pack_propagate(0)
         inner_frame.pack()
         
-        label = ctk.CTkLabel(inner_frame, text="Sales Graph", font=('Consolas', 14, 'bold'), text_color='#2D2D2D')
-        label.pack(padx=20, pady=20)
+        self.plot(inner_frame)
+        
+        label = ctk.CTkLabel(inner_frame, text="Sales Graph", font=('Inter Medium', 12), text_color='#2E2E2E',
+                             width=80, height=14)
+        label.place(x=13, y=12)
+        
+        view_all = ctk.CTkButton(inner_frame, text="View All", font=("Inter Medium", 12, 'underline'), 
+                                            text_color="#2E8EC4", fg_color='transparent', hover_color='#F7F7F7',
+                                            width=60, height=14)
+        view_all.place(x=362, y=9)
+        
+        
 
-    def plot(self):
+    def plot(self, inner_frame):
         categories = ['A', 'B', 'C', 'D', 'E']
         values = [23, 45, 56, 78, 33]
 
         fig, ax = plt.subplots(figsize=(3.5, 3.5))
+        fig.set_facecolor("#F7F7F7")
+        ax.set_facecolor("#F7F7F7")
+        
         ax.pie(values, labels=categories, autopct='%1.1f%%', startangle=90, colors=plt.cm.tab20.colors)
         ax.axis('equal')
         ax.set_title('Donut Chart')
@@ -33,7 +45,7 @@ class graphSalesView(ctk.CTkFrame):
         center_circle = plt.Circle((0, 0), 0.7, color='white', fc='white', linewidth=1.25)
         ax.add_artist(center_circle)
         
-        canvas = FigureCanvasTkAgg(fig, master=self)
+        canvas = FigureCanvasTkAgg(fig, master=inner_frame)
         canvas.draw()
         canvas.get_tk_widget().place(x=80, y=20)
         
