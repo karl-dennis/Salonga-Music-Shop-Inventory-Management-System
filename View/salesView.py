@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class deliveryView(ctk.CTk):
+class salesView(ctk.CTk):
 
     def __init__(self, controller):
         super().__init__()
@@ -60,26 +60,26 @@ class deliveryView(ctk.CTk):
         self.appIcon.place(x=33, y=12)
     
     def _selection_1(self):
-        self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#F5F5F5',
+        self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5',
                                         width=156, height=48, command=self.controller.show_dashboard)
         self.selection1.place(x=10, y=70)
 
     def _selection_2(self):
-        self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#F5F5F5',
+        self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5',
                                         width=156, height=48, command=self.controller.show_products)
         self.selection2.place(x=10, y=135)
         
     def _selection_3(self):
-        self.selection3 = ctk.CTkButton(self.leftFrame, text="Sales", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#F5F5F5',
-                                        width=156, height=48, command=self.controller.show_sales)
+        self.selection3 = ctk.CTkButton(self.leftFrame, text="Sales", font=('Consolas', 18, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd',
+                                        width=156, height=48)
         self.selection3.place(x=10, y=200)
         
     def _selection_4(self):
-        self.selection4 = ctk.CTkButton(self.leftFrame, text="Delivery", font=('Consolas', 18, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#CDCDCD',
-                                        width=156, height=48)
+        self.selection4 = ctk.CTkButton(self.leftFrame, text="Delivery", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5',
+                                        width=156, height=48, command=self.controller.show_deliveries)
         self.selection4.place(x=10, y=265)
         
     def _selection_5(self):
-        self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#F5F5F5',
+        self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5',
                                         width=156, height=48, command=self.controller.show_maintenance)
         self.selection5.place(x=10, y=330)

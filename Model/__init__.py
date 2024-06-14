@@ -2,7 +2,7 @@ from Model.signupModel import *
 from Model.loginModel import *
 from Model.dashboardModel import *
 from Model.productModel import *
-from Model.reportModel import *
+from Model.salesModel import *
 from Model.deliveryModel import *
 from Model.inventoryModel import *
 from Model.maintenanceModel import *
@@ -14,7 +14,7 @@ from Model.verifyEmailModel import *
 from Model.resetPassModel import *
 
 __all__ = ["signupModel", "loginModel", "dashboardModel",
-           "productModel", "reportModel", "deliveryModel",
+           "productModel", "salesModel", "deliveryModel",
            "inventoryModel", "maintenanceModel", "graphSalesModel",
            "stockAlertsModel", "statisticModel", "calendarModel",
            "verifyEmailModel", "resetPassModel"]
