@@ -34,7 +34,7 @@ class dashboardController:
     def show_sales(self):
         self.view.clear_base_frame()
         from Controller.salesController import salesController
-        sales_controller = salesController()
+        sales_controller = salesController(self.view.baseFrame)
         sales_controller.main()
         
     def show_deliveries(self): 

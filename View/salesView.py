@@ -1,85 +1,92 @@
 import customtkinter as ctk
 
-class salesView(ctk.CTk):
+class salesView(ctk.CTkFrame):
 
-    def __init__(self, controller):
-        super().__init__()
+    def __init__(self, parent, controller):
+        super().__init__(parent)
         self.controller = controller
-        self.title("Salonga Music Shop")
-        
+        self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
-        self.set_window() 
-        self.custom_styles()
-
-        self._top_frame() 
-        self._left_frame()
-        self._base_frame() 
-        self._top_label()
         
-        self._app_icon()
-        self._selection_1()
-        self._selection_2()
-        self._selection_3()
-        self._selection_4()
-        self._selection_5()
-
-    def main(self):
-        self.mainloop()
-
-    def set_window(self):
-        set_width = 1020
-        set_height = 670
-        x = int((self.winfo_screenwidth() / 2) - (set_width / 2))
-        y = int((self.winfo_screenheight() / 2) - (set_height / 2))
-        self.geometry(f'{set_width}x{set_height}+{x}+{y}')
-        self.configure(bg_color='#DFDFDF')
-        self.minsize(set_width, set_height)
-        self.maxsize(set_width, set_height)
-    
-    def _top_frame(self):
-        self.topFrame = ctk.CTkFrame(self, width=844, height=50, fg_color='#FFFFFF', corner_radius=0)
-        self.topFrame.place(x=598, y=25, anchor='center')
-
-    def _left_frame(self):
-        self.leftFrame = ctk.CTkFrame(self, width=178, height=674, fg_color='#EDEDED', corner_radius=0, border_width=2)
-        self.leftFrame.place(x=88, y=335, anchor='center')
-
-    def _base_frame(self):
-        self.baseFrame = ctk.CTkFrame(self, width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
-        self.baseFrame.place(x=598, y=359, anchor='center')
+        self.custom_styles()
+        self.base_frame()
 
     def custom_styles(self):
         pass
-
-    def _top_label(self):
-        self.topLabel = ctk.CTkLabel(self.topFrame, text='Admin', font=('Consolas', 18, 'bold'), text_color='#2D2D2D')
-        self.topLabel.place(x=20, y=12)
-
-    def _app_icon(self):
-        self.appIcon = ctk.CTkLabel(self.leftFrame, text="Icon: Name", text_color='#595959', font=('Consolas', 20, 'bold'))
-        self.appIcon.place(x=33, y=12)
     
-    def _selection_1(self):
-        self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5',
-                                        width=156, height=48, command=self.controller.show_dashboard)
-        self.selection1.place(x=10, y=70)
+    def base_frame(self):
+        self.salesFrame = ctk.CTkFrame(self, width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
+        self.salesFrame.place(x=0, y=0)
+        
+        self.place(x=0, y=0) # Place productView Frame, do not change this
+        
+        self.show_revenue()
+        self.show_salesReg()
+        self.show_salesGraph()
+        self.show_reports()
+        self.show_salesTable()
+    
+    def show_revenue(self):
+        from PIL import Image
+        self.revenueFrame = ctk.CTkFrame(self.salesFrame, width=210, height=58, fg_color='#F7F7F7', 
+                                         bg_color='transparent', border_width=3, border_color='#5089B5',
+                                         corner_radius=7)
+        self.revenueFrame.place(x=12, y=10)
+        
+        self.icon = ctk.CTkImage(light_image=Image.open("./assets/revenue.png"), size=(30,30))
+        self.my_icon = ctk.CTkLabel(self.revenueFrame, text="", image=self.icon)
+        self.my_icon.place(x=13, y=10)
+        
+        self.label = ctk.CTkLabel(self.revenueFrame, text="Revenue (May 2024)", font=('Inter', 13, 'bold'), 
+                                  text_color='#5089B5', fg_color='transparent',
+                                  width=145, height=15, anchor='w')
+        self.label.place(x=50, y=13)
+        
+        self.label = ctk.CTkLabel(self.revenueFrame, text="₱18,049", font=('Inter Medium', 12), 
+                                  text_color='#5089B5', fg_color='transparent', 
+                                  width=130, height=12, anchor='w')
+        self.label.place(x=50, y=26)
+    
+    def show_salesReg(self):
+        self.salesRegFrame = ctk.CTkFrame(self.salesFrame, width=209, height=526, fg_color='#F7F7F7', corner_radius=7)
+        self.salesRegFrame.place(x=12, y=79)
+        
+        self.label = ctk.CTkLabel(self.salesRegFrame, text="Record New Sale", font=('Inter Medium', 13))
+        self.label.place(x=14, y=7)
+    
+    def show_salesGraph(self):
+        self.salesGraphFrame = ctk.CTkFrame(self.salesFrame, width=382, height=232, fg_color='#F7F7F7', corner_radius=7)
+        self.salesGraphFrame.place(x=231, y=10)
+        
+        self.label = ctk.CTkLabel(self.salesGraphFrame, text="Sales Graph", font=('Inter Medium', 13))
+        self.label.place(x=14, y=7)
+    
+    def show_reports(self):
+        self.reportsFrame = ctk.CTkFrame(self.salesFrame, width=207, height=232, fg_color='#F7F7F7', corner_radius=7)
+        self.reportsFrame.place(x=622, y=10)
+        
+        self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13))
+        self.label.place(x=14, y=7)
+    
+    def show_salesTable(self):
+        self.salesTableFrame = ctk.CTkFrame(self.salesFrame, width=598, height=352, fg_color='#F7F7F7', corner_radius=7)
+        self.salesTableFrame.place(x=231, y=252)
+        
+        self.label = ctk.CTkLabel(self.salesTableFrame, text="Sales History", font=('Inter Medium', 13))
+        self.label.place(x=14, y=7)
 
-    def _selection_2(self):
-        self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5',
-                                        width=156, height=48, command=self.controller.show_products)
-        self.selection2.place(x=10, y=135)
+
+class App:
+    def __init__(self):
+        self.root = ctk.CTk()
+        self.root.title("Sales Page (Test)")
         
-    def _selection_3(self):
-        self.selection3 = ctk.CTkButton(self.leftFrame, text="Sales", font=('Consolas', 18, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd',
-                                        width=156, height=48)
-        self.selection3.place(x=10, y=200)
+        self.product_view = salesView(self.root, None)
+        self.product_view.pack(fill=ctk.BOTH, expand=True)
         
-    def _selection_4(self):
-        self.selection4 = ctk.CTkButton(self.leftFrame, text="Delivery", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5',
-                                        width=156, height=48, command=self.controller.show_deliveries)
-        self.selection4.place(x=10, y=265)
-        
-    def _selection_5(self):
-        self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5',
-                                        width=156, height=48, command=self.controller.show_maintenance)
-        self.selection5.place(x=10, y=330)
+    def run(self):
+        self.root.mainloop()
+
+if __name__ == "__main__":
+    app = App()
+    app.run()

@@ -11,7 +11,9 @@ class statisticView(ctk.CTkFrame):
 
     def create_widgets(self):
         # Add your widgets here
-        inner_frame = ctk.CTkFrame(self, width=268, height=75, fg_color='#F7F7F7', bg_color='transparent', border_width=3, border_color='#5089B5', corner_radius=7)
+        inner_frame = ctk.CTkFrame(self, width=268, height=75, fg_color='#F7F7F7', 
+                                   bg_color='transparent', border_width=3, border_color='#5089B5', 
+                                   corner_radius=7)
         inner_frame.pack_propagate(0)
         inner_frame.pack()
         

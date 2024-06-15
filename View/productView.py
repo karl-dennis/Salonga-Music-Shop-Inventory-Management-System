@@ -51,7 +51,7 @@ class productView(ctk.CTkFrame):
         self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7', corner_radius=7)
         self.productTableFrame.place(x=231, y=252)
         
-        self.label = ctk.CTkLabel(self.productTableFrame, text="Reports", font=('Inter Medium', 13))
+        self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13))
         self.label.place(x=14, y=7)
 
 
