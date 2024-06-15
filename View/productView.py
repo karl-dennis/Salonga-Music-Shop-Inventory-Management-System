@@ -30,6 +30,8 @@ class productView(ctk.CTkFrame):
         self.productRegFrame = ctk.CTkFrame(self.productFrame, width=209, height=594, fg_color='#F7F7F7', corner_radius=7)
         self.productRegFrame.place(x=12, y=10)
         
+        
+        
         self.label = ctk.CTkLabel(self.productRegFrame, text="Add Products", font=('Inter Medium', 13))
         self.label.place(x=14, y=7)
     

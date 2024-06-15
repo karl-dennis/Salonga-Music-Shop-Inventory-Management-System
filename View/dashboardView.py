@@ -31,7 +31,7 @@ class dashboardView(ctk.CTk):
         self._top_label()
         
         self.show_dashboard() # Initially show the dashboard view
-        
+        self.active_selection = 1 # Default to selection 1 as active
         self._app_icon()
         self._selection_1()
         self._selection_2()
@@ -77,32 +77,32 @@ class dashboardView(ctk.CTk):
 
     def _selection_1(self):
         self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 18, 'bold'), 
-                                        text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd', 
-                                        width=156, height=48, command=self.controller.show_dashboard)
+                                        text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#FFFFFF', 
+                                        width=156, height=48, command=lambda: self.set_active_selection(1))
         self.selection1.place(x=10, y=70)
 
     def _selection_2(self):
         self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 18, 'bold'), 
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
-                                        width=156, height=48, command=self.controller.show_products)
+                                        width=156, height=48, command=lambda: self.set_active_selection(2))
         self.selection2.place(x=10, y=135)
 
     def _selection_3(self):
         self.selection3 = ctk.CTkButton(self.leftFrame, text="Sales", font=('Consolas', 18, 'bold'), 
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
-                                        width=156, height=48, command=self.controller.show_sales)
+                                        width=156, height=48, command=lambda: self.set_active_selection(3))
         self.selection3.place(x=10, y=200)
 
     def _selection_4(self):
         self.selection4 = ctk.CTkButton(self.leftFrame, text="Delivery", font=('Consolas', 18, 'bold'), 
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
-                                        width=156, height=48, command=self.controller.show_deliveries)
+                                        width=156, height=48, command=lambda: self.set_active_selection(4))
         self.selection4.place(x=10, y=265)
 
     def _selection_5(self):
         self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 18, 'bold'), 
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
-                                        width=156, height=48, command=self.controller.show_maintenance)
+                                        width=156, height=48, command=lambda: self.set_active_selection(5))
         self.selection5.place(x=10, y=330)
     
     def clear_base_frame(self):
@@ -142,4 +142,32 @@ class dashboardView(ctk.CTk):
         graph_of_sales_view = graphSalesView(self.baseFrame, graph_of_sales_controller)
         graph_of_sales_view.place(x=395, y=325)
 
+    def set_active_selection(self, selection):
+        self.active_selection = selection
+        self.update_button()
+        
+        match selection:
+            case 1:
+                self.controller.show_dashboard()
+            case 2:
+                self.controller.show_products()
+            case 3:
+                self.controller.show_sales()
+            case 4:
+                self.controller.show_deliveries()
+            case 5:
+                self.controller.show_maintenance()
     
+    def update_button(self):
+        active_fg = '#FFFFFF'
+        active_hover = '#FFFFFF'
+        inactive_fg = '#E2E2E2'
+        inactive_hover ='#F5F5F5'
+        
+        for i in range(1, 6):
+            button = getattr(self, f'selection{i}')
+            if i == self.active_selection:
+                button.configure(fg_color=active_fg, hover_color=active_hover)
+            else:
+                button.configure(fg_color=inactive_fg, hover_color=inactive_hover)
+        
