@@ -4,23 +4,22 @@ import tkinter as tk
 from tkinter import messagebox
 
 class productController:
-    def __init__(self):
+    def __init__(self, parent):
         self.model = productModel()
-        self.view = productView(self)
+        self.view = productView(parent, self)
         
     def main(self):
-        self.view.main()
-        
+        self.view.base_frame()
+                
     def show_dashboard(self):
         from Controller.dashboardController import dashboardController
         self.view.destroy()
         dashboard_controller = dashboardController()
         dashboard_controller.main()
 
-    def show_products(self): # Not used
+    def show_products(self):
         self.view.destroy()
         self.view = productView(self)
-        self.view.main()
         
     def show_sales(self): 
         from Controller.salesController import salesController

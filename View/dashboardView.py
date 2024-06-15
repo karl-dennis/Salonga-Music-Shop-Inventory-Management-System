@@ -30,11 +30,7 @@ class dashboardView(ctk.CTk):
         self._base_frame()
         self._top_label()
         
-        self.show_calendar()
-        self.show_statistic()
-        self.show_inventory()
-        self.show_graph_of_sales()
-        self.show_stock_alerts()
+        self.show_dashboard() # Initially show the dashboard view
 
         self._app_icon()
         self._selection_1()
@@ -80,32 +76,48 @@ class dashboardView(ctk.CTk):
         self.appIcon.place(x=33, y=12)
 
     def _selection_1(self):
-        self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 18, 'bold'), text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd', 
-                                        width=156, height=48)
+        self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 18, 'bold'), 
+                                        text_color="#2D2D2D", fg_color='#FFFFFF', hover_color='#cdcdcd', 
+                                        width=156, height=48, command=self.controller.show_dashboard)
         self.selection1.place(x=10, y=70)
 
     def _selection_2(self):
-        self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
+        self.selection2 = ctk.CTkButton(self.leftFrame, text="Products", font=('Consolas', 18, 'bold'), 
+                                        text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=self.controller.show_products)
         self.selection2.place(x=10, y=135)
 
     def _selection_3(self):
-        self.selection3 = ctk.CTkButton(self.leftFrame, text="Sales", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
+        self.selection3 = ctk.CTkButton(self.leftFrame, text="Sales", font=('Consolas', 18, 'bold'), 
+                                        text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=self.controller.show_sales)
         self.selection3.place(x=10, y=200)
 
     def _selection_4(self):
-        self.selection4 = ctk.CTkButton(self.leftFrame, text="Delivery", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
+        self.selection4 = ctk.CTkButton(self.leftFrame, text="Delivery", font=('Consolas', 18, 'bold'), 
+                                        text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=self.controller.show_deliveries)
         self.selection4.place(x=10, y=265)
 
     def _selection_5(self):
-        self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 18, 'bold'), text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
+        self.selection5 = ctk.CTkButton(self.leftFrame, text="Maintenance", font=('Consolas', 18, 'bold'), 
+                                        text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=self.controller.show_maintenance)
         self.selection5.place(x=10, y=330)
     
+    def clear_base_frame(self):
+        for widget in self.baseFrame.winfo_children():
+            widget.destroy()
+            
+    def show_dashboard(self): # Execute on click
+            self.clear_base_frame()
+            self.show_calendar()
+            self.show_statistic()
+            self.show_inventory()
+            self.show_graph_of_sales()
+            self.show_stock_alerts()
+            
     def show_calendar(self):
-        # self.clear_base_frame()
         calendar_controller = calendarController()
         calendar_view = calendarView(self.baseFrame, calendar_controller)
         calendar_view.place(x=15, y=15)
@@ -116,7 +128,6 @@ class dashboardView(ctk.CTk):
         statistic_view.place(x=15, y=233)
     
     def show_inventory(self):
-        # self.clear_base_frame()
         inventory_controller = inventoryController()
         inventory_view = inventoryView(self.baseFrame, inventory_controller)
         inventory_view.place(x=305, y=15)
@@ -127,14 +138,8 @@ class dashboardView(ctk.CTk):
         stock_alerts_view.place(x=15, y=325)
     
     def show_graph_of_sales(self):
-        # self.clear_base_frame()
         graph_of_sales_controller = graphSalesController()
         graph_of_sales_view = graphSalesView(self.baseFrame, graph_of_sales_controller)
         graph_of_sales_view.place(x=395, y=325)
 
     
-
-    def clear_base_frame(self):
-        for widget in self.baseFrame.winfo_children():
-            widget.destroy()
-        # print("Base frame cleared")
