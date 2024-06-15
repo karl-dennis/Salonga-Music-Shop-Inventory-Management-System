@@ -18,7 +18,7 @@ class salesView(ctk.CTkFrame):
         self.salesFrame = ctk.CTkFrame(self, width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         self.salesFrame.place(x=0, y=0)
         
-        self.place(x=0, y=0) # Place productView Frame, do not change this
+        self.place(x=0, y=0) # Place salesView Frame, do not change this
         
         self.show_revenue()
         self.show_salesReg()

@@ -40,12 +40,12 @@ class dashboardController:
     def show_deliveries(self): 
         self.view.clear_base_frame()
         from Controller.deliveryController import deliveryController
-        delivery_controller = deliveryController()
+        delivery_controller = deliveryController(self.view.baseFrame)
         delivery_controller.main()
         
     def show_maintenance(self): 
         from Controller.maintenanceController import maintenanceController
-        maintenance_controller = maintenanceController()
+        maintenance_controller = maintenanceController(self.view.baseFrame)
         maintenance_controller.main()
 
 
