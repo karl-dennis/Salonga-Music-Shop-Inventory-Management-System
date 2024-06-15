@@ -31,7 +31,7 @@ class dashboardView(ctk.CTk):
         self._top_label()
         
         self.show_dashboard() # Initially show the dashboard view
-
+        
         self._app_icon()
         self._selection_1()
         self._selection_2()
