@@ -1,5 +1,5 @@
 import customtkinter as ctk
-
+from PIL import Image, ImageTk
 
 class productView(ctk.CTkFrame):
 
@@ -33,20 +33,94 @@ class productView(ctk.CTkFrame):
         self.imageFrame = ctk.CTkFrame(self.productRegFrame, width=128, height=128)
         self.imageFrame.place(x=40  , y=44)
         
-        self.nameFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56)
+        self.nameFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.nameFrame.place(x=24, y=186)
         
-        self.brandFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56)
+        self.nameLabel = ctk.CTkLabel(self.nameFrame, text='Product Name', font=('Inter Medium', 12), text_color='#595959',
+                                       width=106, height=26, bg_color='transparent', anchor='w')
+        self.nameLabel.place(x=5, y=0)
+        
+        self.nameEntry = ctk.CTkEntry(self.nameFrame, width=160, height=30, corner_radius=7, 
+                                       bg_color='transparent', fg_color='#FAFAFA',
+                                       border_color='#CACACA', border_width=2,
+                                       font=('Inter Medium', 12), text_color='#595959')
+        self.nameEntry.place(x=0, y=26)
+        
+        self.icon = ctk.CTkImage(light_image=Image.open('./assets/plus.png'), size=(15,15)) # Icon implementation
+
+        self.brandFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.brandFrame.place(x=24, y=250)
         
-        self.typeFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56)
-        self.typeFrame.place(x=24, y=314)
+        self.brandButton = ctk.CTkButton(self.brandFrame, image=self.icon, 
+                                         text='', width=15, height=15, 
+                                        fg_color='transparent', hover_color='#F7F7F7', anchor='center')
+        self.brandButton.place(x=36, y=1)
         
-        self.quantityFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56)
+        self.brandLabel = ctk.CTkLabel(self.brandFrame, text='Brand', font=('Inter Medium', 12), text_color='#595959',
+                                          width=34, height=26, bg_color='transparent', anchor='w')
+        self.brandLabel.place(x=5, y=0)
+        
+        self.brandDropdown = ctk.CTkComboBox(self.brandFrame, 
+                                            values=['Placeholder', 'Placeholder'], # Insert values here
+                                            width=160, height=30, corner_radius=7,
+                                            bg_color='transparent', fg_color='#FAFAFA',
+                                            border_color='#CACACA', border_width=2, state='readonly', 
+                                            font=('Inter Medium', 12), text_color='#595959',
+                                            dropdown_font=('Inter Medium', 12), dropdown_text_color='#595959', 
+                                            dropdown_fg_color='#FAFAFA', dropdown_hover_color='#e4e4e4',
+                                            button_color='#CACACA')
+        self.brandDropdown.set('Select')
+        self.brandDropdown.place(x=0, y=26)
+        
+        self.typeFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
+        self.typeFrame.place(x=24, y=314)
+                
+        self.typeButton = ctk.CTkButton(self.typeFrame, image=self.icon, text='', width=15, height=15, 
+                                        fg_color='transparent', hover_color='#F7F7F7', anchor='center')
+        self.typeButton.place(x=80, y=1)
+        
+        self.typeLabel = ctk.CTkLabel(self.typeFrame, text='Product Type', font=('Inter Medium', 12), text_color='#595959',
+                                          width=80, height=26, bg_color='transparent', anchor='w')
+        self.typeLabel.place(x=5, y=0)
+        
+        self.typeDropdown = ctk.CTkComboBox(self.typeFrame, 
+                                            values=['Placeholder', 'Placeholder'], # Insert values here
+                                            width=160, height=30, corner_radius=7,
+                                            bg_color='transparent', fg_color='#FAFAFA',
+                                            border_color='#CACACA', border_width=2, state='readonly', 
+                                            font=('Inter Medium', 12), text_color='#595959',
+                                            dropdown_font=('Inter Medium', 12), dropdown_text_color='#595959', 
+                                            dropdown_fg_color='#FAFAFA', dropdown_hover_color='#e4e4e4',
+                                            button_color='#CACACA')
+        self.typeDropdown.set('Select')
+        self.typeDropdown.place(x=0, y=26)
+        
+        self.quantityFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.quantityFrame.place(x=24, y=378)
         
-        self.priceFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56)
+        self.quantityLabel = ctk.CTkLabel(self.quantityFrame, text='Initial Quantity', font=('Inter Medium', 12), text_color='#595959',
+                                          width=106, height=26, bg_color='transparent', anchor='w')
+        self.quantityLabel.place(x=5, y=0)
+        
+        self.quantityEntry = ctk.CTkEntry(self.quantityFrame, width=160, height=30, corner_radius=7, 
+                                       bg_color='transparent', fg_color='#FAFAFA',
+                                       border_color='#CACACA', border_width=2,
+                                       font=('Inter Medium', 12), text_color='#595959')
+        self.quantityEntry.place(x=0, y=26)
+        
+        
+        self.priceFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.priceFrame.place(x=24, y=442)
+        
+        self.priceLabel = ctk.CTkLabel(self.priceFrame, text='Price', font=('Inter Medium', 12), text_color='#595959',
+                                       width=106, height=26, bg_color='transparent', anchor='w')
+        self.priceLabel.place(x=5, y=0)
+        
+        self.priceEntry = ctk.CTkEntry(self.priceFrame, width=160, height=30, corner_radius=7, 
+                                       bg_color='transparent', fg_color='#FAFAFA',
+                                       border_color='#CACACA', border_width=2,
+                                       font=('Inter Medium', 12), text_color='#595959')
+        self.priceEntry.place(x=0, y=26)
         
         self.buttonFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=26, bg_color='transparent', fg_color='transparent')
         self.buttonFrame.place(x=24, y=532)    
