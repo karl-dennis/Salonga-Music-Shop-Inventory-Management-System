@@ -1,5 +1,6 @@
 import customtkinter as ctk
-from PIL import Image, ImageTk
+from PIL import Image
+from tkinter import filedialog
 
 class productView(ctk.CTkFrame):
 
@@ -9,6 +10,8 @@ class productView(ctk.CTkFrame):
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
         
+        self.importIcon = ctk.CTkImage(light_image=Image.open('./assets/import.png'), size=(80,73))
+
         self.custom_styles()
         self.base_frame()
 
@@ -27,11 +30,20 @@ class productView(ctk.CTkFrame):
         self.show_productTable()
         
     def show_productReg(self):
+        self.icon = ctk.CTkImage(light_image=Image.open('./assets/plus.png'), size=(15,15)) # Icon implementation
+        
         self.productRegFrame = ctk.CTkFrame(self.productFrame, width=209, height=594, fg_color='#F7F7F7', corner_radius=7)
         self.productRegFrame.place(x=12, y=10)
         
-        self.imageFrame = ctk.CTkFrame(self.productRegFrame, width=128, height=128)
-        self.imageFrame.place(x=40  , y=44)
+        self.imageFrame = ctk.CTkFrame(self.productRegFrame, width=128, height=128, fg_color='transparent')
+        self.imageFrame.place(x=40, y=44)
+        
+        self.imageButton = ctk.CTkButton(self.imageFrame, image=self.importIcon, text='', width=128, height=128,
+                                         border_width=2.5, border_color='#B8B8B8', corner_radius=7,
+                                         fg_color='#FFFFFF', bg_color='#F7F7F7',
+                                         hover_color='#FFFFFF', command=self.select_image,
+                                         anchor='center')
+        self.imageButton.place(x=0, y=0)
         
         self.nameFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.nameFrame.place(x=24, y=186)
@@ -45,14 +57,11 @@ class productView(ctk.CTkFrame):
                                        border_color='#CACACA', border_width=2,
                                        font=('Inter Medium', 12), text_color='#595959')
         self.nameEntry.place(x=0, y=26)
-        
-        self.icon = ctk.CTkImage(light_image=Image.open('./assets/plus.png'), size=(15,15)) # Icon implementation
-
+    
         self.brandFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.brandFrame.place(x=24, y=250)
         
-        self.brandButton = ctk.CTkButton(self.brandFrame, image=self.icon, 
-                                         text='', width=15, height=15, 
+        self.brandButton = ctk.CTkButton(self.brandFrame, image=self.icon, text='', width=15, height=15, 
                                         fg_color='transparent', hover_color='#F7F7F7', anchor='center')
         self.brandButton.place(x=36, y=1)
         
@@ -108,7 +117,6 @@ class productView(ctk.CTkFrame):
                                        font=('Inter Medium', 12), text_color='#595959')
         self.quantityEntry.place(x=0, y=26)
         
-        
         self.priceFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.priceFrame.place(x=24, y=442)
         
@@ -128,7 +136,7 @@ class productView(ctk.CTkFrame):
         self.clearButton = ctk.CTkButton(self.buttonFrame, width=72, height=26, bg_color='transparent', 
                                          fg_color='#E2E2E2', hover_color='#D5D5D5', corner_radius=7,
                                          text='Clear', font=('Consolas', 12), text_color='#595959', 
-                                         )
+                                         command=self.clear_form)
         self.clearButton.place(x=0, y=0)
         
         self.saveButton = ctk.CTkButton(self.buttonFrame, width=72, height=26,  bg_color='transparent',
@@ -139,7 +147,7 @@ class productView(ctk.CTkFrame):
         
         self.label = ctk.CTkLabel(self.productRegFrame, text="Add Products", font=('Inter Medium', 13))
         self.label.place(x=14, y=7)
-    
+        
     def show_productGraph(self):
         self.productGraphFrame = ctk.CTkFrame(self.productFrame, width=382, height=232, fg_color='#F7F7F7', corner_radius=7)
         self.productGraphFrame.place(x=231, y=10)
@@ -161,7 +169,41 @@ class productView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13))
         self.label.place(x=14, y=7)
 
-
+    def select_image(self):
+        file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
+        
+        if file_path:
+            selected_image = Image.open(file_path)
+            img_width, img_height = 110, 110
+            aspect_ratio = selected_image.width / selected_image.height
+            
+            if aspect_ratio > 1:
+                # If width > height
+                new_width = img_width
+                new_height = int(img_width / aspect_ratio)
+            else:
+                # If width < height
+                new_height = img_height
+                new_width = int(img_height * aspect_ratio)
+            
+            resized_image = selected_image.resize((new_width, new_height))
+            print(f"New image size: {new_width}x{new_height}")
+            new_image = ctk.CTkImage(light_image=resized_image, size=(new_width, new_height))
+            
+            self.imageButton.configure(image=new_image)
+        else: 
+            # Defaults to import icon if none is selected
+            self.imageButton.configure(image=self.importIcon)
+    
+    def clear_form(self):
+        self.imageButton.configure(image=self.importIcon)
+        self.nameEntry.delete(0, 'end')
+        self.brandDropdown.set('Select')
+        self.typeDropdown.set('Select')
+        self.quantityEntry.delete(0, 'end')
+        self.priceEntry.delete(0, 'end')
+      
+        
 class App:
     def __init__(self):
         self.root = ctk.CTk()
