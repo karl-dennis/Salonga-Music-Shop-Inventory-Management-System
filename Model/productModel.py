@@ -5,8 +5,8 @@ class productModel:
         self.connectDatabase = None
         self.cursor = None
         self.connect_database()
-        self.create_table_products()
-        self.create_table_stock()
+        # self.create_table_products()
+        # self.create_table_stock()
 
     def connect_database(self):
         try:
@@ -20,8 +20,9 @@ class productModel:
             create_table_query_products = '''CREATE TABLE IF NOT EXISTS products(
                 product_id INTEGER PRIMARY KEY,
                 product_name TEXT,
-                product_price INTEGER,
-                category TEXT
+                product_brand TEXT,
+                product_type TEXT,
+                product_price INTEGER
             )'''
             self.cursor.execute(create_table_query_products)
         except sqlite3.Error as e:
@@ -39,9 +40,17 @@ class productModel:
             print('Error:', e)
 
     def add_products(self, name, type, brand, quantity, price):
+        # Debugging purposes
         print('In model')
         print(f'Product Name: {name}')
         print(f'Product Type: {type}')
         print(f'Product Brand: {brand}')
         print(f'Product Quantity: {quantity}')
         print(f'Product Price: {price}')
+
+        # try:
+        #     self.cursor.execute('''INSERT INTO products ()''')
+
+
+
+

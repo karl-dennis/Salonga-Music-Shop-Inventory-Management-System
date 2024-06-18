@@ -4,6 +4,7 @@ import customtkinter as ctk
 from PIL import Image
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import simpledialog
 
 class productView(ctk.CTkFrame):
 
@@ -69,7 +70,7 @@ class productView(ctk.CTkFrame):
         self.brandFrame.place(x=24, y=250)
         
         self.brandButton = ctk.CTkButton(self.brandFrame, image=self.icon, text='', width=15, height=15, 
-                                        fg_color='transparent', hover_color='#F7F7F7', anchor='center')
+                                        fg_color='transparent', hover_color='#F7F7F7', anchor='center', command=self.brand_button_clicked)
         self.brandButton.place(x=36, y=1)
         
         self.brandLabel = ctk.CTkLabel(self.brandFrame, text='Brand', font=('Inter Medium', 12), text_color='#595959',
@@ -77,7 +78,7 @@ class productView(ctk.CTkFrame):
         self.brandLabel.place(x=5, y=0)
         
         self.brandDropdown = ctk.CTkComboBox(self.brandFrame, 
-                                            values=['Placeholder', 'Placeholder'], # Insert values here
+                                            values=['Fender', 'Yamaha'], # Insert values here
                                             width=160, height=30, corner_radius=7,
                                             bg_color='transparent', fg_color='#FAFAFA',
                                             border_color='#CACACA', border_width=2, state='readonly', 
@@ -100,7 +101,7 @@ class productView(ctk.CTkFrame):
         self.typeLabel.place(x=5, y=0)
         
         self.typeDropdown = ctk.CTkComboBox(self.typeFrame, 
-                                            values=['Placeholder', 'Placeholder'], # Insert values here
+                                            values=['Guitar', 'Violin'], # Insert values here
                                             width=160, height=30, corner_radius=7,
                                             bg_color='transparent', fg_color='#FAFAFA',
                                             border_color='#CACACA', border_width=2, state='readonly', 
@@ -209,6 +210,15 @@ class productView(ctk.CTkFrame):
         self.typeDropdown.set('Select')
         self.quantityEntry.delete(0, 'end')
         self.priceEntry.delete(0, 'end')
+
+    def brand_button_clicked(self):
+        # Function to handle brand input dialog
+        brand_name = simpledialog.askstring("Enter Brand", "Enter the brand name:")
+        if brand_name:
+            # Add the new brand to the dropdown values
+            current_values = self.brandDropdown['values']
+            updated_values = list(current_values) + [brand_name]
+            self.brandDropdown['values'] = updated_values
 
     def save_button_clicked(self):
         product_name = self.name_entry.get()

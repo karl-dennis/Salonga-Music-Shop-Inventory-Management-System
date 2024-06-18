@@ -20,8 +20,9 @@ class inventoryModel:
             create_table_query_products = '''CREATE TABLE IF NOT EXISTS products(
                 product_id INTEGER PRIMARY KEY,
                 product_name TEXT,
-                product_price INTEGER,
-                category TEXT
+                product_brand TEXT,
+                product_type TEXT,
+                product_price INTEGER
             )'''
             self.cursor.execute(create_table_query_products)
         except sqlite3.Error as e:
