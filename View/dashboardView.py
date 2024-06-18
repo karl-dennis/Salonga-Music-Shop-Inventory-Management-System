@@ -104,10 +104,6 @@ class dashboardView(ctk.CTk):
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=lambda: self.set_active_selection(5))
         self.selection5.place(x=10, y=330)
-    
-    def clear_base_frame(self):
-        for widget in self.baseFrame.winfo_children():
-            widget.destroy()
             
     def show_dashboard(self): # Execute on click
             self.clear_base_frame()
@@ -142,6 +138,10 @@ class dashboardView(ctk.CTk):
         graph_of_sales_view = graphSalesView(self.baseFrame, graph_of_sales_controller)
         graph_of_sales_view.place(x=395, y=325)
 
+    def clear_base_frame(self):
+        for widget in self.baseFrame.winfo_children():
+            widget.destroy()
+            
     def set_active_selection(self, selection):
         self.active_selection = selection
         self.update_button()

@@ -8,6 +8,7 @@ class salesView(ctk.CTkFrame):
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
         
+        self.active_tab = 1
         self.custom_styles()
         self.base_frame()
 
@@ -20,73 +21,79 @@ class salesView(ctk.CTkFrame):
         
         self.place(x=0, y=0) # Place salesView Frame, do not change this
         
-        self.show_revenue()
-        self.show_salesReg()
-        self.show_salesGraph()
-        self.show_reports()
-        self.show_salesTable()
+        self.show_firstPage()
+        self.show_orderFrame()
     
-    def show_revenue(self):
-        from PIL import Image
-        self.revenueFrame = ctk.CTkFrame(self.salesFrame, width=210, height=58, fg_color='#F7F7F7', 
-                                         bg_color='transparent', border_width=3, border_color='#5089B5',
-                                         corner_radius=7)
-        self.revenueFrame.place(x=12, y=10)
+    def show_firstPage(self):
+        self.firstPageFrame = ctk.CTkFrame(self.salesFrame, width=522, height=583, fg_color='#F7F7F7', corner_radius=7)
+        self.firstPageFrame.place(x=12, y=15)
+                
+        self.tabFrame = ctk.CTkFrame(self.firstPageFrame, width=246, height=40, fg_color='transparent')
+        self.tabFrame.place(x=6, y=7)
         
-        self.icon = ctk.CTkImage(light_image=Image.open("./assets/revenue.png"), size=(30,30))
-        self.my_icon = ctk.CTkLabel(self.revenueFrame, text="", image=self.icon)
-        self.my_icon.place(x=13, y=10)
+        self.selection1 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='New Sale',
+                                        font=('Inter', 13, 'bold'), text_color='#2E2E2E',
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.set_active_tab(1))
+        self.selection1.place(x=3, y=0)
         
-        self.label = ctk.CTkLabel(self.revenueFrame, text="Revenue (May 2024)", font=('Inter', 13, 'bold'), 
-                                  text_color='#5089B5', fg_color='transparent',
-                                  width=145, height=15, anchor='w')
-        self.label.place(x=50, y=13)
-        
-        self.label = ctk.CTkLabel(self.revenueFrame, text="₱18,049", font=('Inter Medium', 12), 
-                                  text_color='#5089B5', fg_color='transparent', 
-                                  width=130, height=12, anchor='w')
-        self.label.place(x=50, y=26)
-    
-    def show_salesReg(self):
-        self.salesRegFrame = ctk.CTkFrame(self.salesFrame, width=209, height=526, fg_color='#F7F7F7', corner_radius=7)
-        self.salesRegFrame.place(x=12, y=79)
-        
-        self.label = ctk.CTkLabel(self.salesRegFrame, text="Record New Sale", font=('Inter Medium', 13))
-        self.label.place(x=14, y=7)
-    
-    def show_salesGraph(self):
-        self.salesGraphFrame = ctk.CTkFrame(self.salesFrame, width=382, height=232, fg_color='#F7F7F7', corner_radius=7)
-        self.salesGraphFrame.place(x=231, y=10)
-        
-        self.label = ctk.CTkLabel(self.salesGraphFrame, text="Sales Graph", font=('Inter Medium', 13))
-        self.label.place(x=14, y=7)
-    
-    def show_reports(self):
-        self.reportsFrame = ctk.CTkFrame(self.salesFrame, width=207, height=232, fg_color='#F7F7F7', corner_radius=7)
-        self.reportsFrame.place(x=622, y=10)
-        
-        self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13))
-        self.label.place(x=14, y=7)
-    
-    def show_salesTable(self):
-        self.salesTableFrame = ctk.CTkFrame(self.salesFrame, width=598, height=352, fg_color='#F7F7F7', corner_radius=7)
-        self.salesTableFrame.place(x=231, y=252)
-        
-        self.label = ctk.CTkLabel(self.salesTableFrame, text="Sales History", font=('Inter Medium', 13))
-        self.label.place(x=14, y=7)
+        self.selection2 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='Sales Report',
+                                        font=('Inter', 13, 'bold'), text_color='#9A9A9A',
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.set_active_tab(2))
+        self.selection2.place(x=133, y=0)
 
-
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("Sales Page (Test)")
+        self.tabLine = ctk.CTkFrame(self.tabFrame, width=78, height=4, fg_color='#5089B5', corner_radius=7)
+        self.tabLine.place(x=19, y=33)
         
-        self.product_view = salesView(self.root, None)
-        self.product_view.pack(fill=ctk.BOTH, expand=True)
+        self.dividerLine = ctk.CTkFrame(self.firstPageFrame, width=522, height=2, fg_color='#DDDDDD')
+        self.dividerLine.place(x=0, y=51)
         
-    def run(self):
-        self.root.mainloop()
+    def show_orderFrame(self):
+        self.orderFrame = ctk.CTkFrame(self.salesFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
+        self.orderFrame.place(x=546, y=15)
+        
+        self.label = ctk.CTkLabel(self.orderFrame, text="Order #0001", font=('Inter', 15, 'bold'), text_color='#2E2E2E')
+        self.label.place(x=95, y=12)
 
-if __name__ == "__main__":
-    app = App()
-    app.run()
+    def clear_sales_frame(self):
+        for widget in self.salesFrame.winfo_children():
+            widget.destroy()
+
+    def set_active_tab(self, tab):
+        self.active_tab = tab
+        self.update_tab()
+        
+        match tab:
+            case 1:
+                self.controller.show_firstPage()
+                self.tabLine.place_forget()
+                self.tabLine.place(x=19, y=33)
+            case 2:
+                self.controller.show_secondPage()
+                self.tabLine.place_forget()
+                self.tabLine.place(x=150, y=33)
+                
+    def update_tab(self):
+        active_text = '#2E2E2E'
+        inactive_text ='#9A9A9A'
+        
+        for i in range(1, 3):
+            tab = getattr(self, f'selection{i}')
+            if i == self.active_tab:
+                tab.configure(text_color=active_text)
+            else:
+                tab.configure(text_color=inactive_text)
+
+# class App:
+#     def __init__(self):
+#         self.root = ctk.CTk()
+#         self.root.title("Sales Page (Test)")
+        
+#         self.product_view = salesView(self.root, None)
+#         self.product_view.pack(fill=ctk.BOTH, expand=True)
+        
+#     def run(self):
+#         self.root.mainloop()
+
+# if __name__ == "__main__":
+#     app = App()
+#     app.run()
