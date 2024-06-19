@@ -5,6 +5,7 @@ from PIL import Image
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import simpledialog
+from tkinter import messagebox
 
 class productView(ctk.CTkFrame):
 
@@ -227,6 +228,8 @@ class productView(ctk.CTkFrame):
         quantity = self.quantity.get()
         price = self.price.get()
         self.controller.save_button_clicked(product_name,type,brand,quantity,price)
+        messagebox.showinfo('Success', 'Product Added Successfully')
+        self.clear_form()
 
 # class App:
 #     def __init__(self):
