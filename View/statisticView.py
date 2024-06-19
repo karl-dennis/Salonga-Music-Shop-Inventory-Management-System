@@ -25,5 +25,5 @@ class statisticView(ctk.CTkFrame):
         label = ctk.CTkLabel(inner_frame, text="Revenue (May 2024)", font=('Inter', 17, 'bold'), text_color='#5089B5', fg_color='transparent')
         label.place(x=65, y=13)
         
-        label = ctk.CTkLabel(inner_frame, text="₱18,049", font=('Inter Medium', 16), text_color='#5089B5', fg_color='transparent', height=20)
+        label = ctk.CTkLabel(inner_frame, text="₱18,049.25", font=('Inter Medium', 16), text_color='#5089B5', fg_color='transparent', height=20)
         label.place(x=65, y=36)

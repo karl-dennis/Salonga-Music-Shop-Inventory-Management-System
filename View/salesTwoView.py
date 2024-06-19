@@ -23,7 +23,10 @@ class salesTwoView(ctk.CTkFrame):
         
         self.show_secondPage()
         self.show_orderFrame()
-    
+        self.show_salesGraph()
+        self.show_revenue()
+        self.show_reports()
+                
     def show_secondPage(self):
         self.secondPageFrame = ctk.CTkFrame(self.baseFrame, width=522, height=340, fg_color='#F7F7F7', corner_radius=7)
         self.secondPageFrame.place(x=12, y=15)
@@ -48,7 +51,7 @@ class salesTwoView(ctk.CTkFrame):
         self.dividerLine.place(x=0, y=51)
         
     def show_orderFrame(self):
-        self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
+        self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=585, fg_color='#F7F7F7', corner_radius=7)
         self.orderFrame.place(x=546, y=15)
         
         self.label = ctk.CTkLabel(self.orderFrame, text="Order #0001", font=('Inter', 15, 'bold'), text_color='#2E2E2E')
@@ -56,11 +59,40 @@ class salesTwoView(ctk.CTkFrame):
         
     def show_salesGraph(self):
         self.salesGraphFrame = ctk.CTkFrame(self.baseFrame, width=315, height=232, fg_color='#F7F7F7', corner_radius=7)
-        self.salesGraphFrame.place(x=231, y=10)
+        self.salesGraphFrame.place(x=12, y=367)
         
-        self.label = ctk.CTkLabel(self.salesGraphFrame, text="Sales Graph", font=('Inter Medium', 13), text_color='#2E2E2E')
-        self.label.place(x=14, y=7)
+        self.label = ctk.CTkLabel(self.salesGraphFrame, text="Sales Graph", font=('Inter Medium', 13), text_color='#2E2E2E',
+                                  width=130, height=16, anchor='w')
+        self.label.place(x=12, y=8)
 
+    def show_revenue(self):
+        from PIL import Image
+        self.revenueFrame = ctk.CTkFrame(self.baseFrame, width=201, height=58, fg_color='#F7F7F7', 
+                                         bg_color='transparent', border_width=3, border_color='#5089B5',
+                                         corner_radius=7)
+        self.revenueFrame.place(x=334, y=367)
+        
+        self.icon = ctk.CTkImage(light_image=Image.open("./assets/revenue.png"), size=(30,30))
+        self.my_icon = ctk.CTkLabel(self.revenueFrame, text="", image=self.icon)
+        self.my_icon.place(x=13, y=10)
+        
+        self.label = ctk.CTkLabel(self.revenueFrame, text="Revenue (May 2024)", font=('Inter', 13, 'bold'), 
+                                  text_color='#5089B5', fg_color='transparent',
+                                  width=145, height=15, anchor='w')
+        self.label.place(x=50, y=13)
+        
+        self.label = ctk.CTkLabel(self.revenueFrame, text="₱18,049.25", font=('Inter Medium', 12), 
+                                  text_color='#5089B5', fg_color='transparent', 
+                                  width=130, height=12, anchor='w')
+        self.label.place(x=50, y=26)
+    
+    def show_reports(self):
+        self.reportsFrame = ctk.CTkFrame(self.baseFrame, width=201, height=165, fg_color='#F7F7F7', corner_radius=7)
+        self.reportsFrame.place(x=334, y=434)
+        
+        self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
+        self.label.place(x=14, y=7)
+    
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
@@ -72,12 +104,12 @@ class salesTwoView(ctk.CTkFrame):
         match tab:
             case 1:
                 self.controller.show_firstPage()
-                self.tabLine.place_forget()
-                self.tabLine.place(x=19, y=33)
+                # self.tabLine.place_forget()
+                # self.tabLine.place(x=19, y=33)
             case 2:
                 self.controller.show_secondPage()
-                self.tabLine.place_forget()
-                self.tabLine.place(x=150, y=33)
+                # self.tabLine.place_forget()
+                # self.tabLine.place(x=150, y=33)
                 
     def update_tab(self):
         active_text = '#2E2E2E'
@@ -90,17 +122,17 @@ class salesTwoView(ctk.CTkFrame):
             else:
                 tab.configure(text_color=inactive_text)
 
-# class App:
-#     def __init__(self):
-#         self.root = ctk.CTk()
-#         self.root.title("Sales Page (Test)")
+class App:
+    def __init__(self):
+        self.root = ctk.CTk()
+        self.root.title("Sales Page (Test)")
         
-#         self.product_view = salesView(self.root, None)
-#         self.product_view.pack(fill=ctk.BOTH, expand=True)
+        self.salesTwo_view = salesTwoView(self.root, None)
+        self.salesTwo_view.pack(fill=ctk.BOTH, expand=True)
         
-#     def run(self):
-#         self.root.mainloop()
+    def run(self):
+        self.root.mainloop()
 
-# if __name__ == "__main__":
-#     app = App()
-#     app.run()
+if __name__ == "__main__":
+    app = App()
+    app.run()
