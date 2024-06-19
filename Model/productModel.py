@@ -62,9 +62,18 @@ class productModel:
         product_data = (name, brand, type, quantity,price)
 
         try:
+            # Insert the new product into the products table
             self.cursor.execute('''INSERT INTO products (product_name, product_brand, product_type, product_quantity, product_price)
-            VALUES (?, ?, ?, ?, ?)''', product_data)
+                        VALUES (?, ?, ?, ?, ?)''', product_data)
+            self.connectDatabase.commit()
 
+            # Get the product_id of the newly added product
+            product_id = self.cursor.lastrowid
+
+            # Insert the initial stock entries into the stock_items table
+            stock_data = [(product_id,) for _ in range(int(quantity))]
+            self.cursor.executemany('''INSERT INTO stock_items (product_id)
+                        VALUES (?)''', stock_data)
             self.connectDatabase.commit()
         except sqlite3.Error as e:
             print('Error:', e)
