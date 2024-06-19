@@ -15,8 +15,8 @@ class salesController:
         self.view.show_firstPage()
         
     def show_secondPage(self):
-        pass
-        # self.view.clear_sales_frame()
-        # from Controller.salesTwoController import salesTwoController
-        # salesTwo_controller = salesTwoController(self.view.salesFrame)
-        # salesTwo_controller.main()
+        # pass
+        self.view.clear_base_frame()
+        from Controller.salesTwoController import salesTwoController
+        salesTwo_controller = salesTwoController(self.view.baseFrame)
+        salesTwo_controller.main()
