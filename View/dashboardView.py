@@ -143,6 +143,9 @@ class dashboardView(ctk.CTk):
             widget.destroy()
             
     def set_active_selection(self, selection):
+        if self.active_selection == selection: # Skips when the selection is chosen again
+            return
+        
         self.active_selection = selection
         self.update_button()
         
@@ -163,11 +166,13 @@ class dashboardView(ctk.CTk):
         active_hover = '#FFFFFF'
         inactive_fg = '#E2E2E2'
         inactive_hover ='#F5F5F5'
+        active_text ='#2D2D2D'
+        inactive_text ='#595959'
         
         for i in range(1, 6):
             button = getattr(self, f'selection{i}')
             if i == self.active_selection:
-                button.configure(fg_color=active_fg, hover_color=active_hover)
+                button.configure(fg_color=active_fg, hover_color=active_hover, text_color=active_text)
             else:
-                button.configure(fg_color=inactive_fg, hover_color=inactive_hover)
+                button.configure(fg_color=inactive_fg, hover_color=inactive_hover, text_color=inactive_text)
         

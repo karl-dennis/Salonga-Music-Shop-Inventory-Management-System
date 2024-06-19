@@ -145,28 +145,28 @@ class productView(ctk.CTkFrame):
                                         )
         self.saveButton.place(x=88, y=0)
         
-        self.label = ctk.CTkLabel(self.productRegFrame, text="Add Products", font=('Inter Medium', 13))
+        self.label = ctk.CTkLabel(self.productRegFrame, text="Add Products", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
         
     def show_productGraph(self):
         self.productGraphFrame = ctk.CTkFrame(self.productFrame, width=382, height=232, fg_color='#F7F7F7', corner_radius=7)
         self.productGraphFrame.place(x=231, y=10)
         
-        self.label = ctk.CTkLabel(self.productGraphFrame, text="Stock Graph", font=('Inter Medium', 13))
+        self.label = ctk.CTkLabel(self.productGraphFrame, text="Stock Graph", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
     
     def show_reports(self):
         self.reportsFrame = ctk.CTkFrame(self.productFrame, width=207, height=232, fg_color='#F7F7F7', corner_radius=7)
         self.reportsFrame.place(x=622, y=10)
         
-        self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13))
+        self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
     
     def show_productTable(self):
         self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7', corner_radius=7)
         self.productTableFrame.place(x=231, y=252)
         
-        self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13))
+        self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
     def select_image(self):

@@ -53,6 +53,13 @@ class salesTwoView(ctk.CTkFrame):
         
         self.label = ctk.CTkLabel(self.orderFrame, text="Order #0001", font=('Inter', 15, 'bold'), text_color='#2E2E2E')
         self.label.place(x=95, y=12)
+        
+    def show_salesGraph(self):
+        self.salesGraphFrame = ctk.CTkFrame(self.baseFrame, width=315, height=232, fg_color='#F7F7F7', corner_radius=7)
+        self.salesGraphFrame.place(x=231, y=10)
+        
+        self.label = ctk.CTkLabel(self.salesGraphFrame, text="Sales Graph", font=('Inter Medium', 13), text_color='#2E2E2E')
+        self.label.place(x=14, y=7)
 
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
@@ -79,7 +86,7 @@ class salesTwoView(ctk.CTkFrame):
         for i in range(1, 3):
             tab = getattr(self, f'selection{i}')
             if i == self.active_tab:
-                tab.configure(text_color=inactive_text)
+                tab.configure(text_color=active_text)
             else:
                 tab.configure(text_color=inactive_text)
 

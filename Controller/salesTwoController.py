@@ -19,5 +19,5 @@ class salesTwoController:
         sales_controller.main()
         
     def show_secondPage(self):
-        # pass
-        self.view.show_secondPage()
+        pass
+        # self.view.show_secondPage()
