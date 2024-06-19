@@ -1,12 +1,21 @@
+import tkinter
+
 import customtkinter as ctk
 from PIL import Image
+import tkinter as tk
 from tkinter import filedialog
+from tkinter import simpledialog
+from tkinter import messagebox
 
 class productView(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
+        self.name_entry = tk.StringVar()
+        self.quantity = tk.StringVar()
+        self.price = tk.StringVar()
+
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
         
@@ -55,14 +64,14 @@ class productView(ctk.CTkFrame):
         self.nameEntry = ctk.CTkEntry(self.nameFrame, width=160, height=30, corner_radius=7, 
                                        bg_color='transparent', fg_color='#FAFAFA',
                                        border_color='#CACACA', border_width=2,
-                                       font=('Inter Medium', 12), text_color='#595959')
+                                       font=('Inter Medium', 12), text_color='#595959', textvariable=self.name_entry)
         self.nameEntry.place(x=0, y=26)
     
         self.brandFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.brandFrame.place(x=24, y=250)
         
         self.brandButton = ctk.CTkButton(self.brandFrame, image=self.icon, text='', width=15, height=15, 
-                                        fg_color='transparent', hover_color='#F7F7F7', anchor='center')
+                                        fg_color='transparent', hover_color='#F7F7F7', anchor='center', command=self.brand_button_clicked)
         self.brandButton.place(x=36, y=1)
         
         self.brandLabel = ctk.CTkLabel(self.brandFrame, text='Brand', font=('Inter Medium', 12), text_color='#595959',
@@ -70,14 +79,14 @@ class productView(ctk.CTkFrame):
         self.brandLabel.place(x=5, y=0)
         
         self.brandDropdown = ctk.CTkComboBox(self.brandFrame, 
-                                            values=['Placeholder', 'Placeholder'], # Insert values here
+                                            values=['Fender', 'Yamaha'], # Insert values here
                                             width=160, height=30, corner_radius=7,
                                             bg_color='transparent', fg_color='#FAFAFA',
                                             border_color='#CACACA', border_width=2, state='readonly', 
                                             font=('Inter Medium', 12), text_color='#595959',
                                             dropdown_font=('Inter Medium', 12), dropdown_text_color='#595959', 
                                             dropdown_fg_color='#FAFAFA', dropdown_hover_color='#e4e4e4',
-                                            button_color='#CACACA')
+                                            button_color='#CACACA',)
         self.brandDropdown.set('Select')
         self.brandDropdown.place(x=0, y=26)
         
@@ -93,7 +102,7 @@ class productView(ctk.CTkFrame):
         self.typeLabel.place(x=5, y=0)
         
         self.typeDropdown = ctk.CTkComboBox(self.typeFrame, 
-                                            values=['Placeholder', 'Placeholder'], # Insert values here
+                                            values=['Guitar', 'Violin'], # Insert values here
                                             width=160, height=30, corner_radius=7,
                                             bg_color='transparent', fg_color='#FAFAFA',
                                             border_color='#CACACA', border_width=2, state='readonly', 
@@ -114,7 +123,7 @@ class productView(ctk.CTkFrame):
         self.quantityEntry = ctk.CTkEntry(self.quantityFrame, width=160, height=30, corner_radius=7, 
                                        bg_color='transparent', fg_color='#FAFAFA',
                                        border_color='#CACACA', border_width=2,
-                                       font=('Inter Medium', 12), text_color='#595959')
+                                       font=('Inter Medium', 12), text_color='#595959', textvariable=self.quantity)
         self.quantityEntry.place(x=0, y=26)
         
         self.priceFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
@@ -127,7 +136,7 @@ class productView(ctk.CTkFrame):
         self.priceEntry = ctk.CTkEntry(self.priceFrame, width=160, height=30, corner_radius=7, 
                                        bg_color='transparent', fg_color='#FAFAFA',
                                        border_color='#CACACA', border_width=2,
-                                       font=('Inter Medium', 12), text_color='#595959')
+                                       font=('Inter Medium', 12), text_color='#595959', textvariable=self.price)
         self.priceEntry.place(x=0, y=26)
         
         self.buttonFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=26, bg_color='transparent', fg_color='transparent')
@@ -141,7 +150,7 @@ class productView(ctk.CTkFrame):
         
         self.saveButton = ctk.CTkButton(self.buttonFrame, width=72, height=26,  bg_color='transparent',
                                         fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=7,
-                                        text='Save', font=('Consolas', 12), text_color='#F7F7F7',
+                                        text='Save', font=('Consolas', 12), text_color='#F7F7F7', command=self.save_button_clicked
                                         )
         self.saveButton.place(x=88, y=0)
         
@@ -202,19 +211,37 @@ class productView(ctk.CTkFrame):
         self.typeDropdown.set('Select')
         self.quantityEntry.delete(0, 'end')
         self.priceEntry.delete(0, 'end')
-      
-        
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("Products Page (Test)")
-        
-        self.product_view = productView(self.root, None)
-        self.product_view.pack(fill=ctk.BOTH, expand=True)
-        
-    def run(self):
-        self.root.mainloop()
 
-if __name__ == "__main__":
-    app = App()
-    app.run()
+    def brand_button_clicked(self):
+        # Function to handle brand input dialog
+        brand_name = simpledialog.askstring("Enter Brand", "Enter the brand name:")
+        if brand_name:
+            # Add the new brand to the dropdown values
+            current_values = self.brandDropdown['values']
+            updated_values = list(current_values) + [brand_name]
+            self.brandDropdown['values'] = updated_values
+
+    def save_button_clicked(self):
+        product_name = self.name_entry.get()
+        type = self.typeDropdown.get()
+        brand = self.brandDropdown.get()
+        quantity = self.quantity.get()
+        price = self.price.get()
+        self.controller.save_button_clicked(product_name,type,brand,quantity,price)
+        messagebox.showinfo('Success', 'Product Added Successfully')
+        self.clear_form()
+
+# class App:
+#     def __init__(self):
+#         self.root = ctk.CTk()
+#         self.root.title("Products Page (Test)")
+#
+#         self.product_view = productView(self.root, None)
+#         self.product_view.pack(fill=ctk.BOTH, expand=True)
+#
+#     def run(self):
+#         self.root.mainloop()
+#
+# if __name__ == "__main__":
+#     app = App()
+#     app.run()
