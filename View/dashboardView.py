@@ -104,10 +104,6 @@ class dashboardView(ctk.CTk):
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=lambda: self.set_active_selection(5))
         self.selection5.place(x=10, y=330)
-    
-    def clear_base_frame(self):
-        for widget in self.baseFrame.winfo_children():
-            widget.destroy()
             
     def show_dashboard(self): # Execute on click
             self.clear_base_frame()
@@ -142,7 +138,14 @@ class dashboardView(ctk.CTk):
         graph_of_sales_view = graphSalesView(self.baseFrame, graph_of_sales_controller)
         graph_of_sales_view.place(x=395, y=325)
 
+    def clear_base_frame(self):
+        for widget in self.baseFrame.winfo_children():
+            widget.destroy()
+            
     def set_active_selection(self, selection):
+        if self.active_selection == selection: # Skips when the selection is chosen again
+            return
+        
         self.active_selection = selection
         self.update_button()
         
@@ -163,11 +166,13 @@ class dashboardView(ctk.CTk):
         active_hover = '#FFFFFF'
         inactive_fg = '#E2E2E2'
         inactive_hover ='#F5F5F5'
+        active_text ='#2D2D2D'
+        inactive_text ='#595959'
         
         for i in range(1, 6):
             button = getattr(self, f'selection{i}')
             if i == self.active_selection:
-                button.configure(fg_color=active_fg, hover_color=active_hover)
+                button.configure(fg_color=active_fg, hover_color=active_hover, text_color=active_text)
             else:
-                button.configure(fg_color=inactive_fg, hover_color=inactive_hover)
+                button.configure(fg_color=inactive_fg, hover_color=inactive_hover, text_color=inactive_text)
         
