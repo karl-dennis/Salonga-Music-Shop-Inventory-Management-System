@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import simpledialog
 from tkinter import messagebox
+from CTkTable import *
 
 class productView(ctk.CTkFrame):
 
@@ -177,6 +178,15 @@ class productView(ctk.CTkFrame):
         
         self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
+
+        # Define the headers
+        headers = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
+
+        self.table = CTkTable(master=self.productTableFrame, column=7)
+        self.table.update_values([headers])
+
+        # Place the table on the frame
+        self.table.place(x=14, y=10)
 
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])

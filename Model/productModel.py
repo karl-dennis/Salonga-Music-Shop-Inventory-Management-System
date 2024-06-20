@@ -41,7 +41,7 @@ class productModel:
             self.cursor.execute(create_table_query_stocks)
         except sqlite3.Error as e:
             print('Error:', e)
-
+    
     def create_brand_table(self):
         try:
             create_table_query_stocks = '''CREATE TABLE IF NOT EXISTS brands(
