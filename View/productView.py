@@ -179,14 +179,59 @@ class productView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        # Define the headers
-        headers = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
+        column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
+        table_values = [
+            ["STR001", "Electric Guitar", "String", "Fender", "₱900", "8", "Available"],
+            # ["PER001", "Xylophone", "Percussion", "Yamaha", "₱850", "0", "No Stock"]
+        ]
+                             
+        self.table = CTkTable(master=self.productTableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
+        self.table.update_values([column_titles])
+        
+        # Inserting a Row
+        for row, row_values in enumerate(table_values):
+            for column, value in enumerate(row_values):
+                print(f"Inserting value '{value}' into row {row + 1}, column {column}")
+                self.table.insert(row + 1, column, value)
 
-        self.table = CTkTable(master=self.productTableFrame, column=7)
-        self.table.update_values([headers])
+        # Configuring Column Header
+        column_widths = [98, 96, 91, 86, 70, 71, 65]
+        for column, width in enumerate(column_widths):
+            self.table.frame[0, column].configure(width=width, height=25,
+                                                fg_color='#F7F7F7',
+                                                corner_radius=0, anchor='w')
+    
+        self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
+        self.columnLine.place(x=0, y=53)
 
-        # Place the table on the frame
-        self.table.place(x=14, y=10)
+        # Configuring the rest of the rows
+        for row in range(1, self.table.rows):
+            for column in range(self.table.columns):
+                self.table.frame[row, column].configure(width=column_widths[column], height=25,
+                                                        fg_color='#F7F7F7', text_color='#A7A7A7',
+                                                        corner_radius=0, anchor='w')
+
+            status = str(table_values[row - 1][-1])
+            print(status)
+            if status == "Available":
+                text_color = '#558E41'
+            elif status == "No Stock":
+                text_color = '#A65656'
+            else:
+                text_color = '#000000'  # Default color if status is neither 'Available' nor 'No Stock'
+                
+            self.table.frame[row, 6].configure(text_color=text_color) 
+            
+            
+            
+            self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb')
+            self.rowLine.place(x=0, y=80 + (row-1) * 25)
+        
+
+                
+        self.table.place(x=15, y=30)
+        
+        
 
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
@@ -241,17 +286,17 @@ class productView(ctk.CTkFrame):
         messagebox.showinfo('Success', 'Product Added Successfully')
         self.clear_form()
 
-# class App:
-#     def __init__(self):
-#         self.root = ctk.CTk()
-#         self.root.title("Products Page (Test)")
-#
-#         self.product_view = productView(self.root, None)
-#         self.product_view.pack(fill=ctk.BOTH, expand=True)
-#
-#     def run(self):
-#         self.root.mainloop()
-#
-# if __name__ == "__main__":
-#     app = App()
-#     app.run()
+class App:
+    def __init__(self):
+        self.root = ctk.CTk()
+        self.root.title("Products Page (Test)")
+
+        self.product_view = productView(self.root, None)
+        self.product_view.pack(fill=ctk.BOTH, expand=True)
+
+    def run(self):
+        self.root.mainloop()
+
+if __name__ == "__main__":
+    app = App()
+    app.run()
