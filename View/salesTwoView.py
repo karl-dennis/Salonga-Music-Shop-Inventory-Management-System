@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import tkinter as tk
 
 class salesTwoView(ctk.CTkFrame):
 
@@ -9,6 +10,8 @@ class salesTwoView(ctk.CTkFrame):
         ctk.set_appearance_mode("light")
         
         self.active_tab = 2
+        self.search_query = tk.StringVar()
+
         self.custom_styles()
         self.base_frame()
 
@@ -49,6 +52,42 @@ class salesTwoView(ctk.CTkFrame):
         
         self.dividerLine = ctk.CTkFrame(self.secondPageFrame, width=522, height=2, fg_color='#DDDDDD')
         self.dividerLine.place(x=0, y=51)
+        
+        
+        self.searchFrame = ctk.CTkFrame(self.secondPageFrame, width=160, height=22, fg_color='transparent')
+        self.searchFrame.place(x=349, y=14) 
+        
+        self.search_query.set('Search')
+        
+        self.searchEntry = ctk.CTkEntry(self.searchFrame, width=160, height=22,
+                                        fg_color='#FAFAFA', border_color='#BCBCBC', 
+                                        border_width=2, corner_radius=10, font=('Inter Medium', 11), 
+                                        text_color='#959595', textvariable=self.search_query)
+        self.searchEntry.place(x=0, y=0) 
+        
+        def on_entry_click(event):
+            if self.searchEntry.get() == 'Search':
+                self.searchEntry.delete(0, tk.END)  # Delete all the text in the entry
+
+        def on_focus_out(event):
+            if self.searchEntry.get() == '':
+                self.search_query.set('Search')
+
+        self.searchEntry.bind('<FocusIn>', on_entry_click)
+        self.searchEntry.bind('<FocusOut>', on_focus_out)    
+        
+        def perform_search():
+            query = self.search_query.get()
+            if query.strip() != '':
+                query = self.search_query.get()
+                
+                """Insert model/controller here"""
+                
+                print(f"Performing search for: {query}")
+            
+        self.searchEntry.bind('<Return>', lambda event: perform_search())
+        self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
+        self.secondPageFrame.bind('<Button-1>', lambda event: self.secondPageFrame.focus_set())
         
     def show_orderFrame(self):
         self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=585, fg_color='#F7F7F7', corner_radius=7)
