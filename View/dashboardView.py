@@ -9,6 +9,7 @@ from View.graphSalesVIew import graphSalesView
 from View.stockAlertsView import stockAlertsView
 from View.statisticView import statisticView
 from View.calendarView import calendarView
+import time
 
 class dashboardView(ctk.CTk):
 
@@ -29,6 +30,9 @@ class dashboardView(ctk.CTk):
         self._left_frame()
         self._base_frame()
         self._top_label()
+
+        self._time_label()
+        self._update_time()
         
         self.show_dashboard() # Initially show the dashboard view
         self.active_selection = 1 # Default to selection 1 as active
@@ -71,9 +75,18 @@ class dashboardView(ctk.CTk):
         self.topLabel = ctk.CTkLabel(self.topFrame, text='Admin', font=('Consolas', 18, 'bold'), text_color='#2D2D2D')
         self.topLabel.place(x=20, y=12)
 
+    def _time_label(self):
+        self.timeLabel = ctk.CTkLabel(self.topFrame, text='', font=("Consolas", 16, 'bold'), text_color='#000000', fg_color='#FFFFFF')
+        self.timeLabel.place(x=700, y=12)  # Adjust the x and y values as needed
+
+    def _update_time(self):
+        self.current_time = time.strftime("%H:%M:%S")  # Get the current time
+        self.timeLabel.configure(text=self.current_time)  # Update the label text
+        self.after(1000, self._update_time)
+
     def _app_icon(self):
-        self.appIcon = ctk.CTkLabel(self.leftFrame, text="Icon: Name", text_color='#595959', font=('Consolas', 20, 'bold'))
-        self.appIcon.place(x=33, y=12)
+            self.appIcon = ctk.CTkLabel(self.leftFrame, text="Icon: Name", text_color='#595959', font=('Consolas', 20, 'bold'))
+            self.appIcon.place(x=33, y=12)
 
     def _selection_1(self):
         self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 18, 'bold'), 
