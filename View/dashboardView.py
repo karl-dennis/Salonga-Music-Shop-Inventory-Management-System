@@ -77,7 +77,7 @@ class dashboardView(ctk.CTk):
 
     def _time_label(self):
         self.timeLabel = ctk.CTkLabel(self.topFrame, text='', font=("Consolas", 16, 'bold'), text_color='#000000', fg_color='#FFFFFF')
-        self.timeLabel.place(x=700, y=12)  # Adjust the x and y values as needed
+        self.timeLabel.place(x=745, y=12)  # Adjust the x and y values as needed
 
     def _update_time(self):
         self.current_time = time.strftime("%H:%M:%S")  # Get the current time

@@ -171,23 +171,30 @@ class productView(ctk.CTkFrame):
         
         self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
-    
+
     def show_productTable(self):
         self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7', corner_radius=7)
         self.productTableFrame.place(x=231, y=252)
-        
+
         self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
         column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
         table_values = [
             ["STR001", "Electric Guitar", "String", "Fender", "₱900", "8", "Available"],
-            # ["PER001", "Xylophone", "Percussion", "Yamaha", "₱850", "0", "No Stock"]
+            ["PER001", "Xylophone", "Percussion", "Yamaha", "₱850", "0", "No Stock"],
+            ["PER001", "Xylophone", "Percussion", "Yamaha", "₱850", "0", "No Stock"]
         ]
-                             
+
         self.table = CTkTable(master=self.productTableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
         self.table.update_values([column_titles])
-        
+
+        # Ensure there are enough rows in the table
+        required_rows = len(table_values)
+        current_rows = self.table.rows - 1  # Subtract 1 for the header row
+        for _ in range(required_rows - current_rows):
+            self.table.add_row([''] * 7)  # Add empty rows to meet the required row count
+
         # Inserting a Row
         for row, row_values in enumerate(table_values):
             for column, value in enumerate(row_values):
@@ -200,7 +207,7 @@ class productView(ctk.CTkFrame):
             self.table.frame[0, column].configure(width=width, height=25,
                                                 fg_color='#F7F7F7',
                                                 corner_radius=0, anchor='w')
-    
+
         self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
         self.columnLine.place(x=0, y=53)
 
@@ -219,28 +226,28 @@ class productView(ctk.CTkFrame):
                 text_color = '#A65656'
             else:
                 text_color = '#000000'  # Default color if status is neither 'Available' nor 'No Stock'
-                
-            self.table.frame[row, 6].configure(text_color=text_color) 
-            
-            
-            
+
+            self.table.frame[row, 6].configure(text_color=text_color)
+
+
+
             self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb')
             self.rowLine.place(x=0, y=80 + (row-1) * 25)
-        
 
-                
+
+
         self.table.place(x=15, y=30)
-        
-        
+
+
 
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
-        
+
         if file_path:
             selected_image = Image.open(file_path)
             img_width, img_height = 110, 110
             aspect_ratio = selected_image.width / selected_image.height
-            
+
             if aspect_ratio > 1:
                 # If width > height
                 new_width = img_width
@@ -249,13 +256,13 @@ class productView(ctk.CTkFrame):
                 # If width < height
                 new_height = img_height
                 new_width = int(img_height * aspect_ratio)
-            
+
             resized_image = selected_image.resize((new_width, new_height))
             print(f"New image size: {new_width}x{new_height}")
             new_image = ctk.CTkImage(light_image=resized_image, size=(new_width, new_height))
-            
+
             self.imageButton.configure(image=new_image)
-        else: 
+        else:
             # Defaults to import icon if none is selected
             self.imageButton.configure(image=self.importIcon)
     
