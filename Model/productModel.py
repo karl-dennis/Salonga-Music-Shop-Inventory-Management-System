@@ -25,7 +25,8 @@ class productModel:
                 product_brand TEXT,
                 product_type TEXT,
                 product_quantity INTEGER,
-                product_price REAL NOT NULL
+                product_price REAL NOT NULL,
+                status TEXT NOT NULL
             )'''
             self.cursor.execute(create_table_query_products)
         except sqlite3.Error as e:
@@ -58,13 +59,14 @@ class productModel:
         print(f'Product Brand: {brand}')
         print(f'Product Quantity: {quantity}')
         print(f'Product Price: {price}')
-
-        product_data = (name, brand, type, quantity,price)
+        if quantity != 0:
+            status = True
+            product_data = [name, brand, type, quantity,price, status]
 
         try:
             # Insert the new product into the products table
-            self.cursor.execute('''INSERT INTO products (product_name, product_brand, product_type, product_quantity, product_price)
-                        VALUES (?, ?, ?, ?, ?)''', product_data)
+            self.cursor.execute('''INSERT INTO products (product_name, product_brand, product_type, product_quantity, product_price, status)
+                        VALUES (?, ?, ?, ?, ?, ?)''', product_data)
             self.connectDatabase.commit()
 
             # Get the product_id of the newly added product
@@ -78,6 +80,9 @@ class productModel:
         except sqlite3.Error as e:
             print('Error:', e)
 
+    def fetch_data(self):
+        self.cursor.execute('''SELECT * FROM products''')
+        data = self.cursor.fetchall()
 
-
-
+        converted_data = [list(row) for row in data]
+        return converted_data

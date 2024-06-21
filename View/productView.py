@@ -172,19 +172,44 @@ class productView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
+    def update_values(self, values):
+        for row_values in values:
+            self.add_row(row_values)
+
+    def add_row(self, row_values):
+        self.rows += 1
+        self.table.append(row_values)
+        row_frame = ctk.CTkFrame(self)
+        for column, value in enumerate(row_values):
+            cell = ctk.CTkLabel(row_frame, text=value, font=self.font)
+            cell.grid(row=self.rows, column=column, padx=5, pady=5)
+        row_frame.pack()
+
+    def insert(self, row, column, value):
+        self.table[row][column] = value
+        # You would also update the UI accordingly
+        self.refresh_table()
+
+    def refresh_table(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        self.update_values(self.table)
+
     def show_productTable(self):
-        self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7', corner_radius=7)
+        self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7',
+                                              corner_radius=7)
         self.productTableFrame.place(x=231, y=252)
 
-        self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13), text_color='#2E2E2E')
+        self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13),
+                                  text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        column_titles = ["Product ID", "Name", "Type", "Brand", "Price", "Qty", "Status"]
-        table_values = [
-            ["STR001", "Electric Guitar", "String", "Fender", "₱900", "8", "Available"],
-            ["PER001", "Xylophone", "Percussion", "Yamaha", "₱850", "0", "No Stock"],
-            ["PER001", "Xylophone", "Percussion", "Yamaha", "₱850", "0", "No Stock"]
-        ]
+        feature/tableVisualization-kd
+        column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
+
+        # Fetch data from the database using the controller
+        table_values = self.controller.get_data()
+        print(self.controller.get_data())
 
         self.table = CTkTable(master=self.productTableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
         self.table.update_values([column_titles])
@@ -205,8 +230,8 @@ class productView(ctk.CTkFrame):
         column_widths = [98, 96, 91, 86, 70, 71, 65]
         for column, width in enumerate(column_widths):
             self.table.frame[0, column].configure(width=width, height=25,
-                                                fg_color='#F7F7F7',
-                                                corner_radius=0, anchor='w')
+                                                  fg_color='#F7F7F7',
+                                                  corner_radius=0, anchor='w')
 
         self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
         self.columnLine.place(x=0, y=53)
@@ -229,16 +254,10 @@ class productView(ctk.CTkFrame):
 
             self.table.frame[row, 6].configure(text_color=text_color)
 
-
-
             self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb')
-            self.rowLine.place(x=0, y=80 + (row-1) * 25)
-
-
+            self.rowLine.place(x=0, y=80 + (row - 1) * 25)
 
         self.table.place(x=15, y=30)
-
-
 
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
@@ -293,17 +312,19 @@ class productView(ctk.CTkFrame):
         messagebox.showinfo('Success', 'Product Added Successfully')
         self.clear_form()
 
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("Products Page (Test)")
+        self.show_productTable()
 
-        self.product_view = productView(self.root, None)
-        self.product_view.pack(fill=ctk.BOTH, expand=True)
-
-    def run(self):
-        self.root.mainloop()
-
-if __name__ == "__main__":
-    app = App()
-    app.run()
+# class App:
+#     def __init__(self):
+#         self.root = ctk.CTk()
+#         self.root.title("Products Page (Test)")
+#
+#         self.product_view = productView(self.root, None)
+#         self.product_view.pack(fill=ctk.BOTH, expand=True)
+#
+#     def run(self):
+#         self.root.mainloop()
+#
+# if __name__ == "__main__":
+#     app = App()
+#     app.run()
