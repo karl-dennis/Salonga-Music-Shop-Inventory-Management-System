@@ -311,6 +311,8 @@ class productView(ctk.CTkFrame):
         messagebox.showinfo('Success', 'Product Added Successfully')
         self.clear_form()
 
+        self.show_productTable()
+
 # class App:
 #     def __init__(self):
 #         self.root = ctk.CTk()
