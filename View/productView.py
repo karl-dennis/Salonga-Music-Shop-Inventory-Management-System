@@ -179,7 +179,7 @@ class productView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
+        column_titles = ["Product ID", "Name", "Type", "Brand", "Price", "Qty", "Status"]
         table_values = [
             ["STR001", "Electric Guitar", "String", "Fender", "₱900", "8", "Available"],
             ["PER001", "Xylophone", "Percussion", "Yamaha", "₱850", "0", "No Stock"],
