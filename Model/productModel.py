@@ -78,6 +78,7 @@ class productModel:
         except sqlite3.Error as e:
             print('Error:', e)
 
-
-
-
+    def fetch_data(self):
+        self.cursor.execute('''SELECT * FROM products''')
+        data = self.cursor.fetchall()
+        return data

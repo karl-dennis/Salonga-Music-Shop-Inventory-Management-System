@@ -172,21 +172,45 @@ class productView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
+    def update_values(self, values):
+        for row_values in values:
+            self.add_row(row_values)
+
+    def add_row(self, row_values):
+        self.rows += 1
+        self.table.append(row_values)
+        row_frame = ctk.CTkFrame(self)
+        for column, value in enumerate(row_values):
+            cell = ctk.CTkLabel(row_frame, text=value, font=self.font)
+            cell.grid(row=self.rows, column=column, padx=5, pady=5)
+        row_frame.pack()
+
+    def insert(self, row, column, value):
+        self.table[row][column] = value
+        # You would also update the UI accordingly
+        self.refresh_table()
+
+    def refresh_table(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        self.update_values(self.table)
+
     def show_productTable(self):
-        self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7', corner_radius=7)
+        self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7',
+                                              corner_radius=7)
         self.productTableFrame.place(x=231, y=252)
 
-        self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13), text_color='#2E2E2E')
+        self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13),
+                                  text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
         column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
-        table_values = [
-            ["STR001", "Electric Guitar", "String", "Fender", "₱900", "8", "Available"],
-            ["PER001", "Xylophone", "Percussion", "Yamaha", "₱850", "0", "No Stock"],
-            ["PER001", "Xylophone", "Percussion", "Yamaha", "₱850", "0", "No Stock"]
-        ]
 
-        self.table = CTkTable(master=self.productTableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
+        # Fetch data from the database
+        table_values = self.controller.get_data()
+
+        # Create the table without the unsupported 'columns' argument
+        self.table = CTkTable(master=self.productTableFrame, padx=0, pady=0, font=('Inter', 12))
         self.table.update_values([column_titles])
 
         # Ensure there are enough rows in the table
@@ -195,7 +219,7 @@ class productView(ctk.CTkFrame):
         for _ in range(required_rows - current_rows):
             self.table.add_row([''] * 7)  # Add empty rows to meet the required row count
 
-        # Inserting a Row
+        # Inserting Rows
         for row, row_values in enumerate(table_values):
             for column, value in enumerate(row_values):
                 print(f"Inserting value '{value}' into row {row + 1}, column {column}")
@@ -204,9 +228,8 @@ class productView(ctk.CTkFrame):
         # Configuring Column Header
         column_widths = [98, 96, 91, 86, 70, 71, 65]
         for column, width in enumerate(column_widths):
-            self.table.frame[0, column].configure(width=width, height=25,
-                                                fg_color='#F7F7F7',
-                                                corner_radius=0, anchor='w')
+            self.table.table[0][column] = ctk.CTkLabel(self.table, text=column_titles[column], width=width, height=25,
+                                                       fg_color='#F7F7F7', corner_radius=0, anchor='w')
 
         self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
         self.columnLine.place(x=0, y=53)
@@ -214,9 +237,9 @@ class productView(ctk.CTkFrame):
         # Configuring the rest of the rows
         for row in range(1, self.table.rows):
             for column in range(self.table.columns):
-                self.table.frame[row, column].configure(width=column_widths[column], height=25,
-                                                        fg_color='#F7F7F7', text_color='#A7A7A7',
-                                                        corner_radius=0, anchor='w')
+                self.table.table[row][column] = ctk.CTkLabel(self.table, text=self.table.table[row][column],
+                                                             width=column_widths[column], height=25, fg_color='#F7F7F7',
+                                                             text_color='#A7A7A7', corner_radius=0, anchor='w')
 
             status = str(table_values[row - 1][-1])
             print(status)
@@ -227,14 +250,10 @@ class productView(ctk.CTkFrame):
             else:
                 text_color = '#000000'  # Default color if status is neither 'Available' nor 'No Stock'
 
-            self.table.frame[row, 6].configure(text_color=text_color)
-
-
+            self.table.table[row][6] = ctk.CTkLabel(self.table, text=self.table.table[row][6], text_color=text_color)
 
             self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb')
-            self.rowLine.place(x=0, y=80 + (row-1) * 25)
-
-
+            self.rowLine.place(x=0, y=80 + (row - 1) * 25)
 
         self.table.place(x=15, y=30)
 
