@@ -16,7 +16,8 @@ class productView(ctk.CTkFrame):
         self.name_entry = tk.StringVar()
         self.quantity = tk.StringVar()
         self.price = tk.StringVar()
-
+        self.search_query = tk.StringVar()
+        
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
         
@@ -38,6 +39,14 @@ class productView(ctk.CTkFrame):
         self.show_productGraph()
         self.show_reports()
         self.show_productTable()
+        self.search_bar()
+        
+        self.productFrame.bind('<Button-1>', lambda event: self.productFrame.focus_set())
+        self.productTableFrame.bind('<Button-1>', lambda event: self.productTableFrame.focus_set())
+        self.productRegFrame.bind('<Button-1>', lambda event: self.productRegFrame.focus_set())
+        self.productGraphFrame.bind('<Button-1>', lambda event: self.productGraphFrame.focus_set())
+        self.reportsFrame.bind('<Button-1>', lambda event: self.reportsFrame.focus_set())
+        
         
     def show_productReg(self):
         self.icon = ctk.CTkImage(light_image=Image.open('./assets/plus.png'), size=(15,15)) # Icon implementation
@@ -242,8 +251,41 @@ class productView(ctk.CTkFrame):
                 self.rowLine.place(x=0, y=78 + (row - 1) * 25)
 
         self.table.place(x=15, y=30)
+          
+    def search_bar(self):
+        self.searchFrame = ctk.CTkFrame(self.productTableFrame, width=160, height=22, fg_color='transparent')
+        self.searchFrame.place(x=430, y=8) 
         
+        self.search_query.set('Search')
+        
+        self.searchEntry = ctk.CTkEntry(self.searchFrame, width=160, height=22,
+                                        fg_color='#FAFAFA', border_color='#BCBCBC', 
+                                        border_width=2, corner_radius=10, font=('Inter Medium', 11), 
+                                        text_color='#959595', textvariable=self.search_query)
+        self.searchEntry.place(x=0, y=0) 
+        
+        def on_entry_click(event):
+            if self.searchEntry.get() == 'Search':
+                self.searchEntry.delete(0, tk.END)  # Delete all the text in the entry
 
+        def on_focus_out(event):
+            if self.searchEntry.get() == '':
+                self.search_query.set('Search')
+
+        self.searchEntry.bind('<FocusIn>', on_entry_click)
+        self.searchEntry.bind('<FocusOut>', on_focus_out)    
+        
+        def perform_search():
+            query = self.search_query.get()
+            if query.strip() != '':
+                query = self.search_query.get()
+                
+                """Insert model/controller here"""
+                
+                print(f"Performing search for: {query}")
+            
+        self.searchEntry.bind('<Return>', lambda event: perform_search())
+        
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
 

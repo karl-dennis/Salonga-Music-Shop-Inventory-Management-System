@@ -10,7 +10,7 @@ if __name__ == '__main__':
     # login.main()
     dashboard = dashboardController()
     dashboard.main()
-    # product = productModel()
+    # product    = productModel()
     # product = productController()
     # product.main()
     # sales = salesController()
