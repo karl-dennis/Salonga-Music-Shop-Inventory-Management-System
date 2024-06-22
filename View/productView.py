@@ -251,8 +251,7 @@ class productView(ctk.CTkFrame):
                 self.rowLine.place(x=0, y=78 + (row - 1) * 25)
 
         self.table.place(x=15, y=30)
-        
-    
+          
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.productTableFrame, width=160, height=22, fg_color='transparent')
         self.searchFrame.place(x=430, y=8) 
