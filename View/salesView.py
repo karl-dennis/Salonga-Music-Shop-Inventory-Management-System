@@ -12,6 +12,7 @@ class salesView(ctk.CTkFrame):
         
         self.active_tab = 1
         self.search_query = tk.StringVar()
+        self.selected_product = [] # Tracks all active selections
         
         self.custom_styles()
         self.base_frame()
@@ -35,7 +36,6 @@ class salesView(ctk.CTkFrame):
         self.filterFrame.bind('<Button-1>', lambda event: self.filterFrame.focus_set())
         self.selectionTable.bind('<Button-1>', lambda event: self.selectionTable.focus_set())
 
-    
     def show_firstPage(self):
         self.firstPageFrame = ctk.CTkFrame(self.baseFrame, width=522, height=583, fg_color='#F7F7F7', corner_radius=7)
         self.firstPageFrame.place(x=12, y=15)
@@ -146,9 +146,10 @@ class salesView(ctk.CTkFrame):
             self.selectionImage = ctk.CTkButton(self.selectionFrame, image=self.placeholderIcon, text='', width=83, height=83,
                                         border_width=2.5, border_color='#B8B8B8', corner_radius=7,
                                         fg_color='#FFFFFF', bg_color='#F7F7F7',
-                                        hover_color='#FFFFFF', anchor='center')
+                                        hover_color='#FFFFFF', anchor='center',
+                                        command=lambda name=name, brand=brand, price=price, quantity=quantity: self.handle_selection(name, brand, price, quantity))
             self.selectionImage.grid(row=0, column=0)
-            
+                    
             self.selectionName = ctk.CTkLabel(self.selectionFrame, text=name,
                                             width=80, height=12, font=('Inter Semibold', 10), text_color='#747474')
             self.selectionName.grid(row=1, column=0)
@@ -169,7 +170,24 @@ class salesView(ctk.CTkFrame):
                                             width=80, height=9, font=('Inter Semibold', 9), 
                                             text_color=text_color)
             self.selectionQuantity.grid(row=4, column=0)
+    
+    def show_orderFrame(self):
+        self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
+        self.orderFrame.place(x=546, y=15)
         
+        self.label = ctk.CTkLabel(self.orderFrame, text="Order #0001", font=('Inter', 15, 'bold'), text_color='#2E2E2E')
+        self.label.place(x=95, y=12)
+        self.orderFrame.bind('<Button-1>', lambda event: self.orderFrame.focus_set())
+
+    def handle_selection(self, name, brand, price, quantity):
+        values = {'name': name, 'brand': brand, 'price': price, 'quantity': quantity} 
+        self.selected_product.append(values) # Tracks all active selections
+        
+        # For debugging purposes
+        print("All Selections:")
+        for item in self.selected_product:
+            print(item)
+    
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.firstPageFrame, width=160, height=22, fg_color='transparent')
         self.searchFrame.place(x=349, y=14) 
@@ -203,16 +221,7 @@ class salesView(ctk.CTkFrame):
                 print(f"Performing search for: {query}")
             
         self.searchEntry.bind('<Return>', lambda event: perform_search())
-        
-    def show_orderFrame(self):
-        self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
-        self.orderFrame.place(x=546, y=15)
-        
-        self.label = ctk.CTkLabel(self.orderFrame, text="Order #0001", font=('Inter', 15, 'bold'), text_color='#2E2E2E')
-        self.label.place(x=95, y=12)
-        self.orderFrame.bind('<Button-1>', lambda event: self.orderFrame.focus_set())
-
-    
+            
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
