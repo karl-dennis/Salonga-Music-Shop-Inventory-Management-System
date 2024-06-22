@@ -52,6 +52,7 @@ class productModel:
             print('Error:', e)
 
     def add_products(self, name, type, brand, quantity, price):
+        quantity = int(quantity)
         # Debugging purposes
         print('In model')
         print(f'Product Name: {name}')
@@ -59,10 +60,10 @@ class productModel:
         print(f'Product Brand: {brand}')
         print(f'Product Quantity: {quantity}')
         print(f'Product Price: {price}')
-        if quantity != 0:
-            status = True
-            product_data = [name, brand, type, quantity,price, status]
-
+        
+        status = 'Available' if quantity > 5 else 'Low Stock' if quantity > 0 else 'No Stock'
+        product_data = [name, brand, type, quantity, price, status]
+        
         try:
             # Insert the new product into the products table
             self.cursor.execute('''INSERT INTO products (product_name, product_brand, product_type, product_quantity, product_price, status)
