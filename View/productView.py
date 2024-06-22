@@ -204,7 +204,6 @@ class productView(ctk.CTkFrame):
                                   text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        feature/tableVisualization-kd
         column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
 
         # Fetch data from the database using the controller
@@ -214,8 +213,11 @@ class productView(ctk.CTkFrame):
         self.table = CTkTable(master=self.productTableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
         self.table.update_values([column_titles])
 
-        # Ensure there are enough rows in the table
-        required_rows = len(table_values)
+        if not table_values:
+            required_rows = 0
+        else:
+            required_rows = len(table_values)
+        
         current_rows = self.table.rows - 1  # Subtract 1 for the header row
         for _ in range(required_rows - current_rows):
             self.table.add_row([''] * 7)  # Add empty rows to meet the required row count
@@ -238,26 +240,32 @@ class productView(ctk.CTkFrame):
 
         # Configuring the rest of the rows
         for row in range(1, self.table.rows):
-            for column in range(self.table.columns):
+            for column in range(self.table.columns): 
                 self.table.frame[row, column].configure(width=column_widths[column], height=25,
-                                                        fg_color='#F7F7F7', text_color='#A7A7A7',
+                                                        fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
 
-            status = str(table_values[row - 1][-1])
-            print(status)
-            if status == "Available":
-                text_color = '#558E41'
-            elif status == "No Stock":
-                text_color = '#A65656'
-            else:
-                text_color = '#000000'  # Default color if status is neither 'Available' nor 'No Stock'
+            if table_values:
+                quantity = int(table_values[row - 1][4])  # 5th Column = Quantity
+                if quantity == 0:
+                    status = "No Stock"
+                    status_color = "#D92929"
+                elif 1 <= quantity <= 5:
+                    status = "Low Stock"
+                    status_color = "#E9AC07"
+                else:
+                    status = "Available"
+                    status_color = "#329932"
 
-            self.table.frame[row, 6].configure(text_color=text_color)
-
-            self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb')
-            self.rowLine.place(x=0, y=80 + (row - 1) * 25)
+                self.table.insert(row, 6, status)
+                self.table.frame[row, 6].configure(width=column_widths[-1], text_color=status_color) # Status color
+                self.table.frame[row, 4].configure(text_color='#5e5e5e') # Quantity color
+        
+                self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb') # Row divider
+                self.rowLine.place(x=0, y=78 + (row - 1) * 25)
 
         self.table.place(x=15, y=30)
+        
 
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
@@ -318,13 +326,13 @@ class productView(ctk.CTkFrame):
 #     def __init__(self):
 #         self.root = ctk.CTk()
 #         self.root.title("Products Page (Test)")
-#
+
 #         self.product_view = productView(self.root, None)
 #         self.product_view.pack(fill=ctk.BOTH, expand=True)
-#
+
 #     def run(self):
 #         self.root.mainloop()
-#
+
 # if __name__ == "__main__":
 #     app = App()
 #     app.run()
