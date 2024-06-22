@@ -26,6 +26,11 @@ class salesView(ctk.CTkFrame):
         
         self.show_firstPage()
         self.show_orderFrame()
+        self.search_bar()
+        
+        self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
+        self.firstPageFrame.bind('<Button-1>', lambda event: self.firstPageFrame.focus_set())
+        
     
     def show_firstPage(self):
         self.firstPageFrame = ctk.CTkFrame(self.baseFrame, width=522, height=583, fg_color='#F7F7F7', corner_radius=7)
@@ -49,7 +54,12 @@ class salesView(ctk.CTkFrame):
         
         self.dividerLine = ctk.CTkFrame(self.firstPageFrame, width=522, height=2, fg_color='#DDDDDD')
         self.dividerLine.place(x=0, y=51)
+        
+        self.filterFrame = ctk.CTkFrame(self.firstPageFrame, width=336, height=56)
+        self.filterFrame.place(x=0, y=0)    
+    
 
+    def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.firstPageFrame, width=160, height=22, fg_color='transparent')
         self.searchFrame.place(x=349, y=14) 
         
@@ -82,8 +92,6 @@ class salesView(ctk.CTkFrame):
                 print(f"Performing search for: {query}")
             
         self.searchEntry.bind('<Return>', lambda event: perform_search())
-        self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
-        self.firstPageFrame.bind('<Button-1>', lambda event: self.firstPageFrame.focus_set())
         
     def show_orderFrame(self):
         self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
@@ -97,3 +105,18 @@ class salesView(ctk.CTkFrame):
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
+
+class App:
+    def __init__(self):
+        self.root = ctk.CTk()
+        self.root.title("Sales Page (Test)")
+
+        self.sales_view = salesView(self.root, None)
+        self.sales_view.pack(fill=ctk.BOTH, expand=True)
+
+    def run(self):
+        self.root.mainloop()
+
+if __name__ == "__main__":
+    app = App()
+    app.run()

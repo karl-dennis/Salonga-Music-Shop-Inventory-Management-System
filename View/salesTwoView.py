@@ -29,6 +29,14 @@ class salesTwoView(ctk.CTkFrame):
         self.show_salesGraph()
         self.show_revenue()
         self.show_reports()
+        
+        self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
+        self.secondPageFrame.bind('<Button-1>', lambda event: self.secondPageFrame.focus_set())
+        self.orderFrame.bind('<Button-1>', lambda event: self.orderFrame.focus_set())
+        self.salesGraphFrame.bind('<Button-1>', lambda event: self.salesGraphFrame.focus_set())
+        self.revenueFrame.bind('<Button-1>', lambda event: self.revenueFrame.focus_set())
+        self.reportsFrame.bind('<Button-1>', lambda event: self.reportsFrame.focus_set())
+
                 
     def show_secondPage(self):
         self.secondPageFrame = ctk.CTkFrame(self.baseFrame, width=522, height=340, fg_color='#F7F7F7', corner_radius=7)
@@ -86,8 +94,6 @@ class salesTwoView(ctk.CTkFrame):
                 print(f"Performing search for: {query}")
             
         self.searchEntry.bind('<Return>', lambda event: perform_search())
-        self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
-        self.secondPageFrame.bind('<Button-1>', lambda event: self.secondPageFrame.focus_set())
         
     def show_orderFrame(self):
         self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=585, fg_color='#F7F7F7', corner_radius=7)
