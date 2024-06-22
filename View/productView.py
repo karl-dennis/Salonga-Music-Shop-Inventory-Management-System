@@ -171,30 +171,7 @@ class productView(ctk.CTkFrame):
         
         self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
-
-    def update_values(self, values):
-        for row_values in values:
-            self.add_row(row_values)
-
-    def add_row(self, row_values):
-        self.rows += 1
-        self.table.append(row_values)
-        row_frame = ctk.CTkFrame(self)
-        for column, value in enumerate(row_values):
-            cell = ctk.CTkLabel(row_frame, text=value, font=self.font)
-            cell.grid(row=self.rows, column=column, padx=5, pady=5)
-        row_frame.pack()
-
-    def insert(self, row, column, value):
-        self.table[row][column] = value
-        # You would also update the UI accordingly
-        self.refresh_table()
-
-    def refresh_table(self):
-        for widget in self.winfo_children():
-            widget.destroy()
-        self.update_values(self.table)
-
+    
     def show_productTable(self):
         self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7',
                                               corner_radius=7)
