@@ -235,7 +235,7 @@ class productView(ctk.CTkFrame):
                     status_color = "#329932"
 
                 self.table.insert(row, 6, status)
-                self.table.frame[row, 6].configure(width=column_widths[-1], text_color=status_color) # Status color
+                self.table.frame[row, 6].configure(text_color=status_color) # Status color
                 self.table.frame[row, 4].configure(text_color='#5e5e5e') # Quantity color
         
                 self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb') # Row divider

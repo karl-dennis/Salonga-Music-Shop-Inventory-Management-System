@@ -55,7 +55,7 @@ class dashboardView(ctk.CTk):
         self.configure(bg_color='#DFDFDF')
         self.minsize(set_width, set_height)
         self.maxsize(set_width, set_height)
-
+        self.resizable(False, False)
     def _top_frame(self):
         self.topFrame = ctk.CTkFrame(self, width=844, height=50, fg_color='#FFFFFF', corner_radius=0)
         self.topFrame.place(x=598, y=25, anchor='center')
