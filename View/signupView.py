@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 import tkinter as ttk # DateEntry style
-import tkcalendar as tkc
+from tkcalendar import DateEntry
 class signupView(ctk.CTk):
 
     def __init__(self, controller):
@@ -162,7 +162,7 @@ class signupView(ctk.CTk):
     def _birthday_entry(self): # TODO: implement tkcalendar instead of ctk.CTkEntry
         # self.birthdayEntry = ctk.CTkEntry(self.birthdayFrame, textvariable=self.birthday)
         # self.birthdayEntry.pack(side='left', padx=5, pady=5)
-        self.calendarEntry = tkc.Calendar(self.birthdayFrame, textvariable=self.birthday, 
+        self.calendarEntry = DateEntry(self.birthdayFrame, textvariable=self.birthday, 
                                        firstweekday='sunday', showweeknumbers=False,
                                        background='#F7F7F7', foreground='#393939', 
                                        headersbackground='#92A3AA', headersforeground='#FFFFFF',
