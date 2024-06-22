@@ -244,9 +244,9 @@ class productView(ctk.CTkFrame):
                 self.table.frame[row, column].configure(width=column_widths[column], height=25,
                                                         fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
-            # Set status and change text_color
+
             if table_values:
-                quantity = int(table_values[row - 1][4])  # 5th Column is Quantity
+                quantity = int(table_values[row - 1][4])  # 5th Column = Quantity
                 if quantity == 0:
                     status = "No Stock"
                     status_color = "#D92929"
@@ -258,13 +258,14 @@ class productView(ctk.CTkFrame):
                     status_color = "#329932"
 
                 self.table.insert(row, 6, status)
-                self.table.frame[row, 6].configure(width=column_widths[-1], text_color=status_color)
+                self.table.frame[row, 6].configure(width=column_widths[-1], text_color=status_color) # Status color
                 self.table.frame[row, 4].configure(text_color='#5e5e5e') # Quantity color
         
-                self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb')
+                self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb') # Row divider
                 self.rowLine.place(x=0, y=78 + (row - 1) * 25)
 
         self.table.place(x=15, y=30)
+        
 
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
