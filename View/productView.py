@@ -17,6 +17,7 @@ class productView(ctk.CTkFrame):
         self.quantity = tk.StringVar()
         self.price = tk.StringVar()
         self.search_query = tk.StringVar()
+        self.image_data = None
         
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")

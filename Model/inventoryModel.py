@@ -18,11 +18,14 @@ class inventoryModel:
     def create_table_products(self):
         try:
             create_table_query_products = '''CREATE TABLE IF NOT EXISTS products(
-                product_id INTEGER PRIMARY KEY,
+                product_id TEXT PRIMARY KEY,
                 product_name TEXT,
                 product_brand TEXT,
                 product_type TEXT,
-                product_price INTEGER
+                product_quantity INTEGER,
+                product_price REAL NOT NULL,
+                status TEXT NOT NULL,
+                product_image BLOB
             )'''
             self.cursor.execute(create_table_query_products)
         except sqlite3.Error as e:
@@ -31,8 +34,8 @@ class inventoryModel:
     def create_table_stock(self):
         try:
             create_table_query_stocks = '''CREATE TABLE IF NOT EXISTS stock_items(
-                stock_id INTEGER PRIMARY KEY,
-                product_id INTEGER,
+                stock_id TEXT PRIMARY KEY,
+                product_id TEXT,
                 FOREIGN KEY (product_id) REFERENCES products (product_id)
             )'''
             self.cursor.execute(create_table_query_stocks)
