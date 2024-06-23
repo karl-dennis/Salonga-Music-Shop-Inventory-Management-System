@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 from PIL import Image
+from CTkSpinbox import *
 
 class salesView(ctk.CTkFrame):
 
@@ -12,7 +13,10 @@ class salesView(ctk.CTkFrame):
         
         self.active_tab = 1
         self.search_query = tk.StringVar()
+        self.amount = ctk.IntVar()
         self.selected_product = [] # Tracks all active selections
+        self.product_prices = []
+        self.trashIcon = ctk.CTkImage(light_image=Image.open('./assets/trash.png'), size=(15,15))
         
         self.custom_styles()
         self.base_frame()
@@ -27,14 +31,15 @@ class salesView(ctk.CTkFrame):
         self.place(x=0, y=0) # Place salesView Frame, do not change this
         
         self.show_firstPage()
+        self.show_selection()
         self.show_orderFrame()
         self.search_bar()
-        self.show_selection()
         
         self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
         self.firstPageFrame.bind('<Button-1>', lambda event: self.firstPageFrame.focus_set())
         self.filterFrame.bind('<Button-1>', lambda event: self.filterFrame.focus_set())
         self.selectionTable.bind('<Button-1>', lambda event: self.selectionTable.focus_set())
+        self.orderFrame.bind('<Button-1>', lambda event: self.orderFrame.focus_set())
 
     def show_firstPage(self):
         self.firstPageFrame = ctk.CTkFrame(self.baseFrame, width=522, height=583, fg_color='#F7F7F7', corner_radius=7)
@@ -105,22 +110,22 @@ class salesView(ctk.CTkFrame):
         self.selectionTable.place(x=0, y=120)
         
         values = [ # Insert values here
-            ['Electric Guitar', 'Fendy', '₱900', '10 In Stock'],
-            ['Name', 'Brand', 'Price', '5 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '5 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '5 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
+            ['Electric Guitar', 'Fendy', '1000', '10 In Stock'],
+            ['Xylophone', 'Yamaha', '800', '5 In Stock'],
+            ['Acoustic Guitar', 'Gibson', '850', '0 In Stock'],
+            ['Bass Guitar', 'JB', '730', '0 In Stock'],
+            ['Ukulele', 'RJ', '920', '0 In Stock'],
+            ['Electric Guitar', 'Fendy', '2000', '10 In Stock'],
+            ['Xylophone', 'Yamaha', '800', '5 In Stock'],
+            ['Acoustic Guitar', 'Gibson', '850', '0 In Stock'],
+            ['Bass Guitar', 'JB', '730', '0 In Stock'],
+            ['Ukulele', 'RJ', '920', '0 In Stock'],
+            ['Electric Guitar', 'Fendy', '900', '10 In Stock'],
+            ['Xylophone', 'Yamaha', '800', '5 In Stock'],
+            ['Acoustic Guitar', 'Gibson', '850', '0 In Stock'],
+            ['Bass Guitar', 'JB', '730', '0 In Stock'],
+            ['Ukulele', 'RJ', '920', '0 In Stock'],
+            ['Electric Guitar', 'Fendy', '900', '10 In Stock'],
         ]
         
         columns = 5 
@@ -158,12 +163,15 @@ class salesView(ctk.CTkFrame):
                                             width=80, height=7, font=('Inter Semibold', 7), text_color='#747474')
             self.selectionBrand.grid(row=2, column=0)
             
-            self.selectionPrice = ctk.CTkLabel(self.selectionFrame, text=price,
+            price = int(price)
+            formatted_price = f'₱{price:,.2f}'
+            
+            self.selectionPrice = ctk.CTkLabel(self.selectionFrame, text=formatted_price,
                                             width=80, height=10, font=('Inter Semibold', 8), text_color='#747474')
             self.selectionPrice.grid(row=3, column=0)
             
-            quantity_value = quantity.split() # 'X In Stock', splits and takes X (number); gives an error if format isn't followed
-            quantity_value = int(quantity_value[0])
+            quantity_value = int(quantity.split()[0]) # 'X In Stock', splits and takes X (number); gives an error if format isn't followed
+            
             text_color = '#AE5050' if quantity_value == 0 else ('#E9AC07' if 1 <= quantity_value <= 5 else '#329932')
 
             self.selectionQuantity = ctk.CTkLabel(self.selectionFrame, text=quantity,
@@ -175,18 +183,121 @@ class salesView(ctk.CTkFrame):
         self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
         self.orderFrame.place(x=546, y=15)
         
-        self.label = ctk.CTkLabel(self.orderFrame, text="Order #0001", font=('Inter', 15, 'bold'), text_color='#2E2E2E')
-        self.label.place(x=95, y=12)
-        self.orderFrame.bind('<Button-1>', lambda event: self.orderFrame.focus_set())
-
-    def handle_selection(self, name, brand, price, quantity):
-        values = {'name': name, 'brand': brand, 'price': price, 'quantity': quantity} 
-        self.selected_product.append(values) # Tracks all active selections
+        orderID = 1 # ID Counter, increments on click (save button)
         
-        # For debugging purposes
-        print("All Selections:")
-        for item in self.selected_product:
-            print(item)
+        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID:04}", width=121, height=23, # Pads zeroes (length of 4), e.g. 0001
+                                         font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
+        self.orderIDLabel.place(x=82, y=12)
+        
+        self.orderColumnFrame = ctk.CTkFrame(self.orderFrame, width=285, height=24, corner_radius=0, fg_color='#E9E9E9')
+        self.orderColumnFrame.place(x=0, y=48)
+        
+        self.orderProduct = ctk.CTkLabel(self.orderColumnFrame, text='Product', width=106, height=22,
+                                         font=('Inter Semibold', 12), text_color='#B8B8B8', anchor='w')
+        self.orderProduct.place(x=10, y=1)
+        
+        self.orderQuantity = ctk.CTkLabel(self.orderColumnFrame, text='Qty', width=28, height=22,
+                                         font=('Inter Semibold', 12), text_color='#B8B8B8', anchor='center')
+        self.orderQuantity.place(x=148, y=1)
+        
+        self.orderPrice = ctk.CTkLabel(self.orderColumnFrame, text='Price', width=63, height=22,
+                                         font=('Inter Semibold', 12), text_color='#B8B8B8', anchor='w')
+        self.orderPrice.place(x=207, y=1)    
+
+        self.orderListFrame = ctk.CTkFrame(self.orderFrame, width=285, height=354, fg_color='transparent')
+        self.orderListFrame.place(x=0, y=72)
+            
+    def handle_selection(self, name, brand, price, quantity):
+        quantity_value = int(quantity.split()[0])
+        
+        if quantity_value > 0:
+            values = {'name': name, 'brand': brand, 'price': price, 'quantity': quantity} 
+            
+            self.selected_product.append(values)  # Tracks all active selections
+            self.product_prices.append(price)
+            
+            self.refresh_order_list()
+            print("Order List:")
+            
+            for item in self.selected_product:
+                name = item['name']
+                brand = item['brand']
+                price = item['price']
+                quantity = int(item['quantity'].split()[0]) # 'X In Stock', splits and takes X (number); gives an error if format isn't followed
+                print(name, brand, price, quantity)
+            print()
+            
+        else:
+            pass
+
+    def delete_row(self, index):
+        if index < len(self.selected_product):
+            self.selected_product.pop(index)  # Removes selection from list 'selected_product[]'
+        
+        self.refresh_order_list()
+        print(f"Selection deleted at index: {index}") # For debugging
+
+    def refresh_order_list(self):
+        # Clears all selections
+        for widget in self.orderListFrame.winfo_children():
+            widget.destroy()
+        
+        # Places all selections after clearing
+        for i, item in enumerate(self.selected_product):
+            self.create_row(i, item)
+
+    def create_row(self, index, item):
+        name = item['name']
+        brand = item['brand']
+        price = item['price']
+        quantity = item['quantity']
+
+        quantity = int(quantity.split()[0])
+        print(name, brand, price, quantity) # For debugging
+        
+        if quantity > 0:
+            self.rowFrame = ctk.CTkFrame(self.orderListFrame, width=285, height=40, fg_color='transparent')
+            self.rowFrame.place(x=0, y=index * 40)
+
+            self.deleteButton = ctk.CTkButton(self.rowFrame, image=self.trashIcon, text='', width=15, height=15,
+                                        border_width=0, fg_color='transparent', corner_radius=0,
+                                        hover_color='#F7F7F7', anchor='center',
+                                        command=lambda i=index: self.delete_row(i))
+            self.deleteButton.place(x=3, y=8)
+
+            self.rowLine = ctk.CTkFrame(self.rowFrame, width=285, height=2, fg_color='#E9E9E9')
+            self.rowLine.place(x=0, y=39)
+            
+            self.productName = ctk.CTkLabel(self.rowFrame, text=name, width=90, height=12,
+                                            font=('Inter Semibold', 11), text_color='#747474', anchor='w')
+            self.productName.place(x=29, y=9)
+            
+            self.productBrand = ctk.CTkLabel(self.rowFrame, text=brand, width=90, height=10,
+                                            font=('Inter Semibold', 9), text_color='#747474', anchor='w')
+            self.productBrand.place(x=29, y=21)
+            
+            self.productQuantity = CTkSpinbox(self.rowFrame, start_value=0, width=64, height=20,
+                                            min_value=0, max_value=quantity, variable=self.amount,
+                                            font=('Inter Semibold', 10), text_color='#747474',
+                                            fg_color='#F7F7F7', 
+                                            corner_radius=5, border_width=2, border_color='#CACACA',
+                                            command=lambda idx=index, it=item: self.update_price(idx, it))
+            self.productQuantity.place(x=130, y=9)
+
+            self.productPrice = ctk.CTkLabel(self.rowFrame, text='₱0.00', width=69, height=17,
+                                            font=('Inter Semibold', 10), text_color='#747474', anchor='w')
+            self.productPrice.place(x=207, y=11)     
+                    
+    def update_price(self, index, item):
+        quantity = self.amount.get()
+        price = int(item['price'])
+        new_price = quantity * price
+        
+        # Update price in product_prices list
+        self.product_prices[index] = new_price
+        
+        # Update displayed price in productPrice label based on product_prices
+        self.productPrice.configure(text=f'₱{self.product_prices[index]:,.2f}')
     
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.firstPageFrame, width=160, height=22, fg_color='transparent')
