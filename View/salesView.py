@@ -203,40 +203,57 @@ class salesView(ctk.CTkFrame):
             
     def handle_selection(self, name, brand, price, quantity):
         values = {'name': name, 'brand': brand, 'price': price, 'quantity': quantity} 
-        self.selected_product.append(values) # Tracks all active selections
+        self.selected_product.append(values)  # Tracks all active selections
         
-        height = 40
+        self.refresh_order_list()
         print("Order List:")
         
-        for i, item in enumerate(self.selected_product):
+        for item in self.selected_product:
             name = item['name']
             brand = item['brand']
             price = item['price']
-            quantity = item['quantity']
-            
-            quantity = int(quantity.split()[0]) # 'X In Stock', splits and takes X (number); gives an error if format isn't followed
-
+            quantity = int(item['quantity'].split()[0]) # 'X In Stock', splits and takes X (number); gives an error if format isn't followed
             print(name, brand, price, quantity)
-            
-            self.rowFrame = ctk.CTkFrame(self.orderListFrame, width=285, height=40, fg_color='transparent')
-            self.rowFrame.place(x=0, y=i * height)
-            
-            self.deleteButton = ctk.CTkButton(self.rowFrame, image=self.trashIcon, text='', width=15, height=15,
-                                              border_width=0, fg_color='transparent', corner_radius=0,
-                                              hover_color='#000000', anchor='center',
-                                              )
-            self.deleteButton.place(x=3, y=8)
-            
-            self.rowLine = ctk.CTkFrame(self.rowFrame, width=285, height=2, fg_color='#E9E9E9')
-            self.rowLine.place(x=0, y=39)
+        print()
+
+    def delete_row(self, index):
+        if index < len(self.selected_product):
+            self.selected_product.pop(index)  # Removes selection from list 'selected_product[]'
         
-        print()  
-        # For debugging purposes
-        # print("All Selections:")
-        for item in self.selected_product:
-            # print(item)
-            pass
-    
+        self.refresh_order_list()
+        print(f"Selection deleted at index: {index}") # For debugging
+
+    def refresh_order_list(self):
+        # Clears all selections
+        for widget in self.orderListFrame.winfo_children():
+            widget.destroy()
+        
+        # Places all selections after clearing
+        for i, item in enumerate(self.selected_product):
+            self.create_row(i, item)
+
+    def create_row(self, index, item):
+        name = item['name']
+        brand = item['brand']
+        price = item['price']
+        quantity = item['quantity']
+
+        quantity = int(quantity.split()[0])
+        print(name, brand, price, quantity) # For debugging
+        
+        self.rowFrame = ctk.CTkFrame(self.orderListFrame, width=285, height=40, fg_color='transparent')
+        self.rowFrame.place(x=0, y=index * 40)
+
+        self.deleteButton = ctk.CTkButton(self.rowFrame, image=self.trashIcon, text='', width=15, height=15,
+                                    border_width=0, fg_color='transparent', corner_radius=0,
+                                    hover_color='#000000', anchor='center',
+                                    command=lambda i=index: self.delete_row(i))
+        self.deleteButton.place(x=3, y=8)
+
+        self.rowLine = ctk.CTkFrame(self.rowFrame, width=285, height=2, fg_color='#E9E9E9')
+        self.rowLine.place(x=0, y=39)
+        
+            
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.firstPageFrame, width=160, height=22, fg_color='transparent')
         self.searchFrame.place(x=349, y=14) 
