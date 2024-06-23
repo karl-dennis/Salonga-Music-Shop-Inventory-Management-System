@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 from PIL import Image
+from CTkSpinbox import *
 
 class salesView(ctk.CTkFrame):
 
@@ -12,7 +13,9 @@ class salesView(ctk.CTkFrame):
         
         self.active_tab = 1
         self.search_query = tk.StringVar()
+        self.amount = ctk.IntVar()
         self.selected_product = [] # Tracks all active selections
+        self.product_prices = []
         self.trashIcon = ctk.CTkImage(light_image=Image.open('./assets/trash.png'), size=(15,15))
         
         self.custom_styles()
@@ -205,19 +208,27 @@ class salesView(ctk.CTkFrame):
         self.orderListFrame.place(x=0, y=72)
             
     def handle_selection(self, name, brand, price, quantity):
-        values = {'name': name, 'brand': brand, 'price': price, 'quantity': quantity} 
-        self.selected_product.append(values)  # Tracks all active selections
+        quantity_value = int(quantity.split()[0])
         
-        self.refresh_order_list()
-        print("Order List:")
-        
-        for item in self.selected_product:
-            name = item['name']
-            brand = item['brand']
-            price = item['price']
-            quantity = int(item['quantity'].split()[0]) # 'X In Stock', splits and takes X (number); gives an error if format isn't followed
-            print(name, brand, price, quantity)
-        print()
+        if quantity_value > 0:
+            values = {'name': name, 'brand': brand, 'price': price, 'quantity': quantity} 
+            
+            self.selected_product.append(values)  # Tracks all active selections
+            self.product_prices.append(price)
+            
+            self.refresh_order_list()
+            print("Order List:")
+            
+            for item in self.selected_product:
+                name = item['name']
+                brand = item['brand']
+                price = item['price']
+                quantity = int(item['quantity'].split()[0]) # 'X In Stock', splits and takes X (number); gives an error if format isn't followed
+                print(name, brand, price, quantity)
+            print()
+            
+        else:
+            pass
 
     def delete_row(self, index):
         if index < len(self.selected_product):
@@ -244,33 +255,50 @@ class salesView(ctk.CTkFrame):
         quantity = int(quantity.split()[0])
         print(name, brand, price, quantity) # For debugging
         
-        self.rowFrame = ctk.CTkFrame(self.orderListFrame, width=285, height=40, fg_color='transparent')
-        self.rowFrame.place(x=0, y=index * 40)
+        if quantity > 0:
+            self.rowFrame = ctk.CTkFrame(self.orderListFrame, width=285, height=40, fg_color='transparent')
+            self.rowFrame.place(x=0, y=index * 40)
 
-        self.deleteButton = ctk.CTkButton(self.rowFrame, image=self.trashIcon, text='', width=15, height=15,
-                                    border_width=0, fg_color='transparent', corner_radius=0,
-                                    hover_color='#F7F7F7', anchor='center',
-                                    command=lambda i=index: self.delete_row(i))
-        self.deleteButton.place(x=3, y=8)
+            self.deleteButton = ctk.CTkButton(self.rowFrame, image=self.trashIcon, text='', width=15, height=15,
+                                        border_width=0, fg_color='transparent', corner_radius=0,
+                                        hover_color='#F7F7F7', anchor='center',
+                                        command=lambda i=index: self.delete_row(i))
+            self.deleteButton.place(x=3, y=8)
 
-        self.rowLine = ctk.CTkFrame(self.rowFrame, width=285, height=2, fg_color='#E9E9E9')
-        self.rowLine.place(x=0, y=39)
-        
-        self.productName = ctk.CTkLabel(self.rowFrame, text=name, width=90, height=12,
-                                        font=('Inter Semibold', 11), text_color='#747474', anchor='w')
-        self.productName.place(x=29, y=9)
-        
-        self.productBrand = ctk.CTkLabel(self.rowFrame, text=brand, width=90, height=10,
-                                         font=('Inter Semibold', 9), text_color='#747474', anchor='w')
-        self.productBrand.place(x=29, y=21)
-        
-        price = int(quantity) * int(price)
-
-        formatted_price = f'₱{price:,.2f}'
-        self.productPrice = ctk.CTkLabel(self.rowFrame, text=formatted_price, width=69, height=17,
-                                         font=('Inter Semibold', 10), text_color='#747474', anchor='w')
-        self.productPrice.place(x=207, y=11)
+            self.rowLine = ctk.CTkFrame(self.rowFrame, width=285, height=2, fg_color='#E9E9E9')
+            self.rowLine.place(x=0, y=39)
             
+            self.productName = ctk.CTkLabel(self.rowFrame, text=name, width=90, height=12,
+                                            font=('Inter Semibold', 11), text_color='#747474', anchor='w')
+            self.productName.place(x=29, y=9)
+            
+            self.productBrand = ctk.CTkLabel(self.rowFrame, text=brand, width=90, height=10,
+                                            font=('Inter Semibold', 9), text_color='#747474', anchor='w')
+            self.productBrand.place(x=29, y=21)
+            
+            self.productQuantity = CTkSpinbox(self.rowFrame, start_value=0, width=64, height=20,
+                                            min_value=0, max_value=quantity, variable=self.amount,
+                                            font=('Inter Semibold', 10), text_color='#747474',
+                                            fg_color='#F7F7F7', 
+                                            corner_radius=5, border_width=2, border_color='#CACACA',
+                                            command=lambda idx=index, it=item: self.update_price(idx, it))
+            self.productQuantity.place(x=130, y=9)
+
+            self.productPrice = ctk.CTkLabel(self.rowFrame, text='₱0.00', width=69, height=17,
+                                            font=('Inter Semibold', 10), text_color='#747474', anchor='w')
+            self.productPrice.place(x=207, y=11)     
+                    
+    def update_price(self, index, item):
+        quantity = self.amount.get()
+        price = int(item['price'])
+        new_price = quantity * price
+        
+        # Update price in product_prices list
+        self.product_prices[index] = new_price
+        
+        # Update displayed price in productPrice label based on product_prices
+        self.productPrice.configure(text=f'₱{self.product_prices[index]:,.2f}')
+    
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.firstPageFrame, width=160, height=22, fg_color='transparent')
         self.searchFrame.place(x=349, y=14) 
