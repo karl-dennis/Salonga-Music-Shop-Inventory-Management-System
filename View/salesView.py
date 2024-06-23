@@ -108,8 +108,8 @@ class salesView(ctk.CTkFrame):
         
         values = [ # Insert values here
             ['Electric Guitar', 'Fendy', '₱900', '10 In Stock'],
-            ['Name', 'Brand', 'Price', '5 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
+            ['Xylophone', 'Yamaha', 'Price', '5 In Stock'],
+            ['Name', 'Gibson', 'Price', '0 In Stock'],
             ['Name', 'Brand', 'Price', '0 In Stock'],
             ['Name', 'Brand', 'Price', '0 In Stock'],
             ['Name', 'Brand', 'Price', '0 In Stock'],
@@ -246,12 +246,21 @@ class salesView(ctk.CTkFrame):
 
         self.deleteButton = ctk.CTkButton(self.rowFrame, image=self.trashIcon, text='', width=15, height=15,
                                     border_width=0, fg_color='transparent', corner_radius=0,
-                                    hover_color='#000000', anchor='center',
+                                    hover_color='#F7F7F7', anchor='center',
                                     command=lambda i=index: self.delete_row(i))
         self.deleteButton.place(x=3, y=8)
 
         self.rowLine = ctk.CTkFrame(self.rowFrame, width=285, height=2, fg_color='#E9E9E9')
         self.rowLine.place(x=0, y=39)
+        
+        self.productName = ctk.CTkLabel(self.rowFrame, text=name, width=90, height=12,
+                                        font=('Inter Semibold', 11), text_color='#747474', anchor='w')
+        self.productName.place(x=29, y=9)
+        
+        self.productBrand = ctk.CTkLabel(self.rowFrame, text=brand, width=90, height=10,
+                                         font=('Inter Semibold', 9), text_color='#747474', anchor='w')
+        self.productBrand.place(x=29, y=21)
+        
         
             
     def search_bar(self):
