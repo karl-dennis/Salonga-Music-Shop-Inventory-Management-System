@@ -7,7 +7,7 @@ from tkinter import filedialog
 from tkinter import simpledialog
 from tkinter import messagebox
 from CTkTable import *
-
+import io
 class productView(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
@@ -285,7 +285,7 @@ class productView(ctk.CTkFrame):
                 print(f"Performing search for: {query}")
             
         self.searchEntry.bind('<Return>', lambda event: perform_search())
-        
+
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
 
@@ -308,6 +308,14 @@ class productView(ctk.CTkFrame):
             new_image = ctk.CTkImage(light_image=resized_image, size=(new_width, new_height))
 
             self.imageButton.configure(image=new_image)
+
+            # Store the binary image data
+            with io.BytesIO() as output:
+                resized_image.save(output, format='PNG')
+                self.image_data = output.getvalue()
+
+            # Store the selected image reference
+            self.selected_image = new_image
         else:
             # Defaults to import icon if none is selected
             self.imageButton.configure(image=self.importIcon)
@@ -335,7 +343,8 @@ class productView(ctk.CTkFrame):
         brand = self.brandDropdown.get()
         quantity = self.quantity.get()
         price = self.price.get()
-        self.controller.save_button_clicked(product_name,type,brand,quantity,price)
+        image = self.image_data
+        self.controller.save_button_clicked(product_name,type,brand,quantity,price,image)
         messagebox.showinfo('Success', 'Product Added Successfully')
         self.clear_form()
 
