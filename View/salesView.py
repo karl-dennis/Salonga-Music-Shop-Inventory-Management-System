@@ -107,22 +107,22 @@ class salesView(ctk.CTkFrame):
         self.selectionTable.place(x=0, y=120)
         
         values = [ # Insert values here
-            ['Electric Guitar', 'Fendy', '₱900', '10 In Stock'],
-            ['Xylophone', 'Yamaha', 'Price', '5 In Stock'],
-            ['Name', 'Gibson', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '5 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '5 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
-            ['Name', 'Brand', 'Price', '0 In Stock'],
+            ['Electric Guitar', 'Fendy', '1000', '10 In Stock'],
+            ['Xylophone', 'Yamaha', '800', '5 In Stock'],
+            ['Acoustic Guitar', 'Gibson', '850', '0 In Stock'],
+            ['Bass Guitar', 'JB', '730', '0 In Stock'],
+            ['Ukulele', 'RJ', '920', '0 In Stock'],
+            ['Electric Guitar', 'Fendy', '2000', '10 In Stock'],
+            ['Xylophone', 'Yamaha', '800', '5 In Stock'],
+            ['Acoustic Guitar', 'Gibson', '850', '0 In Stock'],
+            ['Bass Guitar', 'JB', '730', '0 In Stock'],
+            ['Ukulele', 'RJ', '920', '0 In Stock'],
+            ['Electric Guitar', 'Fendy', '900', '10 In Stock'],
+            ['Xylophone', 'Yamaha', '800', '5 In Stock'],
+            ['Acoustic Guitar', 'Gibson', '850', '0 In Stock'],
+            ['Bass Guitar', 'JB', '730', '0 In Stock'],
+            ['Ukulele', 'RJ', '920', '0 In Stock'],
+            ['Electric Guitar', 'Fendy', '900', '10 In Stock'],
         ]
         
         columns = 5 
@@ -160,7 +160,10 @@ class salesView(ctk.CTkFrame):
                                             width=80, height=7, font=('Inter Semibold', 7), text_color='#747474')
             self.selectionBrand.grid(row=2, column=0)
             
-            self.selectionPrice = ctk.CTkLabel(self.selectionFrame, text=price,
+            price = int(price)
+            formatted_price = f'₱{price:,.2f}'
+            
+            self.selectionPrice = ctk.CTkLabel(self.selectionFrame, text=formatted_price,
                                             width=80, height=10, font=('Inter Semibold', 8), text_color='#747474')
             self.selectionPrice.grid(row=3, column=0)
             
@@ -261,7 +264,12 @@ class salesView(ctk.CTkFrame):
                                          font=('Inter Semibold', 9), text_color='#747474', anchor='w')
         self.productBrand.place(x=29, y=21)
         
-        
+        price = int(quantity) * int(price)
+
+        formatted_price = f'₱{price:,.2f}'
+        self.productPrice = ctk.CTkLabel(self.rowFrame, text=formatted_price, width=69, height=17,
+                                         font=('Inter Semibold', 10), text_color='#747474', anchor='w')
+        self.productPrice.place(x=207, y=11)
             
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.firstPageFrame, width=160, height=22, fg_color='transparent')
