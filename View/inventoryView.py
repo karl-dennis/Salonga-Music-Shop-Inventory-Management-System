@@ -51,4 +51,4 @@ class inventoryView(ctk.CTkFrame):
 
         canvas = FigureCanvasTkAgg(fig, master=inner_frame)
         canvas.draw()
-        canvas.get_tk_widget().place(x=80, y=0)
+        canvas.get_tk_widget().place(x=90, y=10)
