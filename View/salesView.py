@@ -2,6 +2,7 @@ import customtkinter as ctk
 import tkinter as tk
 from PIL import Image
 from CTkSpinbox import *
+from tkinter import messagebox
 
 class salesView(ctk.CTkFrame):
 
@@ -14,7 +15,8 @@ class salesView(ctk.CTkFrame):
         self.active_tab = 1
         self.search_query = tk.StringVar()
         self.amount = ctk.IntVar()
-        self.selected_product = [] # Tracks all active selections
+        self.selected_product = [] # Tracks all active selections      
+        
         self.product_prices = []
         self.trashIcon = ctk.CTkImage(light_image=Image.open('./assets/trash.png'), size=(15,15))
         
@@ -104,81 +106,87 @@ class salesView(ctk.CTkFrame):
                                             button_color='#CACACA',)
         self.typeDropdown.set('All')
         self.typeDropdown.place(x=0, y=26)
-    
+        
     def show_selection(self):
         self.selectionTable = ctk.CTkScrollableFrame(self.firstPageFrame, width=493, height=423, fg_color='transparent')
         self.selectionTable.place(x=0, y=120)
-        
-        values = [ # Insert values here
+
+        values = [
             ['Electric Guitar', 'Fendy', '1000', '10 In Stock'],
             ['Xylophone', 'Yamaha', '800', '5 In Stock'],
-            ['Acoustic Guitar', 'Gibson', '850', '0 In Stock'],
-            ['Bass Guitar', 'JB', '730', '0 In Stock'],
+            ['Acoustic Guitar', 'Gibson', '850', '3 In Stock'],
+            ['Bass Guitar', 'JB', '730', '5 In Stock'],
             ['Ukulele', 'RJ', '920', '0 In Stock'],
             ['Electric Guitar', 'Fendy', '2000', '10 In Stock'],
             ['Xylophone', 'Yamaha', '800', '5 In Stock'],
-            ['Acoustic Guitar', 'Gibson', '850', '0 In Stock'],
+            ['Acoustic Guitar', 'Gibson', '850', '8 In Stock'],
             ['Bass Guitar', 'JB', '730', '0 In Stock'],
             ['Ukulele', 'RJ', '920', '0 In Stock'],
             ['Electric Guitar', 'Fendy', '900', '10 In Stock'],
             ['Xylophone', 'Yamaha', '800', '5 In Stock'],
-            ['Acoustic Guitar', 'Gibson', '850', '0 In Stock'],
-            ['Bass Guitar', 'JB', '730', '0 In Stock'],
-            ['Ukulele', 'RJ', '920', '0 In Stock'],
+            ['Acoustic Guitar', 'Gibson', '850', '2 In Stock'],
+            ['Bass Guitar', 'JB', '730', '3 In Stock'],
+            ['Ukulele', 'RJ', '920', '4 In Stock'],
             ['Electric Guitar', 'Fendy', '900', '10 In Stock'],
         ]
-        
-        columns = 5 
+
+        columns = 5
         frame_width = 83
         frame_height = 126
         x_spacing = 17
         y_spacing = 16
 
-        self.placeholderIcon = ctk.CTkImage(light_image=Image.open('./assets/placeholder.png'), size=(66,66))
-        
-        for index, (name, brand, price, quantity) in enumerate(values):
-            row = index // columns
-            col = index % columns
-            
-            x = col * (frame_width + x_spacing)
-            y = row * (frame_height + y_spacing)
-            
-            self.selectionFrame = ctk.CTkFrame(self.selectionTable,
+        self.placeholderIcon = ctk.CTkImage(light_image=Image.open('./assets/placeholder.png'), size=(66, 66))
+
+        valid_index = 0
+        for name, brand, price, quantity in values:
+            try:
+                quantity_value = int(quantity.split()[0])
+            except (IndexError, ValueError):
+                quantity_value = 0
+
+            if quantity_value == 0:
+                continue
+
+            row = valid_index // columns
+            col = valid_index % columns
+
+            selection_frame = ctk.CTkFrame(self.selectionTable,
                                         width=frame_width, height=frame_height,
                                         fg_color='transparent', bg_color='transparent')
-            self.selectionFrame.grid(row=row, column=col, padx=7, pady=5)
-            
-            self.selectionImage = ctk.CTkButton(self.selectionFrame, image=self.placeholderIcon, text='', width=83, height=83,
-                                        border_width=2.5, border_color='#B8B8B8', corner_radius=7,
-                                        fg_color='#FFFFFF', bg_color='#F7F7F7',
-                                        hover_color='#FFFFFF', anchor='center',
-                                        command=lambda name=name, brand=brand, price=price, quantity=quantity: self.handle_selection(name, brand, price, quantity))
-            self.selectionImage.grid(row=0, column=0)
-                    
-            self.selectionName = ctk.CTkLabel(self.selectionFrame, text=name,
-                                            width=80, height=12, font=('Inter Semibold', 10), text_color='#747474')
-            self.selectionName.grid(row=1, column=0)
-            
-            self.selectionBrand = ctk.CTkLabel(self.selectionFrame, text=brand,
-                                            width=80, height=7, font=('Inter Semibold', 7), text_color='#747474')
-            self.selectionBrand.grid(row=2, column=0)
-            
+            selection_frame.grid(row=row, column=col, padx=7, pady=5)
+
+            selection_image = ctk.CTkButton(selection_frame, image=self.placeholderIcon, text='', width=83, height=83,
+                                            border_width=2.5, border_color='#B8B8B8', corner_radius=7,
+                                            fg_color='#FFFFFF', bg_color='#F7F7F7',
+                                            hover_color='#FFFFFF', anchor='center',
+                                            command=lambda name=name, brand=brand, price=price, quantity=quantity: self.handle_selection(name, brand, price, quantity))
+            selection_image.grid(row=0, column=0)
+
+            selection_name = ctk.CTkLabel(selection_frame, text=name,
+                                        width=80, height=12, font=('Inter Semibold', 10), text_color='#747474')
+            selection_name.grid(row=1, column=0)
+
+            selection_brand = ctk.CTkLabel(selection_frame, text=brand,
+                                        width=80, height=7, font=('Inter Semibold', 7), text_color='#747474')
+            selection_brand.grid(row=2, column=0)
+
             price = int(price)
             formatted_price = f'₱{price:,.2f}'
-            
-            self.selectionPrice = ctk.CTkLabel(self.selectionFrame, text=formatted_price,
-                                            width=80, height=10, font=('Inter Semibold', 8), text_color='#747474')
-            self.selectionPrice.grid(row=3, column=0)
-            
-            quantity_value = int(quantity.split()[0]) # 'X In Stock', splits and takes X (number); gives an error if format isn't followed
-            
+
+            selection_price = ctk.CTkLabel(selection_frame, text=formatted_price,
+                                        width=80, height=10, font=('Inter Semibold', 8), text_color='#747474')
+            selection_price.grid(row=3, column=0)
+
             text_color = '#AE5050' if quantity_value == 0 else ('#E9AC07' if 1 <= quantity_value <= 5 else '#329932')
 
-            self.selectionQuantity = ctk.CTkLabel(self.selectionFrame, text=quantity,
-                                            width=80, height=9, font=('Inter Semibold', 9), 
+            selection_quantity = ctk.CTkLabel(selection_frame, text=quantity,
+                                            width=80, height=9, font=('Inter Semibold', 9),
                                             text_color=text_color)
-            self.selectionQuantity.grid(row=4, column=0)
-    
+            selection_quantity.grid(row=4, column=0)
+
+            valid_index += 1
+            
     def show_orderFrame(self):
         self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
         self.orderFrame.place(x=546, y=15)
@@ -206,7 +214,70 @@ class salesView(ctk.CTkFrame):
 
         self.orderListFrame = ctk.CTkFrame(self.orderFrame, width=285, height=354, fg_color='transparent')
         self.orderListFrame.place(x=0, y=72)
-            
+        
+        self.buyerInfoFrame = ctk.CTkFrame(self.orderFrame, width=285, height=64, fg_color='#F1F1F1')
+        self.buyerInfoFrame.place(x=0, y=426)
+        
+        self.buyerNameLabel = ctk.CTkLabel(self.buyerInfoFrame, width=98, height=16,
+                                           text="Buyer's Name: ", anchor='w', font=('Inter Bold', 12), text_color='#747474')
+        self.buyerNameLabel.place(x=17, y=10)
+        
+        self.buyerNameEntry = ctk.CTkEntry(self.buyerInfoFrame, width=113, height=22, fg_color='#FFFFFF', 
+                                           border_width=2, border_color='#CACACA', 
+                                           font=('Inter Medium', 11), text_color='#747474')
+        self.buyerNameEntry.place(x=118, y=7)
+        
+        self.buyerContactLabel = ctk.CTkLabel(self.buyerInfoFrame, width=98, height=16,
+                                           text="Phone #: ", anchor='w', font=('Inter Bold', 12), text_color='#747474')
+        self.buyerContactLabel.place(x=17, y=37)
+        
+        self.buyerContactEntry = ctk.CTkEntry(self.buyerInfoFrame, width=113, height=22, fg_color='#FFFFFF', 
+                                           border_width=2, border_color='#CACACA', 
+                                           font=('Inter Medium', 11), text_color='#747474')
+        self.buyerContactEntry.place(x=118, y=34)
+        
+        self.line = ctk.CTkFrame(self.buyerInfoFrame, width=285, height=2, fg_color='#CDCDCD')
+        self.line.place(x=0, y=63)
+        
+        self.revenueFrame = ctk.CTkFrame(self.orderFrame, width=285, height=36, fg_color='#F1F1F1')
+        self.revenueFrame.place(x=0, y=490)
+        
+        self.revenueLabel = ctk.CTkLabel(self.revenueFrame, text='Revenue', width=66, height=25, anchor='center',
+                                         font=('Inter Bold', 14), text_color='#747474')
+        self.revenueLabel.place(x=14, y=5)
+        
+        self.calculated_revenue = 26550
+        self.formatted_revenue = f'₱{self.calculated_revenue:,.2f}'
+        
+        self.revenueLabel = ctk.CTkLabel(self.revenueFrame, width=98, height=25, text=self.formatted_revenue, 
+                                         font=('Inter Bold', 14), text_color='#57AF20')
+        self.revenueLabel.place(x=181, y=5)
+        
+        self.buttonFrame = ctk.CTkFrame(self.orderFrame, width=252, height=30, fg_color='transparent')
+        self.buttonFrame.place(x=17, y=539)
+        
+        self.clearButton = ctk.CTkButton(self.buttonFrame, width=115, height=30, bg_color='transparent', 
+                                         fg_color='#E2E2E2', hover_color='#D5D5D5', corner_radius=8,
+                                         text='Clear', font=('Consolas', 14), text_color='#595959', 
+                                         command=self.clear_form)
+        self.clearButton.place(x=0, y=0)
+        
+        self.saveButton = ctk.CTkButton(self.buttonFrame, width=115, height=30,  bg_color='transparent',
+                                        fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=8,
+                                        text='Save', font=('Consolas', 14), text_color='#F7F7F7', 
+                                        command=self.save_button_clicked)
+        self.saveButton.place(x=138, y=0)
+        
+    def clear_form(self):
+        self.buyerContactEntry.delete(0, 'end')
+        self.buyerNameEntry.delete(0, 'end')
+        
+        while self.selected_product:
+            self.delete_row(0)
+
+    def save_button_clicked(self):
+        pass
+        
     def handle_selection(self, name, brand, price, quantity):
         quantity_value = int(quantity.split()[0])
         

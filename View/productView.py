@@ -228,7 +228,7 @@ class productView(ctk.CTkFrame):
                                   text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        column_titles = ["Product ID", "Name", "Type", "Brand", "Qty ↑ ↓ ", "Price", "Status ↑ ↓ "]
+        column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
 
         # Fetch data from the database using the controller
         table_values = self.controller.get_data()
