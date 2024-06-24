@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
-from tkinter import PhotoImage
+from PIL import Image
 
 class loginView(ctk.CTk):
 
@@ -91,27 +91,22 @@ class loginView(ctk.CTk):
         self.passwordEntry.pack(side='top', padx=5, pady=5)
 
     def _toggle_password_button(self):
-        self.show_password = False  # Variable to keep track of password visibility
+        self.eye_open = ctk.CTkImage(light_image=Image.open('./assets/eye-open.png'), size=(28, 28))
+        self.eye_closed = ctk.CTkImage(light_image=Image.open('./assets/eye-closed.png'), size=(28, 28))
 
-        # Load eye icons using PhotoImage
-        self.eye_open_image = PhotoImage(file="eye_open.png")
-        self.eye_closed_image = PhotoImage(file="eye_pass.png")
+        self.toggle_button = ctk.CTkButton(self.passwordFrame, image=self.eye_closed, text='',
+                                           width=28, height=28, fg_color='#FFFFFF', hover_color='#FFFFFF', corner_radius=0,
+                                           command=self._toggle_password_visibility)
+        self.toggle_button.place(x=320, y=39)
 
-        # Convert PhotoImage to CTkImage
-        self.eye_open_ctk_image = ctk.CTkImage(light_image=self.eye_open_image, size=(20, 20))
-        self.eye_closed_ctk_image = ctk.CTkImage(light_image=self.eye_closed_image, size=(20, 20))
-
-        self.toggle_button = ctk.CTkButton(self.passwordFrame, image=self.eye_open_ctk_image, text='',
-                                           command=self._toggle_password_visibility, width=40)
-        self.toggle_button.pack(side='left', padx=5, pady=5)
-
+        self.show_password = False 
     def _toggle_password_visibility(self):
         if self.show_password:
             self.passwordEntry.configure(show='*')
-            self.toggle_button.configure(image=self.eye_open_ctk_image)
+            self.toggle_button.configure(image=self.eye_closed)
         else:
             self.passwordEntry.configure(show='')
-            self.toggle_button.configure(image=self.eye_closed_ctk_image)
+            self.toggle_button.configure(image=self.eye_open)
 
         self.show_password = not self.show_password
         
@@ -138,3 +133,21 @@ class loginView(ctk.CTk):
         username = self.userName.get()
         password = self.password.get()
         self.controller.on_button_click(username, password)
+        
+        
+# class App:
+#     def __init__(self):
+#         self.root = ctk.CTk()
+#         self.root.title("Login Page (Test)")
+
+#         self.login_view = loginView(self.root, None)
+#         self.login_view.pack(fill=ctk.BOTH, expand=True)
+        
+#         self.root.update()
+        
+#     def run(self):
+#         self.root.mainloop()
+
+# if __name__ == "__main__":
+#     app = App()
+#     app.run()
