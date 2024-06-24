@@ -34,7 +34,6 @@ class salesView(ctk.CTkFrame):
     
     def update_price(self, index, item, spinbox, price_label):
         amount_bought = spinbox.get()
-        # print(amount_bought)
         price = item[2]
         
         computed_price = price * amount_bought
@@ -58,19 +57,18 @@ class salesView(ctk.CTkFrame):
         #     frame.place_forget()
     
     def delete_row(self, index):
-        if 0 <= index < len(self.selected_products):
-            print("\nBefore deleting index", index, ", Length of selected_products:", len(self.selected_products))
-            print("Products before deletion:", self.selected_products)
-            
+        if 0 <= index < len(self.selected_products):           
             del self.selected_products[index]
             
             self.rowFrames[index].place_forget()
             del self.rowFrames[index]
             
             self.refresh_list()
-            print("Products after deletion:", self.selected_products)
+            print(index)
+            # print("Products after deletion:", self.selected_products)
 
         else: # Catches indexError, bruteforce deletes the list (selected_products[]), and reference list (rowFrames[])
+            print(index)
             self.selected_products = []  # Clear the entire list
             for frame in self.rowFrames:
                 frame.place_forget()
@@ -113,7 +111,6 @@ class salesView(ctk.CTkFrame):
                                     font=('Inter Semibold', 10), text_color='#747474', anchor='w')
         self.productPrice.place(x=207, y=11)
         
-        # print("Item:", item)
         self.productQuantity = CTkSpinbox(self.rowFrame, start_value=1, width=64, height=20,
                                             min_value=1, max_value=quantity, variable=self.spinboxValue,
                                             font=('Inter Semibold', 10), text_color='#747474',
@@ -273,13 +270,13 @@ class salesView(ctk.CTkFrame):
         self.clearButton = ctk.CTkButton(self.buttonFrame, width=115, height=30, bg_color='transparent', 
                                          fg_color='#E2E2E2', hover_color='#D5D5D5', corner_radius=8,
                                          text='Clear', font=('Consolas', 14), text_color='#595959', 
-                                         )
+                                         command=self.clear_form)
         self.clearButton.place(x=0, y=0)
         
         self.saveButton = ctk.CTkButton(self.buttonFrame, width=115, height=30,  bg_color='transparent',
                                         fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=8,
                                         text='Save', font=('Consolas', 14), text_color='#F7F7F7', 
-                                        )
+                                        command=self.save_button_clicked)
         self.saveButton.place(x=138, y=0)
         
     def show_firstPage(self):
@@ -367,8 +364,10 @@ class salesView(ctk.CTkFrame):
         self.buyerContactEntry.delete(0, 'end')
         self.buyerNameEntry.delete(0, 'end')
         
-        while self.selected_product:
-            self.delete_row(0)
+        self.selected_products = []
+        for frame in self.rowFrames:
+            frame.place_forget()
+        self.rowFrames = []
 
     def save_button_clicked(self):
         pass

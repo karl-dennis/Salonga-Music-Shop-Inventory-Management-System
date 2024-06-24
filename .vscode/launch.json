@@ -9,7 +9,7 @@
             "name": "Python: Current File",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/View/test3.py",
+            "program": "${workspaceFolder}/View/salesView.py",
             "console": "integratedTerminal"
         }
     ]
