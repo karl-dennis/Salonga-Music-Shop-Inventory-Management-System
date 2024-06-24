@@ -17,7 +17,7 @@ class salesView(ctk.CTkFrame):
         self.spinboxValue = ctk.IntVar() # For Spinbox Quantity
 
         self.selected_products = []
-        self.product_prices = [] # Appended to selected_products
+        # self.computed_prices = [] 
         self.rowFrames = [] # Stores created rows, upon item selection
         
         self.trashIcon = ctk.CTkImage(light_image=Image.open('./assets/trash.png'), size=(15,15))
@@ -37,9 +37,21 @@ class salesView(ctk.CTkFrame):
         price = item[2]
         
         computed_price = price * amount_bought
-        formatted_price = f'₱{computed_price:.2f}'
+        formatted_price = f'₱{computed_price:,.2f}'
+        
+        
         price_label.configure(text=formatted_price)
-         
+        
+        self.computed_prices[index] = computed_price
+        self.update_revenue()
+    
+    
+    def update_revenue(self):
+        # pass    
+        total_revenue = sum(self.computed_prices)
+        formatted_revenue = f'₱{total_revenue:,.2f}'
+        self.revenueLabel.configure(text=formatted_revenue)
+    
     def refresh_list(self):
         for index, frame in enumerate(self.rowFrames):
             frame.place_forget()
@@ -82,7 +94,7 @@ class salesView(ctk.CTkFrame):
         self.productQuantity.configure(max_value=quantity)
     
     def create_row(self, index, item):
-        name, brand, quantity = item[0], item[1], item[3]
+        name, brand, price, quantity = item[0], item[1], item[2], item[3]
         
         self.rowFrame = ctk.CTkFrame(self.orderListFrame, width=285, height=40, fg_color='transparent')
         self.rowFrame.place(x=0, y=index * 40)
@@ -106,8 +118,9 @@ class salesView(ctk.CTkFrame):
                                         font=('Inter Semibold', 9), text_color='#747474', anchor='w')
         self.productBrand.place(x=29, y=21)
 
+        formatted_price = f'₱{price:,.2f}'
         
-        self.productPrice = ctk.CTkLabel(self.rowFrame, text='₱0.00', width=69, height=17,
+        self.productPrice = ctk.CTkLabel(self.rowFrame, text=formatted_price, width=69, height=17,
                                     font=('Inter Semibold', 10), text_color='#747474', anchor='w')
         self.productPrice.place(x=207, y=11)
         
@@ -124,24 +137,24 @@ class salesView(ctk.CTkFrame):
         self.selectionTable.place(x=0, y=120)
 
         values = [
-        ['Electric Guitar', 'Fendy', 1000.0, 10],
-        ['Xylophone', 'Yamaha', 800.0, 5],
-        ['Acoustic Guitar', 'Gibson', 850.0, 3],
-        ['Bass Guitar', 'JB', 730.0, 5],
-        ['Ukulele', 'RJ', 920.0, 0],
-        ['Drum Set', 'Pearl', 1500.0, 7],
-        ['Violin', 'Stradivarius', 1200.0, 3],
-        ['Trumpet', 'Bach', 900.0, 4],
-        ['Saxophone', 'Yamaha', 1100.0, 6],
-        ['Flute', 'Yamaha', 700.0, 5],
-        ['Cello', 'Stradivarius', 2000.0, 2],
-        ['Clarinet', 'Buffet', 800.0, 8],
-        ['Harp', 'Lyon & Healy', 3500.0, 1],
-        ['Trombone', 'Conn', 950.0, 3],
-        ['Piano', 'Steinway', 5000.0, 2],
-        ['Synthesizer', 'Roland', 1300.0, 5]
-    ]
-
+            ['Electric Guitar', 'Fendy', 1000.0, 10],
+            ['Xylophone', 'Yamaha', 800.0, 5],
+            ['Acoustic Guitar', 'Gibson', 850.0, 3],
+            ['Bass Guitar', 'JB', 730.0, 5],
+            ['Ukulele', 'RJ', 920.0, 0],
+            ['Drum Set', 'Pearl', 1500.0, 7],
+            ['Violin', 'Stradivarius', 1200.0, 3],
+            ['Trumpet', 'Bach', 900.0, 4],
+            ['Saxophone', 'Yamaha', 1100.0, 6],
+            ['Flute', 'Yamaha', 700.0, 5],
+            ['Cello', 'Stradivarius', 2000.0, 2],
+            ['Clarinet', 'Buffet', 800.0, 8],
+            ['Harp', 'Lyon & Healy', 3500.0, 1],
+            ['Trombone', 'Conn', 950.0, 3],
+            ['Piano', 'Steinway', 5000.0, 2],
+            ['Synthesizer', 'Roland', 1300.0, 5]
+        ]
+        self.computed_prices = [0] * len(values)
 
         columns = 5
         frame_width = 83
