@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
+from tkinter import PhotoImage
 
 class loginView(ctk.CTk):
 
@@ -26,6 +27,7 @@ class loginView(ctk.CTk):
         self._password_frame()
         self._password_label()
         self._password_entry()
+        self._toggle_password_button()
         self._forgot_password()
         self._button_frame()
         self._confirm_button()
@@ -87,6 +89,31 @@ class loginView(ctk.CTk):
     def _password_entry(self):
         self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', textvariable=self.password, show='*', border_width=2)
         self.passwordEntry.pack(side='top', padx=5, pady=5)
+
+    def _toggle_password_button(self):
+        self.show_password = False  # Variable to keep track of password visibility
+
+        # Load eye icons using PhotoImage
+        self.eye_open_image = PhotoImage(file="eye_open.png")
+        self.eye_closed_image = PhotoImage(file="eye_pass.png")
+
+        # Convert PhotoImage to CTkImage
+        self.eye_open_ctk_image = ctk.CTkImage(light_image=self.eye_open_image, size=(20, 20))
+        self.eye_closed_ctk_image = ctk.CTkImage(light_image=self.eye_closed_image, size=(20, 20))
+
+        self.toggle_button = ctk.CTkButton(self.passwordFrame, image=self.eye_open_ctk_image, text='',
+                                           command=self._toggle_password_visibility, width=40)
+        self.toggle_button.pack(side='left', padx=5, pady=5)
+
+    def _toggle_password_visibility(self):
+        if self.show_password:
+            self.passwordEntry.configure(show='*')
+            self.toggle_button.configure(image=self.eye_open_ctk_image)
+        else:
+            self.passwordEntry.configure(show='')
+            self.toggle_button.configure(image=self.eye_closed_ctk_image)
+
+        self.show_password = not self.show_password
         
     def _password_label(self):
         self.passwordLabel = ctk.CTkLabel(self.passwordFrame, text="Password", font=("Consolas", 18))
