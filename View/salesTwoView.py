@@ -29,6 +29,14 @@ class salesTwoView(ctk.CTkFrame):
         self.show_salesGraph()
         self.show_revenue()
         self.show_reports()
+        
+        self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
+        self.secondPageFrame.bind('<Button-1>', lambda event: self.secondPageFrame.focus_set())
+        self.orderFrame.bind('<Button-1>', lambda event: self.orderFrame.focus_set())
+        self.salesGraphFrame.bind('<Button-1>', lambda event: self.salesGraphFrame.focus_set())
+        self.revenueFrame.bind('<Button-1>', lambda event: self.revenueFrame.focus_set())
+        self.reportsFrame.bind('<Button-1>', lambda event: self.reportsFrame.focus_set())
+
                 
     def show_secondPage(self):
         self.secondPageFrame = ctk.CTkFrame(self.baseFrame, width=522, height=340, fg_color='#F7F7F7', corner_radius=7)
@@ -39,12 +47,12 @@ class salesTwoView(ctk.CTkFrame):
         
         self.selection1 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='New Sale',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
-                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.set_active_tab(1))
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(1))
         self.selection1.place(x=3, y=0)
         
         self.selection2 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='Sales Report',
                                         font=('Inter', 13, 'bold'), text_color='#2E2E2E',
-                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.set_active_tab(2))
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(2))
         self.selection2.place(x=133, y=0)
 
         self.tabLine = ctk.CTkFrame(self.tabFrame, width=78, height=4, fg_color='#5089B5', corner_radius=7)
@@ -86,8 +94,6 @@ class salesTwoView(ctk.CTkFrame):
                 print(f"Performing search for: {query}")
             
         self.searchEntry.bind('<Return>', lambda event: perform_search())
-        self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
-        self.secondPageFrame.bind('<Button-1>', lambda event: self.secondPageFrame.focus_set())
         
     def show_orderFrame(self):
         self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=585, fg_color='#F7F7F7', corner_radius=7)
@@ -135,43 +141,3 @@ class salesTwoView(ctk.CTkFrame):
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
-
-    def set_active_tab(self, tab):
-        self.active_tab = tab
-        self.update_tab()
-        
-        match tab:
-            case 1:
-                self.controller.show_firstPage()
-                # self.tabLine.place_forget()
-                # self.tabLine.place(x=19, y=33)
-            case 2:
-                self.controller.show_secondPage()
-                # self.tabLine.place_forget()
-                # self.tabLine.place(x=150, y=33)
-                
-    def update_tab(self):
-        active_text = '#2E2E2E'
-        inactive_text ='#9A9A9A'
-        
-        for i in range(1, 3):
-            tab = getattr(self, f'selection{i}')
-            if i == self.active_tab:
-                tab.configure(text_color=active_text)
-            else:
-                tab.configure(text_color=inactive_text)
-
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("Sales Page (Test)")
-        
-        self.salesTwo_view = salesTwoView(self.root, None)
-        self.salesTwo_view.pack(fill=ctk.BOTH, expand=True)
-        
-    def run(self):
-        self.root.mainloop()
-
-if __name__ == "__main__":
-    app = App()
-    app.run()

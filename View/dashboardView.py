@@ -55,7 +55,7 @@ class dashboardView(ctk.CTk):
         self.configure(bg_color='#DFDFDF')
         self.minsize(set_width, set_height)
         self.maxsize(set_width, set_height)
-
+        self.resizable(False, False)
     def _top_frame(self):
         self.topFrame = ctk.CTkFrame(self, width=844, height=50, fg_color='#FFFFFF', corner_radius=0)
         self.topFrame.place(x=598, y=25, anchor='center')
@@ -100,6 +100,7 @@ class dashboardView(ctk.CTk):
                                         width=156, height=48, command=lambda: self.set_active_selection(2))
         self.selection2.place(x=10, y=135)
 
+
     def _selection_3(self):
         self.selection3 = ctk.CTkButton(self.leftFrame, text="Sales", font=('Consolas', 18, 'bold'), 
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
@@ -125,6 +126,21 @@ class dashboardView(ctk.CTk):
             self.show_inventory()
             self.show_graph_of_sales()
             self.show_stock_alerts()
+            
+            self.viewAll_one = ctk.CTkButton(self.baseFrame, text="View All", font=("Inter Medium", 12, 'underline'), 
+                                            text_color="#2E8EC4", bg_color='#F7F7F7', fg_color='#F7F7F7', hover_color='#F7F7F7',
+                                            width=60, height=14, command=lambda: self.set_active_selection(2))
+            self.viewAll_one.place(x=755, y=24)
+            
+            self.viewAll_two = ctk.CTkButton(self.baseFrame, text="View All", font=("Inter Medium", 12, 'underline'), 
+                                            text_color="#2E8EC4", bg_color='#F7F7F7', fg_color='#F7F7F7', hover_color='#F7F7F7',
+                                            width=60, height=14, command=lambda: self.set_active_selection(3))
+            self.viewAll_two.place(x=305, y=333)
+            
+            self.viewAll_three = ctk.CTkButton(self.baseFrame, text="View All", font=("Inter Medium", 12, 'underline'), 
+                                            text_color="#2E8EC4", bg_color='#F7F7F7', fg_color='#F7F7F7', hover_color='#F7F7F7',
+                                            width=60, height=14, command=lambda: self.set_active_selection(3))
+            self.viewAll_three.place(x=755, y=333)
             
     def show_calendar(self):
         calendar_controller = calendarController()

@@ -1,5 +1,4 @@
 import tkinter
-
 import customtkinter as ctk
 from PIL import Image
 import tkinter as tk
@@ -10,7 +9,7 @@ from CTkTable import *
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
+import io
 
 class productView(ctk.CTkFrame):
 
@@ -20,7 +19,9 @@ class productView(ctk.CTkFrame):
         self.name_entry = tk.StringVar()
         self.quantity = tk.StringVar()
         self.price = tk.StringVar()
-
+        self.search_query = tk.StringVar()
+        self.image_data = None
+        
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
         
@@ -42,6 +43,14 @@ class productView(ctk.CTkFrame):
         self.show_productGraph()
         self.show_reports()
         self.show_productTable()
+        self.search_bar()
+        
+        self.productFrame.bind('<Button-1>', lambda event: self.productFrame.focus_set())
+        self.productTableFrame.bind('<Button-1>', lambda event: self.productTableFrame.focus_set())
+        self.productRegFrame.bind('<Button-1>', lambda event: self.productRegFrame.focus_set())
+        self.productGraphFrame.bind('<Button-1>', lambda event: self.productGraphFrame.focus_set())
+        self.reportsFrame.bind('<Button-1>', lambda event: self.reportsFrame.focus_set())
+        
         
     def show_productReg(self):
         self.icon = ctk.CTkImage(light_image=Image.open('./assets/plus.png'), size=(15,15)) # Icon implementation
@@ -209,30 +218,7 @@ class productView(ctk.CTkFrame):
         
         self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
-
-    def update_values(self, values):
-        for row_values in values:
-            self.add_row(row_values)
-
-    def add_row(self, row_values):
-        self.rows += 1
-        self.table.append(row_values)
-        row_frame = ctk.CTkFrame(self)
-        for column, value in enumerate(row_values):
-            cell = ctk.CTkLabel(row_frame, text=value, font=self.font)
-            cell.grid(row=self.rows, column=column, padx=5, pady=5)
-        row_frame.pack()
-
-    def insert(self, row, column, value):
-        self.table[row][column] = value
-        # You would also update the UI accordingly
-        self.refresh_table()
-
-    def refresh_table(self):
-        for widget in self.winfo_children():
-            widget.destroy()
-        self.update_values(self.table)
-
+    
     def show_productTable(self):
         self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7',
                                               corner_radius=7)
@@ -241,7 +227,6 @@ class productView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13),
                                   text_color='#2E2E2E')
         self.label.place(x=14, y=7)
-
 
         column_titles = ["Product ID", "Name", "Type", "Brand", "Qty ↑ ↓ ", "Price", "Status ↑ ↓ "]
 
@@ -252,8 +237,11 @@ class productView(ctk.CTkFrame):
         self.table = CTkTable(master=self.productTableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
         self.table.update_values([column_titles])
 
-        # Ensure there are enough rows in the table
-        required_rows = len(table_values)
+        if not table_values:
+            required_rows = 0
+        else:
+            required_rows = len(table_values)
+        
         current_rows = self.table.rows - 1  # Subtract 1 for the header row
         for _ in range(required_rows - current_rows):
             self.table.add_row([''] * 7)  # Add empty rows to meet the required row count
@@ -276,26 +264,65 @@ class productView(ctk.CTkFrame):
 
         # Configuring the rest of the rows
         for row in range(1, self.table.rows):
-            for column in range(self.table.columns):
+            for column in range(self.table.columns): 
                 self.table.frame[row, column].configure(width=column_widths[column], height=25,
-                                                        fg_color='#F7F7F7', text_color='#A7A7A7',
+                                                        fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
 
-            status = str(table_values[row - 1][-1])
-            print(status)
-            if status == "Available":
-                text_color = '#558E41'
-            elif status == "No Stock":
-                text_color = '#A65656'
-            else:
-                text_color = '#000000'  # Default color if status is neither 'Available' nor 'No Stock'
+            if table_values:
+                quantity = int(table_values[row - 1][4])  # 5th Column = Quantity
+                if quantity == 0:
+                    status = "No Stock"
+                    status_color = "#D92929"
+                elif 1 <= quantity <= 5:
+                    status = "Low Stock"
+                    status_color = "#E9AC07"
+                else:
+                    status = "Available"
+                    status_color = "#329932"
 
-            self.table.frame[row, 6].configure(text_color=text_color)
-
-            self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb')
-            self.rowLine.place(x=0, y=80 + (row - 1) * 25)
+                self.table.insert(row, 6, status)
+                self.table.frame[row, 6].configure(text_color=status_color) # Status color
+                self.table.frame[row, 4].configure(text_color='#5e5e5e') # Quantity color
+        
+                self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb') # Row divider
+                self.rowLine.place(x=0, y=78 + (row - 1) * 25)
 
         self.table.place(x=15, y=30)
+          
+    def search_bar(self):
+        self.searchFrame = ctk.CTkFrame(self.productTableFrame, width=160, height=22, fg_color='transparent')
+        self.searchFrame.place(x=430, y=8) 
+        
+        self.search_query.set('Search')
+        
+        self.searchEntry = ctk.CTkEntry(self.searchFrame, width=160, height=22,
+                                        fg_color='#FAFAFA', border_color='#BCBCBC', 
+                                        border_width=2, corner_radius=10, font=('Inter Medium', 11), 
+                                        text_color='#959595', textvariable=self.search_query)
+        self.searchEntry.place(x=0, y=0) 
+        
+        def on_entry_click(event):
+            if self.searchEntry.get() == 'Search':
+                self.searchEntry.delete(0, tk.END)  # Delete all the text in the entry
+
+        def on_focus_out(event):
+            if self.searchEntry.get() == '':
+                self.search_query.set('Search')
+
+        self.searchEntry.bind('<FocusIn>', on_entry_click)
+        self.searchEntry.bind('<FocusOut>', on_focus_out)    
+        
+        def perform_search():
+            query = self.search_query.get()
+            if query.strip() != '':
+                query = self.search_query.get()
+                
+                """Insert model/controller here"""
+                
+                print(f"Performing search for: {query}")
+            
+        self.searchEntry.bind('<Return>', lambda event: perform_search())
 
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
@@ -319,6 +346,14 @@ class productView(ctk.CTkFrame):
             new_image = ctk.CTkImage(light_image=resized_image, size=(new_width, new_height))
 
             self.imageButton.configure(image=new_image)
+
+            # Store the binary image data
+            with io.BytesIO() as output:
+                resized_image.save(output, format='PNG')
+                self.image_data = output.getvalue()
+
+            # Store the selected image reference
+            self.selected_image = new_image
         else:
             # Defaults to import icon if none is selected
             self.imageButton.configure(image=self.importIcon)
@@ -346,7 +381,8 @@ class productView(ctk.CTkFrame):
         brand = self.brandDropdown.get()
         quantity = self.quantity.get()
         price = self.price.get()
-        self.controller.save_button_clicked(product_name,type,brand,quantity,price)
+        image = self.image_data
+        self.controller.save_button_clicked(product_name,type,brand,quantity,price,image)
         messagebox.showinfo('Success', 'Product Added Successfully')
         self.clear_form()
 
@@ -356,13 +392,13 @@ class productView(ctk.CTkFrame):
 #     def __init__(self):
 #         self.root = ctk.CTk()
 #         self.root.title("Products Page (Test)")
-#
+
 #         self.product_view = productView(self.root, None)
 #         self.product_view.pack(fill=ctk.BOTH, expand=True)
-#
+
 #     def run(self):
 #         self.root.mainloop()
-#
+
 # if __name__ == "__main__":
 #     app = App()
 #     app.run()
