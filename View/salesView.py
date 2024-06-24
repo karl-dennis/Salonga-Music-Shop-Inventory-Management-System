@@ -2,6 +2,7 @@ import customtkinter as ctk
 import tkinter as tk
 from PIL import Image
 from CTkSpinbox import *
+from tkinter import messagebox
 
 class salesView(ctk.CTkFrame):
 
@@ -14,7 +15,8 @@ class salesView(ctk.CTkFrame):
         self.active_tab = 1
         self.search_query = tk.StringVar()
         self.amount = ctk.IntVar()
-        self.selected_product = [] # Tracks all active selections
+        self.selected_product = [] # Tracks all active selections      
+        
         self.product_prices = []
         self.trashIcon = ctk.CTkImage(light_image=Image.open('./assets/trash.png'), size=(15,15))
         
@@ -212,7 +214,70 @@ class salesView(ctk.CTkFrame):
 
         self.orderListFrame = ctk.CTkFrame(self.orderFrame, width=285, height=354, fg_color='transparent')
         self.orderListFrame.place(x=0, y=72)
-            
+        
+        self.buyerInfoFrame = ctk.CTkFrame(self.orderFrame, width=285, height=64, fg_color='#F1F1F1')
+        self.buyerInfoFrame.place(x=0, y=426)
+        
+        self.buyerNameLabel = ctk.CTkLabel(self.buyerInfoFrame, width=98, height=16,
+                                           text="Buyer's Name: ", anchor='w', font=('Inter Bold', 12), text_color='#747474')
+        self.buyerNameLabel.place(x=17, y=10)
+        
+        self.buyerNameEntry = ctk.CTkEntry(self.buyerInfoFrame, width=113, height=22, fg_color='#FFFFFF', 
+                                           border_width=2, border_color='#CACACA', 
+                                           font=('Inter Medium', 11), text_color='#747474')
+        self.buyerNameEntry.place(x=118, y=7)
+        
+        self.buyerContactLabel = ctk.CTkLabel(self.buyerInfoFrame, width=98, height=16,
+                                           text="Phone #: ", anchor='w', font=('Inter Bold', 12), text_color='#747474')
+        self.buyerContactLabel.place(x=17, y=37)
+        
+        self.buyerContactEntry = ctk.CTkEntry(self.buyerInfoFrame, width=113, height=22, fg_color='#FFFFFF', 
+                                           border_width=2, border_color='#CACACA', 
+                                           font=('Inter Medium', 11), text_color='#747474')
+        self.buyerContactEntry.place(x=118, y=34)
+        
+        self.line = ctk.CTkFrame(self.buyerInfoFrame, width=285, height=2, fg_color='#CDCDCD')
+        self.line.place(x=0, y=63)
+        
+        self.revenueFrame = ctk.CTkFrame(self.orderFrame, width=285, height=36, fg_color='#F1F1F1')
+        self.revenueFrame.place(x=0, y=490)
+        
+        self.revenueLabel = ctk.CTkLabel(self.revenueFrame, text='Revenue', width=66, height=25, anchor='center',
+                                         font=('Inter Bold', 14), text_color='#747474')
+        self.revenueLabel.place(x=14, y=5)
+        
+        self.calculated_revenue = 26550
+        self.formatted_revenue = f'₱{self.calculated_revenue:,.2f}'
+        
+        self.revenueLabel = ctk.CTkLabel(self.revenueFrame, width=98, height=25, text=self.formatted_revenue, 
+                                         font=('Inter Bold', 14), text_color='#57AF20')
+        self.revenueLabel.place(x=181, y=5)
+        
+        self.buttonFrame = ctk.CTkFrame(self.orderFrame, width=252, height=30, fg_color='transparent')
+        self.buttonFrame.place(x=17, y=539)
+        
+        self.clearButton = ctk.CTkButton(self.buttonFrame, width=115, height=30, bg_color='transparent', 
+                                         fg_color='#E2E2E2', hover_color='#D5D5D5', corner_radius=8,
+                                         text='Clear', font=('Consolas', 14), text_color='#595959', 
+                                         command=self.clear_form)
+        self.clearButton.place(x=0, y=0)
+        
+        self.saveButton = ctk.CTkButton(self.buttonFrame, width=115, height=30,  bg_color='transparent',
+                                        fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=8,
+                                        text='Save', font=('Consolas', 14), text_color='#F7F7F7', 
+                                        command=self.save_button_clicked)
+        self.saveButton.place(x=138, y=0)
+        
+    def clear_form(self):
+        self.buyerContactEntry.delete(0, 'end')
+        self.buyerNameEntry.delete(0, 'end')
+        
+        while self.selected_product:
+            self.delete_row(0)
+
+    def save_button_clicked(self):
+        pass
+        
     def handle_selection(self, name, brand, price, quantity):
         quantity_value = int(quantity.split()[0])
         
