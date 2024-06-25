@@ -1,4 +1,3 @@
-import tkinter
 import customtkinter as ctk
 from PIL import Image
 import tkinter as tk
@@ -21,7 +20,7 @@ class productView(ctk.CTkFrame):
         self.price = tk.StringVar()
         self.search_query = tk.StringVar()
         self.image_data = None
-        
+
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
         
@@ -80,7 +79,7 @@ class productView(ctk.CTkFrame):
                                        border_color='#CACACA', border_width=2,
                                        font=('Inter Medium', 12), text_color='#595959', textvariable=self.name_entry)
         self.nameEntry.place(x=0, y=26)
-    
+
         self.brandFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.brandFrame.place(x=24, y=250)
         
@@ -93,7 +92,7 @@ class productView(ctk.CTkFrame):
         self.brandLabel.place(x=5, y=0)
         
         self.brandDropdown = ctk.CTkComboBox(self.brandFrame, 
-                                            values=['Fender', 'Yamaha'], # Insert values here
+                                            values=self.controller.get_brand(), # Insert values here
                                             width=160, height=30, corner_radius=7,
                                             bg_color='transparent', fg_color='#FAFAFA',
                                             border_color='#CACACA', border_width=2, state='readonly', 
@@ -108,7 +107,7 @@ class productView(ctk.CTkFrame):
         self.typeFrame.place(x=24, y=314)
                 
         self.typeButton = ctk.CTkButton(self.typeFrame, image=self.icon, text='', width=15, height=15, 
-                                        fg_color='transparent', hover_color='#F7F7F7', anchor='center')
+                                        fg_color='transparent', hover_color='#F7F7F7', anchor='center', command=self.type_button_clicked)
         self.typeButton.place(x=80, y=1)
         
         self.typeLabel = ctk.CTkLabel(self.typeFrame, text='Product Type', font=('Inter Medium', 12), text_color='#595959',
@@ -116,7 +115,7 @@ class productView(ctk.CTkFrame):
         self.typeLabel.place(x=5, y=0)
         
         self.typeDropdown = ctk.CTkComboBox(self.typeFrame, 
-                                            values=['Guitar', 'Violin'], # Insert values here
+                                            values=self.controller.get_type(), # Insert values here
                                             width=160, height=30, corner_radius=7,
                                             bg_color='transparent', fg_color='#FAFAFA',
                                             border_color='#CACACA', border_width=2, state='readonly', 
@@ -369,12 +368,23 @@ class productView(ctk.CTkFrame):
     def brand_button_clicked(self):
         # Function to handle brand input dialog
         brand_name = simpledialog.askstring("Enter Brand", "Enter the brand name:")
-        if brand_name:
-            # Add the new brand to the dropdown values
-            current_values = self.brandDropdown['values']
-            updated_values = list(current_values) + [brand_name]
-            self.brandDropdown['values'] = updated_values
+        self.controller.add_brand(brand_name)
 
+        self.update_brand_dropdown()
+
+    def update_brand_dropdown(self):
+        brands = self.controller.get_brand()
+        return self.brandDropdown.configure(values=brands)
+
+    def type_button_clicked(self):
+        type_name = simpledialog.askstring("Product Type", "Enter the Product Type:")
+        self.controller.add_type(type_name)
+
+        self.update_type_dropdown()
+
+    def update_type_dropdown(self):
+        product_type = self.controller.get_type()
+        return self.typeDropdown.configure(values=product_type)
     def save_button_clicked(self):
         product_name = self.name_entry.get()
         type = self.typeDropdown.get()
