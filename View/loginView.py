@@ -76,7 +76,7 @@ class loginView(ctk.CTk):
         self.usernameFrame.pack(pady=(10,0))
 
     def _userName_entry(self):
-        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', textvariable=self.userName, border_width=2)
+        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, width=360, height=48, font=("Consolas", 20), bg_color='#FFFFFF', fg_color='#FFFFFF', border_color='#999999', textvariable=self.userName, border_width=2)
         self.usernameEntry.pack(side='top', padx=5, pady=5)
 
     def _username_label(self):
@@ -101,6 +101,7 @@ class loginView(ctk.CTk):
         self.toggle_button.place(x=320, y=39)
 
         self.show_password = False 
+        
     def _toggle_password_visibility(self):
         if self.show_password:
             self.passwordEntry.configure(show='*')

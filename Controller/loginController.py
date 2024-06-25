@@ -3,6 +3,7 @@ from View.loginView import loginView
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
+import customtkinter as ctk
 
 class loginController:
     def __init__(self):
@@ -22,7 +23,11 @@ class loginController:
 
                 print(otp)  # Debugging: Print the OTP to check its value and type
 
-                input_otp = simpledialog.askinteger("OTP", "Input OTP")
+                # input_otp = simpledialog.askinteger("OTP", "Input OTP")
+                dialog = ctk.CTkInputDialog(text="Input OTP:", title="OTP")
+                dialog.geometry("200x150")
+                input_otp = int(dialog.get_input())
+                print(input_otp)
 
                 if input_otp is not None:  # Ensure the user doesn't cancel the dialog
                     # Convert OTP to the same type for comparison

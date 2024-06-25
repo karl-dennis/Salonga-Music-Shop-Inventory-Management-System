@@ -23,6 +23,7 @@ class verifyEmailController:
         input_otp = self.view.get_otp()
         generated_otp = self.model.get_otp()
 
+        print(generated_otp)
         if input_otp == generated_otp:
             from Controller.resetPassController import resetPassController
             self.view.destroy()
