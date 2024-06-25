@@ -50,7 +50,6 @@ class productView(ctk.CTkFrame):
         self.productGraphFrame.bind('<Button-1>', lambda event: self.productGraphFrame.focus_set())
         self.reportsFrame.bind('<Button-1>', lambda event: self.reportsFrame.focus_set())
         
-        
     def show_productReg(self):
         self.icon = ctk.CTkImage(light_image=Image.open('./assets/plus.png'), size=(15,15)) # Icon implementation
         
@@ -227,21 +226,40 @@ class productView(ctk.CTkFrame):
                                   text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
-
         # Fetch data from the database using the controller
         table_values = self.controller.get_data()
         print(self.controller.get_data())
 
-        self.table = CTkTable(master=self.productTableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
-        self.table.update_values([column_titles])
+        self.tableFrame = ctk.CTkFrame(self.productTableFrame, width=577, height=297, fg_color='#F7F7F7',
+                                       corner_radius=0)
+        self.tableFrame.place(x=15, y=55)
+        
+        column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
+        column_widths = [98, 96, 91, 86, 70, 71, 65]
+        x_position = 0
+        for column, (title, width) in enumerate(zip(column_titles, column_widths)):
+            self.columnLabel = ctk.CTkLabel(
+                self.productTableFrame, 
+                width=width, 
+                height=25, 
+                text=title, 
+                fg_color='#F7F7F7',
+                corner_radius=0, 
+                anchor='w'
+            )
+            self.columnLabel.place(x= 15+x_position, y=30)
+            x_position += width
+            
+        self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
+        self.columnLine.place(x=0, y=53)
 
+        self.table = CTkTable(master=self.tableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
         if not table_values:
             required_rows = 0
         else:
             required_rows = len(table_values)
         
-        current_rows = self.table.rows - 1  # Subtract 1 for the header row
+        current_rows = self.table.rows # Subtract 1 for the header row
         for _ in range(required_rows - current_rows):
             self.table.add_row([''] * 7)  # Add empty rows to meet the required row count
 
@@ -249,7 +267,7 @@ class productView(ctk.CTkFrame):
         for row, row_values in enumerate(table_values):
             for column, value in enumerate(row_values):
                 print(f"Inserting value '{value}' into row {row + 1}, column {column}")
-                self.table.insert(row + 1, column, value)
+                self.table.insert(row, column, value)
 
         # Configuring Column Header
         column_widths = [98, 96, 91, 86, 70, 71, 65]
@@ -257,7 +275,7 @@ class productView(ctk.CTkFrame):
             self.table.frame[0, column].configure(width=width, height=25,
                                                   fg_color='#F7F7F7',
                                                   corner_radius=0, anchor='w')
-
+            
         self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
         self.columnLine.place(x=0, y=53)
 
@@ -287,7 +305,7 @@ class productView(ctk.CTkFrame):
                 self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb') # Row divider
                 self.rowLine.place(x=0, y=78 + (row - 1) * 25)
 
-        self.table.place(x=15, y=30)
+        self.table.place(x=0, y=0)
           
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.productTableFrame, width=160, height=22, fg_color='transparent')
