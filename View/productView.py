@@ -226,34 +226,35 @@ class productView(ctk.CTkFrame):
                                   text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        # Fetch data from the database using the controller
         table_values = self.controller.get_data()
-        print(self.controller.get_data())
+        # print(self.controller.get_data())
 
         self.tableFrame = ctk.CTkFrame(self.productTableFrame, width=577, height=297, fg_color='#F7F7F7',
                                        corner_radius=0)
-        self.tableFrame.place(x=15, y=55)
+        self.tableFrame.place(x=12, y=55)
         
-        column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
-        column_widths = [98, 96, 91, 86, 70, 71, 65]
+        column_titles = ["Product ID", "Product", "Type", "Brand", "Price", "Qty", "Status"]
+        column_widths = [99, 101, 92, 87, 69, 60, 65]
         x_position = 0
         for column, (title, width) in enumerate(zip(column_titles, column_widths)):
             self.columnLabel = ctk.CTkLabel(
                 self.productTableFrame, 
-                width=width, 
+                width=column_widths[column], 
                 height=25, 
                 text=title, 
                 fg_color='#F7F7F7',
+                font=('Inter Semibold', 12),
+                text_color='#9E9E9E',
                 corner_radius=0, 
                 anchor='w'
             )
-            self.columnLabel.place(x= 15+x_position, y=30)
+            self.columnLabel.place(x=15+x_position, y=30)
             x_position += width
             
         self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
         self.columnLine.place(x=0, y=53)
 
-        self.table = CTkTable(master=self.tableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
+        self.table = CTkTable(master=self.tableFrame, column=7, padx=0, pady=0, font=('Inter Medium', 12))
         if not table_values:
             required_rows = 0
         else:
@@ -266,23 +267,14 @@ class productView(ctk.CTkFrame):
         # Inserting a Row
         for row, row_values in enumerate(table_values):
             for column, value in enumerate(row_values):
-                print(f"Inserting value '{value}' into row {row + 1}, column {column}")
+                # print(f"Inserting value '{value}' into row {row + 1}, column {column}")
                 self.table.insert(row, column, value)
 
-        # Configuring Column Header
-        column_widths = [98, 96, 91, 86, 70, 71, 65]
-        for column, width in enumerate(column_widths):
-            self.table.frame[0, column].configure(width=width, height=25,
-                                                  fg_color='#F7F7F7',
-                                                  corner_radius=0, anchor='w')
-            
-        self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
-        self.columnLine.place(x=0, y=53)
-
+        cell_widths = [98, 96, 91, 86, 70, 60, 65]
         # Configuring the rest of the rows
-        for row in range(1, self.table.rows):
+        for row in range(0, self.table.rows):
             for column in range(self.table.columns): 
-                self.table.frame[row, column].configure(width=column_widths[column], height=25,
+                self.table.frame[row, column].configure(width=cell_widths[column], height=25,
                                                         fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
 
