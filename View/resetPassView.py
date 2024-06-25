@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
+from PIL import Image
 
 class resetPassView(ctk.CTk):
 
@@ -27,6 +28,7 @@ class resetPassView(ctk.CTk):
         self._password_frame()
         self._password_label()
         self._password_entry()
+        self._toggle_password_button()
         self._button_frame()
         self._return_button()
         self._save_button()
@@ -79,7 +81,7 @@ class resetPassView(ctk.CTk):
         self.newPassFrame.pack(pady=(10,0))
 
     def _newPass_entry(self):
-        self.newPassEntry = ctk.CTkEntry(self.newPassFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.newPassword, border_width=2)
+        self.newPassEntry = ctk.CTkEntry(self.newPassFrame, width=360, height=48, font=("Consolas", 20), bg_color='#FFFFFF', fg_color='#FFFFFF', border_color='#999999', text_color='#595959', textvariable=self.newPassword, border_width=2)
         self.newPassEntry.pack(side='top', padx=5, pady=5)
 
     def _newPass_label(self):
@@ -91,12 +93,35 @@ class resetPassView(ctk.CTk):
         self.passwordFrame.pack(pady=(10,10))
 
     def _password_entry(self):
-        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.comparePassword, border_width=2)
+        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), bg_color='#FFFFFF', fg_color='#FFFFFF', border_color='#999999', text_color='#595959', textvariable=self.comparePassword, border_width=2)
         self.passwordEntry.pack(side='top', padx=5, pady=5)
         
     def _password_label(self):
         self.passwordLabel = ctk.CTkLabel(self.passwordFrame, text="Confirm Password", font=("Consolas", 18), text_color='#595959')
         self.passwordLabel.pack(side='top', anchor='w', padx=5)
+    
+    def _toggle_password_button(self):
+        self.eye_open = ctk.CTkImage(light_image=Image.open('./assets/eye-open.png'), size=(28, 28))
+        self.eye_closed = ctk.CTkImage(light_image=Image.open('./assets/eye-closed.png'), size=(28, 28))
+
+        self.toggle_button = ctk.CTkButton(self.passwordFrame, image=self.eye_closed, text='',
+                                           width=28, height=28, fg_color='#FFFFFF', hover_color='#FFFFFF', corner_radius=0, border_width=0,
+                                           command=self._toggle_password_visibility)
+        self.toggle_button.place(x=320, y=39)
+
+        self.show_password = False 
+        
+    def _toggle_password_visibility(self):
+        if self.show_password:
+            self.newPassEntry.configure(show='*')
+            self.passwordEntry.configure(show='*')
+            self.toggle_button.configure(image=self.eye_closed)
+        else:
+            self.newPassEntry.configure(show='')
+            self.passwordEntry.configure(show='')
+            self.toggle_button.configure(image=self.eye_open)
+
+        self.show_password = not self.show_password
     
     def _button_frame(self):
         self.buttonFrame = ctk.CTkFrame(self.bottomFrame, width=568, height=80, fg_color="#F0F0F0", border_width=2, corner_radius=0)
@@ -117,3 +142,7 @@ class resetPassView(ctk.CTk):
         new_password = self.newPassword.get()
         compare_password = self.comparePassword.get()
         self.controller.show_login(new_password, compare_password)
+        
+    
+        
+        

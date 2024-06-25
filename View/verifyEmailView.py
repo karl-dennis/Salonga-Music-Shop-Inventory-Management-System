@@ -80,7 +80,7 @@ class verifyEmailView(ctk.CTk):
         self.emailFrame.pack(pady=(10,0))
 
     def _email_entry(self):
-        self.emailEntry = ctk.CTkEntry(self.emailFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.email, border_width=2)
+        self.emailEntry = ctk.CTkEntry(self.emailFrame, width=360, height=48, font=("Consolas", 20), bg_color='#FFFFFF', fg_color='#FFFFFF', border_color='#999999', text_color='#595959', textvariable=self.email, border_width=2)
         self.emailEntry.pack(side='top', padx=5, pady=5)
 
     def _email_label(self):
@@ -92,7 +92,7 @@ class verifyEmailView(ctk.CTk):
         self.otpFrame.pack(pady=(10,10))
 
     def _otp_entry(self):
-        self.otpEntry = ctk.CTkEntry(self.otpFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', text_color='#595959', textvariable=self.otp, border_width=2)
+        self.otpEntry = ctk.CTkEntry(self.otpFrame, width=360, height=48, font=("Consolas", 20), bg_color='#FFFFFF', fg_color='#FFFFFF', border_color='#999999', text_color='#595959', textvariable=self.otp, border_width=2)
         self.otpEntry.pack(side='top', padx=5, pady=5)
         
     def _otp_label(self):

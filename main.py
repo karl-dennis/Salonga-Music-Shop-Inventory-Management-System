@@ -4,10 +4,10 @@ from Model.inventoryModel import inventoryModel
 from Model.productModel import productModel
 
 if __name__ == '__main__':
-    signUp = signupController()
-    signUp.main()
-    # login = loginController()
-    # login.main()
+    # signUp = signupController()
+    # signUp.main()
+    login = loginController()
+    login.main()
     # dashboard = dashboardController()
     # dashboard.main()
     # verifyEmail = verifyEmailController()
