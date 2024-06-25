@@ -137,9 +137,9 @@ class salesView(ctk.CTkFrame):
                                     font=('Inter Semibold', 10), text_color='#747474', anchor='w')
         self.productPrice.place(x=207, y=11)
         
-        spinboxValue = ctk.IntVar(value=1)
-        self.productQuantity = CTkSpinbox(rowFrame, start_value=1, width=64, height=20,
-                                            min_value=1, max_value=quantity, variable=spinboxValue,
+        spinboxValue = ctk.IntVar(value=0)
+        self.productQuantity = CTkSpinbox(rowFrame, start_value=0, width=64, height=20,
+                                            min_value=0, max_value=quantity, variable=spinboxValue,
                                             font=('Inter Semibold', 10), text_color='#747474',
                                             fg_color='#F7F7F7',
                                             corner_radius=5, border_width=2, border_color='#CACACA',
