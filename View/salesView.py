@@ -246,8 +246,8 @@ class salesView(ctk.CTkFrame):
         self.revenueLabel.place(x=14, y=5)
         
         self.computed_revenue = 0
-        self.formatted_revenue = ctk.StringVar(value=f'₱{self.computed_revenue:,.2f}')
-        
+        self.formatted_revenue = ctk.StringVar(value='₱0.00')
+        self.formatted_revenue.get()
         self.revenueLabel = ctk.CTkLabel(self.revenueFrame, width=98, height=25, text=self.formatted_revenue, 
                                          font=('Inter Bold', 14), text_color='#57AF20')
         self.revenueLabel.place(x=181, y=5)

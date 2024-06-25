@@ -21,5 +21,16 @@ class productController:
         # print(f'Product Price: {price}')
         self.model.add_products(product_name,type,brand,quantity,price, image)
 
+    def add_brand(self, brand):
+        self.model.add_brand(brand)
+    def get_brand(self):
+        return self.model.fetch_brand()
+
+    def add_type(self, type_name):
+        self.model.add_type(type_name)
+
+    def get_type(self):
+        return self.model.fetch_type()
+
     def get_data(self):
         return self.model.fetch_data()
