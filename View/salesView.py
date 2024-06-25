@@ -108,6 +108,11 @@ class salesView(ctk.CTkFrame):
             valid_index += 1
     
     def add_row(self, idx):
+        for rowFrame, _, product_idx in self.rowFrames:
+            if product_idx == idx:
+                messagebox.showinfo("Info", "This product is already added.")
+                return
+            
         name, brand, price, quantity = self.products[idx][0], self.products[idx][1], self.products[idx][2], self.products[idx][3]
         y_position = 0 + (self.row_counter * 40)
         rowFrame = ctk.CTkFrame(self.orderListFrame, width=285, height=40, fg_color='transparent')
