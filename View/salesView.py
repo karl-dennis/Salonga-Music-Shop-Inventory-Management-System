@@ -241,14 +241,11 @@ class salesView(ctk.CTkFrame):
         self.revenueFrame = ctk.CTkFrame(self.orderFrame, width=285, height=36, fg_color='#F1F1F1')
         self.revenueFrame.place(x=0, y=490)
         
-        self.revenueLabel = ctk.CTkLabel(self.revenueFrame, text='Revenue', width=66, height=25, anchor='center',
+        self.revenueTitle = ctk.CTkLabel(self.revenueFrame, text='Revenue', width=66, height=25, anchor='center',
                                          font=('Inter Bold', 14), text_color='#747474')
-        self.revenueLabel.place(x=14, y=5)
-        
-        self.computed_revenue = 0
-        self.formatted_revenue = ctk.StringVar(value=f'₱{self.computed_revenue:,.2f}')
-        
-        self.revenueLabel = ctk.CTkLabel(self.revenueFrame, width=98, height=25, text=self.formatted_revenue, 
+        self.revenueTitle.place(x=14, y=5)
+                
+        self.revenueLabel = ctk.CTkLabel(self.revenueFrame, width=98, height=25, text='₱0.00', 
                                          font=('Inter Bold', 14), text_color='#57AF20')
         self.revenueLabel.place(x=181, y=5)
         
