@@ -23,6 +23,7 @@ class productController:
 
     def add_brand(self, brand):
         self.model.add_brand(brand)
+        
     def get_brand(self):
         return self.model.fetch_brand()
 

@@ -60,7 +60,7 @@ class productModel:
 
     def create_product_type_table(self):
         try:
-            create_table_query_type = '''CREATE TABLE IF NOT EXISTS product_type(
+            create_table_query_type = '''CREATE TABLE IF NOT EXISTS product_types(
                 product_type TEXT NOT NULL)'''
             self.cursor.execute(create_table_query_type)
         except sqlite3.Error as e:
@@ -132,8 +132,9 @@ class productModel:
             print(f"SQLite error: {e}")
 
     def add_type(self, product_type):
+        print(f"Adding type: {product_type}")
         try:
-            self.cursor.execute('''INSERT INTO product_type (product_type) VALUES (?)''', (product_type,))
+            self.cursor.execute('''INSERT INTO product_types (product_type) VALUES (?)''', (product_type,))
             self.connectDatabase.commit()
             print("Type added successfully")
         except sqlite3.OperationalError as e:
@@ -141,11 +142,12 @@ class productModel:
 
     def fetch_brand(self):
         self.cursor.execute('''SELECT * FROM brands''')
-        brands = self.cursor.fetchall()
-        print(brands)
-        return [brand[0] for brand in brands]
+        brands_list = self.cursor.fetchall()
+        print(brands_list)
+        return [brand[0] for brand in brands_list]
 
     def fetch_type(self):
-        self.cursor.execute('''SELECT * FROM product_type''')
+        self.cursor.execute('''SELECT * FROM product_types''')
         product_type_list = self.cursor.fetchall()
-        return [product_types[0] for product_types in product_type_list]
+        print(product_type_list)
+        return [product_type[0] for product_type in product_type_list]
