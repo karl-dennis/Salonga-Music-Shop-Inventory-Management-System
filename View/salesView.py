@@ -60,8 +60,20 @@ class salesView(ctk.CTkFrame):
             # Decode the product image from BLOB
             if product_image_blob:
                 product_image = Image.open(io.BytesIO(product_image_blob))
-                product_image.thumbnail((66, 66))
-                product_image = ImageTk.PhotoImage(product_image)
+                # product_image.thumbnail((66, 66))
+                # product_image = ImageTk.PhotoImage(product_image)
+                img_width, img_height = 80, 80
+                aspect_ratio = product_image.width / product_image.height
+
+                if aspect_ratio > 1:
+                    new_width = img_width
+                    new_height = int(img_width / aspect_ratio)
+                else:
+                    new_height = img_height
+                    new_width = int(img_height * aspect_ratio)
+
+                resized_image = product_image.resize((new_width, new_height))
+                product_image = ctk.CTkImage(light_image=product_image, size=(new_width, new_height))
             else:
                 product_image = self.placeholderIcon  # Use a placeholder image if no image is available
 
@@ -71,6 +83,7 @@ class salesView(ctk.CTkFrame):
                                             hover_color='#FFFFFF', anchor='center',
                                             command=lambda idx=valid_index: self.add_row(idx))
             selection_image.grid(row=0, column=0)
+            selection_image.grid_propagate(0)
 
             selection_name = ctk.CTkLabel(selection_frame, text=name,
                                           width=80, height=12, font=('Inter Semibold', 10), text_color='#747474')
