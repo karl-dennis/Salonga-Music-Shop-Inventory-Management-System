@@ -50,7 +50,6 @@ class productView(ctk.CTkFrame):
         self.productGraphFrame.bind('<Button-1>', lambda event: self.productGraphFrame.focus_set())
         self.reportsFrame.bind('<Button-1>', lambda event: self.reportsFrame.focus_set())
         
-        
     def show_productReg(self):
         self.icon = ctk.CTkImage(light_image=Image.open('./assets/plus.png'), size=(15,15)) # Icon implementation
         
@@ -146,6 +145,7 @@ class productView(ctk.CTkFrame):
                                        width=106, height=26, bg_color='transparent', anchor='w')
         self.priceLabel.place(x=5, y=0)
         
+        
         self.priceEntry = ctk.CTkEntry(self.priceFrame, width=160, height=30, corner_radius=7, 
                                        bg_color='transparent', fg_color='#FAFAFA',
                                        border_color='#CACACA', border_width=2,
@@ -218,6 +218,7 @@ class productView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
     
+
     def show_productTable(self):
         self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7',
                                               corner_radius=7)
@@ -227,49 +228,68 @@ class productView(ctk.CTkFrame):
                                   text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        column_titles = ["Product ID", "Name", "Type", "Brand", "Qty", "Price", "Status"]
-
-        # Fetch data from the database using the controller
         table_values = self.controller.get_data()
-        print(self.controller.get_data())
+        reordered_table = []
+        for row_values in table_values:
+            reordered_row_values = [row_values[0], row_values[1], row_values[3], row_values[2], row_values[5], row_values[4], row_values[6]]
+            reordered_table.append(reordered_row_values)
 
-        self.table = CTkTable(master=self.productTableFrame, column=7, padx=0, pady=0, font=('Inter', 12))
-        self.table.update_values([column_titles])
-
-        if not table_values:
-            required_rows = 0
-        else:
-            required_rows = len(table_values)
+        self.tableFrame = ctk.CTkScrollableFrame(self.productTableFrame, width=566, height=297, fg_color='#F7F7F7',
+                                                 corner_radius=0)
+        self.tableFrame.place(x=12, y=55)
         
-        current_rows = self.table.rows - 1  # Subtract 1 for the header row
-        for _ in range(required_rows - current_rows):
-            self.table.add_row([''] * 7)  # Add empty rows to meet the required row count
-
-        # Inserting a Row
-        for row, row_values in enumerate(table_values):
-            for column, value in enumerate(row_values):
-                print(f"Inserting value '{value}' into row {row + 1}, column {column}")
-                self.table.insert(row + 1, column, value)
-
-        # Configuring Column Header
-        column_widths = [98, 96, 91, 86, 70, 71, 65]
-        for column, width in enumerate(column_widths):
-            self.table.frame[0, column].configure(width=width, height=25,
-                                                  fg_color='#F7F7F7',
-                                                  corner_radius=0, anchor='w')
-
+        # Placing column titles
+        column_titles = ["Product ID", "Product", "Type", "Brand", "Price", "Qty", "Status"]
+        column_widths = [98, 96, 91, 86, 70, 60, 65]
+        
+        x_position = 0
+        for column, (title, width) in enumerate(zip(column_titles, column_widths)):
+            self.columnLabel = ctk.CTkLabel(
+                self.productTableFrame, 
+                width=column_widths[column], 
+                height=25, 
+                text=title, 
+                fg_color='#F7F7F7',
+                font=('Inter Semibold', 12),
+                text_color='#9E9E9E',
+                corner_radius=0, 
+                anchor='w'
+            )
+            self.columnLabel.place(x=15+x_position, y=30)
+            x_position += width
+            
         self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
         self.columnLine.place(x=0, y=53)
 
-        # Configuring the rest of the rows
-        for row in range(1, self.table.rows):
+        # Placing table rows
+        self.table = CTkTable(master=self.tableFrame, column=7, padx=0, pady=0, font=('Inter Medium', 12))
+        if not reordered_table:
+            required_rows = 0
+        else:
+            required_rows = len(reordered_table)
+        
+        current_rows = self.table.rows  # Subtract 1 for the header row
+        for _ in range(required_rows - current_rows):
+            self.table.add_row([''] * 7)  # Add empty rows to meet the required row count
+
+        string_limit = 14
+        for row, row_values in enumerate(reordered_table):
+            for column, value in enumerate(row_values):
+                if column == 4:  # Price column
+                    value = f'₱{value:,.2f}'.rstrip('0').rstrip('.')
+                if isinstance(value, str) and len(value) > string_limit:
+                    value = value[:string_limit] + "..."  # Truncate and add ellipsis
+                self.table.insert(row, column, value)
+        
+        cell_widths = [98, 96, 91, 86, 70, 60, 65]
+        for row in range(0, self.table.rows):
             for column in range(self.table.columns): 
-                self.table.frame[row, column].configure(width=column_widths[column], height=25,
+                self.table.frame[row, column].configure(width=cell_widths[column], height=25,
                                                         fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
 
-            if table_values:
-                quantity = int(table_values[row - 1][4])  # 5th Column = Quantity
+            if reordered_table:
+                quantity = int(reordered_table[row][5])  # Column[5] = Quantity
                 if quantity == 0:
                     status = "No Stock"
                     status_color = "#D92929"
@@ -281,13 +301,18 @@ class productView(ctk.CTkFrame):
                     status_color = "#329932"
 
                 self.table.insert(row, 6, status)
-                self.table.frame[row, 6].configure(text_color=status_color) # Status color
-                self.table.frame[row, 4].configure(text_color='#5e5e5e') # Quantity color
+                self.table.frame[row, 6].configure(text_color=status_color)  # Status
+                self.table.frame[row, 5].configure(text_color=status_color, font=('Inter', 12))  # Quantity
         
-                self.rowLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#dbdbdb') # Row divider
-                self.rowLine.place(x=0, y=78 + (row - 1) * 25)
-
-        self.table.place(x=15, y=30)
+           
+        self.table.pack(fill='both', expand=True)
+        
+        for row in range(1, self.table.rows):
+            rowLine = ctk.CTkFrame(self.tableFrame, width=598, height=2, fg_color='#dbdbdb')
+            rowLine.place(x=0, y=(row * 25) - 4)
+        
+     
+       
           
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.productTableFrame, width=160, height=22, fg_color='transparent')
@@ -385,6 +410,7 @@ class productView(ctk.CTkFrame):
     def update_type_dropdown(self):
         product_type = self.controller.get_type()
         return self.typeDropdown.configure(values=product_type)
+        
     def save_button_clicked(self):
         product_name = self.name_entry.get()
         type = self.typeDropdown.get()
