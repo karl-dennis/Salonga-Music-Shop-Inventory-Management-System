@@ -44,6 +44,7 @@ class loginView(ctk.CTk):
         self.configure(fg_color='#FFFFFF')
         self.minsize(set_width, set_height)
         self.maxsize(set_width, set_height)
+        self.resizable(False, False)
 
     def mainframe(self):
         self.frame = ctk.CTkFrame(self, width=568, height=466, fg_color='#F7F7F7', border_width=2) 
@@ -75,7 +76,7 @@ class loginView(ctk.CTk):
         self.usernameFrame.pack(pady=(10,0))
 
     def _userName_entry(self):
-        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', textvariable=self.userName, border_width=2)
+        self.usernameEntry = ctk.CTkEntry(self.usernameFrame, width=360, height=48, font=("Consolas", 20), bg_color='#FFFFFF', fg_color='#FFFFFF', border_color='#999999', textvariable=self.userName, border_width=2)
         self.usernameEntry.pack(side='top', padx=5, pady=5)
 
     def _username_label(self):
@@ -87,7 +88,7 @@ class loginView(ctk.CTk):
         self.passwordFrame.pack(pady=(20,0))
 
     def _password_entry(self):
-        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), border_color='#999999', textvariable=self.password, show='*', border_width=2)
+        self.passwordEntry = ctk.CTkEntry(self.passwordFrame, width=360, height=48, font=("Consolas", 20), bg_color='#FFFFFF', fg_color='#FFFFFF', border_color='#999999', textvariable=self.password, show='*', border_width=2)
         self.passwordEntry.pack(side='top', padx=5, pady=5)
 
     def _toggle_password_button(self):
@@ -95,11 +96,12 @@ class loginView(ctk.CTk):
         self.eye_closed = ctk.CTkImage(light_image=Image.open('./assets/eye-closed.png'), size=(28, 28))
 
         self.toggle_button = ctk.CTkButton(self.passwordFrame, image=self.eye_closed, text='',
-                                           width=28, height=28, fg_color='#FFFFFF', hover_color='#FFFFFF', corner_radius=0,
+                                           width=28, height=28, fg_color='#FFFFFF', hover_color='#FFFFFF', corner_radius=0, border_width=0,
                                            command=self._toggle_password_visibility)
         self.toggle_button.place(x=320, y=39)
 
         self.show_password = False 
+        
     def _toggle_password_visibility(self):
         if self.show_password:
             self.passwordEntry.configure(show='*')

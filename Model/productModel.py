@@ -14,6 +14,8 @@ class productModel:
         self.create_brand_table()
         self.create_table_stock()
 
+        self.create_product_type_table()
+
     def connect_database(self):
         try:
             self.connectDatabase = sqlite3.connect('salonga_music_shop.db')
@@ -51,8 +53,16 @@ class productModel:
     def create_brand_table(self):
         try:
             create_table_query_stocks = '''CREATE TABLE IF NOT EXISTS brands(
-                brand)'''
+                brand TEXT NOT NULL)'''
             self.cursor.execute(create_table_query_stocks)
+        except sqlite3.Error as e:
+            print('Error:', e)
+
+    def create_product_type_table(self):
+        try:
+            create_table_query_type = '''CREATE TABLE IF NOT EXISTS product_type(
+                product_type TEXT NOT NULL)'''
+            self.cursor.execute(create_table_query_type)
         except sqlite3.Error as e:
             print('Error:', e)
 
@@ -112,3 +122,30 @@ class productModel:
             if not self.cursor.fetchone():
                 return unique_id
 
+    def add_brand(self, new_brand):
+        print(f"Adding brand: {new_brand}")
+        try:
+            self.cursor.execute('''INSERT INTO brands (brand) VALUES (?)''', (new_brand,))
+            self.connectDatabase.commit()
+            print("Brand added successfully")
+        except sqlite3.OperationalError as e:
+            print(f"SQLite error: {e}")
+
+    def add_type(self, product_type):
+        try:
+            self.cursor.execute('''INSERT INTO product_type (product_type) VALUES (?)''', (product_type,))
+            self.connectDatabase.commit()
+            print("Type added successfully")
+        except sqlite3.OperationalError as e:
+            print(f"SQLite error: {e}")
+
+    def fetch_brand(self):
+        self.cursor.execute('''SELECT * FROM brands''')
+        brands = self.cursor.fetchall()
+        print(brands)
+        return [brand[0] for brand in brands]
+
+    def fetch_type(self):
+        self.cursor.execute('''SELECT * FROM product_type''')
+        product_type_list = self.cursor.fetchall()
+        return [product_types[0] for product_types in product_type_list]
