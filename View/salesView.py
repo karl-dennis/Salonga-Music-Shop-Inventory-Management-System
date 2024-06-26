@@ -3,7 +3,9 @@ import tkinter as tk
 from PIL import Image
 from CTkSpinbox import *
 from tkinter import messagebox
-
+import base64
+from PIL import Image, ImageTk
+import io
 class salesView(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
@@ -26,29 +28,12 @@ class salesView(ctk.CTkFrame):
         self.update_total_price()
     def custom_styles(self):
         pass
-    
+
     def show_selection(self):
         self.selectionTable = ctk.CTkScrollableFrame(self.firstPageFrame, width=493, height=423, fg_color='transparent')
         self.selectionTable.place(x=0, y=120)
 
-        self.products = [
-            ['Electric Guitar', 'Fendy', 1000.0, 10],
-            ['Xylophone', 'Yamaha', 800.0, 5],
-            ['Acoustic Guitar', 'Gibson', 850.0, 3],
-            ['Bass Guitar', 'JB', 730.0, 5],
-            ['Ukulele', 'RJ', 920.0, 0],
-            ['Drum Set', 'Pearl', 1500.0, 7],
-            ['Violin', 'Stradivarius', 1200.0, 3],
-            ['Trumpet', 'Bach', 900.0, 4],
-            ['Saxophone', 'Yamaha', 1100.0, 6],
-            ['Flute', 'Yamaha', 700.0, 5],
-            ['Cello', 'Stradivarius', 2000.0, 2],
-            ['Clarinet', 'Buffet', 800.0, 8],
-            ['Harp', 'Lyon & Healy', 3500.0, 1],
-            ['Trombone', 'Conn', 950.0, 3],
-            ['Piano', 'Steinway', 5000.0, 2],
-            ['Synthesizer', 'Roland', 1300.0, 5]
-        ]
+        self.products = self.controller.get_product()  # Fetch products from the model
 
         columns = 5
         frame_width = 83
@@ -57,15 +42,11 @@ class salesView(ctk.CTkFrame):
         self.placeholderIcon = ctk.CTkImage(light_image=Image.open('./assets/placeholder.png'), size=(66, 66))
 
         valid_index = 0
-        for i in range(len(self.products)):
-            name, brand, price = self.products[i][0], self.products[i][1], self.products[i][2]
-            try:
-                quantity = self.products[i][3]
-                quantity_value = int(quantity)
-            except (IndexError, ValueError):
-                quantity_value = 0
+        for product in self.products:
+            product_image_blob, name, brand, product_type, quantity, price = product
 
-            if quantity_value == 0:
+            price = float(price)
+            if quantity == 0:
                 continue
 
             row = valid_index // columns
@@ -76,12 +57,33 @@ class salesView(ctk.CTkFrame):
                                            fg_color='transparent', bg_color='transparent')
             selection_frame.grid(row=row, column=col, padx=7, pady=5)
 
-            selection_image = ctk.CTkButton(selection_frame, image=self.placeholderIcon, text='', width=83, height=83,
+            # Decode the product image from BLOB
+            if product_image_blob:
+                product_image = Image.open(io.BytesIO(product_image_blob))
+                # product_image.thumbnail((66, 66))
+                # product_image = ImageTk.PhotoImage(product_image)
+                img_width, img_height = 80, 80
+                aspect_ratio = product_image.width / product_image.height
+
+                if aspect_ratio > 1:
+                    new_width = img_width
+                    new_height = int(img_width / aspect_ratio)
+                else:
+                    new_height = img_height
+                    new_width = int(img_height * aspect_ratio)
+
+                resized_image = product_image.resize((new_width, new_height))
+                product_image = ctk.CTkImage(light_image=product_image, size=(new_width, new_height))
+            else:
+                product_image = self.placeholderIcon  # Use a placeholder image if no image is available
+
+            selection_image = ctk.CTkButton(selection_frame, image=product_image, text='', width=83, height=83,
                                             border_width=2.5, border_color='#B8B8B8', corner_radius=7,
                                             fg_color='#FFFFFF', bg_color='#F7F7F7',
                                             hover_color='#FFFFFF', anchor='center',
-                                            command=lambda idx=i: self.add_row(idx))
+                                            command=lambda idx=valid_index: self.add_row(idx))
             selection_image.grid(row=0, column=0)
+            selection_image.grid_propagate(0)
 
             selection_name = ctk.CTkLabel(selection_frame, text=name,
                                           width=80, height=12, font=('Inter Semibold', 10), text_color='#747474')
@@ -91,15 +93,16 @@ class salesView(ctk.CTkFrame):
                                            width=80, height=7, font=('Inter Semibold', 7), text_color='#747474')
             selection_brand.grid(row=2, column=0)
 
+
             formatted_price = f'₱{price:,.2f}'
 
             selection_price = ctk.CTkLabel(selection_frame, text=formatted_price,
                                            width=80, height=10, font=('Inter Semibold', 8), text_color='#747474')
             selection_price.grid(row=3, column=0)
 
-            text_color = '#AE5050' if quantity_value == 0 else ('#E9AC07' if 1 <= quantity_value <= 5 else '#329932')
+            text_color = '#AE5050' if quantity == 0 else ('#E9AC07' if 1 <= quantity <= 5 else '#329932')
             formatted_quantity = f'{quantity} In Stock'
-            
+
             selection_quantity = ctk.CTkLabel(selection_frame, text=formatted_quantity,
                                               width=80, height=9, font=('Inter Semibold', 9),
                                               text_color=text_color)
@@ -113,7 +116,9 @@ class salesView(ctk.CTkFrame):
                 messagebox.showinfo("Info", "This product is already added.")
                 return
             
-        name, brand, price, quantity = self.products[idx][0], self.products[idx][1], self.products[idx][2], self.products[idx][3]
+        name, brand, price, quantity = self.products[idx][1], self.products[idx][2], self.products[idx][5], self.products[idx][4]
+
+        price = float(price)
         y_position = 0 + (self.row_counter * 40)
         rowFrame = ctk.CTkFrame(self.orderListFrame, width=285, height=40, fg_color='transparent')
 
@@ -136,9 +141,7 @@ class salesView(ctk.CTkFrame):
                                         font=('Inter Semibold', 9), text_color='#747474', anchor='w')
         self.productBrand.place(x=29, y=21)
 
-        formatted_price = f'₱{price:,.2f}'
-        
-        self.productPrice = ctk.CTkLabel(rowFrame, text=formatted_price, width=69, height=17,
+        self.productPrice = ctk.CTkLabel(rowFrame, text='₱0.00', width=69, height=17,
                                     font=('Inter Semibold', 10), text_color='#747474', anchor='w')
         self.productPrice.place(x=207, y=11)
         
@@ -160,14 +163,14 @@ class salesView(ctk.CTkFrame):
         for rowFrame, spinboxValue, product_idx in self.rowFrames:
             if rowFrame.winfo_ismapped(): # Check if row is visible
                 quantity = spinboxValue.get()
-                price = quantity * self.products[product_idx][2] # Calculates price before configuring
+                price = quantity * self.products[product_idx][5] # Calculates price before configuring
                 for widget in rowFrame.winfo_children():
                     if isinstance(widget, ctk.CTkLabel) and "₱" in widget.cget("text"):
                         widget.configure(text=f'₱{price:,.2f}')
         self.update_total_price()
             
     def update_total_price(self):
-        total = sum(spinboxValue.get() * self.products[product_idx][2] for rowFrame, spinboxValue, product_idx in self.rowFrames if rowFrame.winfo_ismapped())
+        total = sum(spinboxValue.get() * self.products[product_idx][5] for rowFrame, spinboxValue, product_idx in self.rowFrames if rowFrame.winfo_ismapped())
         formatted_total = f'₱{total:,.2f}'
         self.revenueLabel.configure(text=formatted_total)
 

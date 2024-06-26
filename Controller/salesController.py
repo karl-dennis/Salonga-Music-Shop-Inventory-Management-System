@@ -40,3 +40,6 @@ class salesController:
                 tab.configure(text_color=active_text)
             else:
                 tab.configure(text_color=inactive_text)
+
+    def get_product(self):
+        return self.model.fetch_products()
