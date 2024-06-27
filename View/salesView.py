@@ -19,6 +19,7 @@ class salesView(ctk.CTkFrame):
 
         self.selectionFrames = []
         self.rowFrames = [] # Stores created rows, upon item selection
+        
         self.row_counter = 0
         
         self.trashIcon = ctk.CTkImage(light_image=Image.open('./assets/trash.png'), size=(15,15))
@@ -42,11 +43,13 @@ class salesView(ctk.CTkFrame):
         self.placeholderIcon = ctk.CTkImage(light_image=Image.open('./assets/placeholder.png'), size=(66, 66))
 
         valid_index = 0
+        controller_index = 0
         for product in self.products:
             product_image_blob, name, brand, product_type, quantity, price = product
 
             price = float(price)
             if quantity == 0:
+                controller_index+=1
                 continue
 
             row = valid_index // columns
@@ -81,7 +84,7 @@ class salesView(ctk.CTkFrame):
                                             border_width=2.5, border_color='#B8B8B8', corner_radius=7,
                                             fg_color='#FFFFFF', bg_color='#F7F7F7',
                                             hover_color='#FFFFFF', anchor='center',
-                                            command=lambda idx=valid_index: self.add_row(idx))
+                                            command=lambda idx=controller_index: self.add_row(idx))
             selection_image.grid(row=0, column=0)
             selection_image.grid_propagate(0)
 
@@ -109,6 +112,7 @@ class salesView(ctk.CTkFrame):
             selection_quantity.grid(row=4, column=0)
 
             valid_index += 1
+            controller_index +=1
     
     def add_row(self, idx):
         for rowFrame, _, product_idx in self.rowFrames:
@@ -170,8 +174,8 @@ class salesView(ctk.CTkFrame):
         self.update_total_price()
             
     def update_total_price(self):
-        total = sum(spinboxValue.get() * self.products[product_idx][5] for rowFrame, spinboxValue, product_idx in self.rowFrames if rowFrame.winfo_ismapped())
-        formatted_total = f'₱{total:,.2f}'
+        self.total = sum(spinboxValue.get() * self.products[product_idx][5] for rowFrame, spinboxValue, product_idx in self.rowFrames if rowFrame.winfo_ismapped())
+        formatted_total = f'₱{self.total:,.2f}'
         self.revenueLabel.configure(text=formatted_total)
 
     def delete_row(self, row_frame):
@@ -355,8 +359,15 @@ class salesView(ctk.CTkFrame):
         
         self.selected_products = []
         for frame in self.rowFrames:
+            frame = frame[0]
             frame.place_forget()
+            frame.destroy()
+            
         self.rowFrames = []
+        self.row_counter = 0
+        self.total = 0
+        self.revenueLabel.configure(text='₱0.00')
+        # self.show_orderFrame()
 
     def save_button_clicked(self):
         pass
