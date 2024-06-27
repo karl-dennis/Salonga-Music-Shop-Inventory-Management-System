@@ -5,6 +5,7 @@ from Controller.productController import *
 from Controller.salesController import *
 from Controller.salesTwoController import *
 from Controller.deliveryController import *
+from Controller.deliveryTwoController import *
 from Controller.maintenanceController import *
 from Controller.inventoryController import *
 from Controller.graphSalesController import *
@@ -16,6 +17,6 @@ from Controller.resetPassController import *
 
 __all__ = ["signupController", "loginController", "dashboardController",
            "productController", "salesController", "salesTwoController",
-           "deliveryController", "inventoryController", "maintenanceController",  
-           "graphSalesController", "stockAlertsController", "statisticController", 
-           "calendarController", "verifyEmailController", "resetPassController"]
+           "deliveryController", "deliveryTwoController", "inventoryController", 
+           "maintenanceController", "graphSalesController", "stockAlertsController", 
+           "statisticController", "calendarController", "verifyEmailController", "resetPassController"]
