@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
+from CTkTable import *
 
 class salesTwoView(ctk.CTkFrame):
 
@@ -33,6 +34,7 @@ class salesTwoView(ctk.CTkFrame):
         self.show_salesGraph()
         self.show_revenue()
         self.show_reports()
+        self.show_historyTable()
         
         self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
         self.secondPageFrame.bind('<Button-1>', lambda event: self.secondPageFrame.focus_set())
@@ -43,7 +45,7 @@ class salesTwoView(ctk.CTkFrame):
 
                 
     def show_secondPage(self):
-        self.secondPageFrame = ctk.CTkFrame(self.baseFrame, width=522, height=340, fg_color='#F7F7F7', corner_radius=7)
+        self.secondPageFrame = ctk.CTkFrame(self.baseFrame, width=522, height=340, fg_color='#F7F7F7', bg_color='#DFDFDF', corner_radius=7)
         self.secondPageFrame.place(x=12, y=15)
         
         self.tabFrame = ctk.CTkFrame(self.secondPageFrame, width=246, height=40, fg_color='transparent')
@@ -98,13 +100,204 @@ class salesTwoView(ctk.CTkFrame):
                 print(f"Performing search for: {query}")
             
         self.searchEntry.bind('<Return>', lambda event: perform_search())
+
+        
+    def show_historyTable(self):
+        # pass
+        self.historyTableFrame = ctk.CTkFrame(self.secondPageFrame, width=522, height=288, corner_radius=7,
+                                              fg_color='#F7F7F7', bg_color='#DFDFDF')
+        self.historyTableFrame.place(x=0, y=52)
+
+        # table_values = self.controller.get_data()
+        # reordered_table = []
+
+        order1 = [
+            {
+                'productName': 'productName1',
+                'productBrand': 'productBrand1',
+                'productQuantity': 1,
+                'computedPrice': 100.0,
+                'BLOB': 'BLOB1'
+            },
+            {
+                'productName': 'productName2',
+                'productBrand': 'productBrand2',
+                'productQuantity': 2,
+                'computedPrice': 200.0,
+                'BLOB': 'BLOB2'
+            }
+        ]
+        
+        order2 = [
+            {
+                'productName': 'productName3',
+                'productBrand': 'productBrand3',
+                'productQuantity': 3,
+                'computedPrice': 300.0,
+                'BLOB': 'BLOB3'
+            },
+            {
+                'productName': 'productName4',
+                'productBrand': 'productBrand4',
+                'productQuantity': 4,
+                'computedPrice': 400.0,
+                'BLOB': 'BLOB4'
+            }
+        ]
+        product_orders = [order1, order2]
+        
+        table_values = [
+            {
+                'orderID': '0001',
+                'products_ordered': order1,
+                'buyerName': 'Fritz Gonzales',
+                'buyerContact': '0999-999-9999',
+                'totalRevenue': 300.0,
+                'date': '2023-06-26',
+                'timestamp': '12:00:00'
+            },
+            {
+                'orderID': '0002',
+                'products_ordered': order2,
+                'buyerName': 'Lucas Ballesteros',
+                'buyerContact': '0999-999-9999',
+                'totalRevenue': 700.0,
+                'date': '2023-06-27',
+                'timestamp': '14:00:00'
+            }
+        ]
+
+        reordered_table = []
+        for row_values in table_values:
+            reordered_row_values = {
+                'orderID': row_values['orderID'],
+                'buyerName': row_values['buyerName'],
+                'buyerContact': row_values['buyerContact'],
+                'totalRevenue': row_values['totalRevenue'],
+                'date': row_values['date'],
+                'timestamp': row_values['timestamp']
+            }
+            reordered_table.append(reordered_row_values)
+            
+        # print("Reordered Table:")
+        # for row in reordered_table:
+        #     print(row)
+            
+        column_titles = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Date', 'Time']
+        column_widths = [67, 101, 102, 91, 78, 65] # Table Width = 504
+        
+        column_frame = ctk.CTkFrame(self.historyTableFrame, width=522, height=36, fg_color='#F3F3F3', bg_color='#DFDFDF', corner_radius=0)
+        column_frame.place(x=0, y=0)
+        
+        """ Table Columns """
+        x_position = 0
+        for column, (title, width) in enumerate(zip(column_titles, column_widths)):
+            self.columnLabel = ctk.CTkLabel(
+                column_frame, 
+                width=column_widths[column], 
+                height=30, 
+                text=title, 
+                fg_color='#F3F3F3',
+                font=('Inter Semibold', 12),
+                text_color='#9E9E9E',
+                corner_radius=0, 
+                anchor='w'
+            )
+            self.columnLabel.place(x=12+x_position, y=3)
+            x_position += width
+        
+        """ Convert to CTkScrollable Frame """
+        self.tableFrame = ctk.CTkScrollableFrame(self.historyTableFrame, width=495, height=252, fg_color='#F7F7F7', corner_radius=0)
+        self.tableFrame.place(x=12, y=37)
+        
+        self.table = CTkTable(master=self.tableFrame, column=6, padx=0, pady=0, font=('Inter Semibold', 11), text_color='#747474',
+                              colors=['#F7F7F7', '#F7F7F7'],
+                              )
+        
+        if not reordered_table:
+            required_rows = 0
+        else:
+            required_rows = len(reordered_table)
+        
+        current_rows = self.table.rows  # Subtract 1 for the header row
+        for _ in range(required_rows - current_rows):
+            self.table.add_row([''] * 6)  # Add empty rows to meet the required row count
+            
+        string_limit = 14
+        for row_index, row_values in enumerate(reordered_table):
+            # Populate table cells with formatted values
+            self.table.insert(row_index, 0, row_values['orderID'])
+            self.table.insert(row_index, 1, row_values['buyerName'])
+            self.table.insert(row_index, 2, row_values['buyerContact'])
+            self.table.insert(row_index, 3, f"${row_values['totalRevenue']:.2f}".rstrip('0').rstrip('.'))  # Format revenue
+            self.table.insert(row_index, 4, row_values['date'])
+            self.table.insert(row_index, 5, row_values['timestamp'])
+    
+        cell_widths = [67, 101, 102, 91, 78, 65] # Table Width = 504
+        for row in range(self.table.rows):
+            for column in range(self.table.columns):
+                self.table.frame[row, column].configure(width=cell_widths[column], height=36, 
+                                                        fg_color='#F7F7F7', text_color='#868686', 
+                                                        corner_radius=0, anchor='w')
+
+        self.table.pack(fill='y', expand=True)
+        
+        self.selected_row = None
+        self.bind_cell_click_events()
+
+        for row in range(1, self.table.rows + 1):
+            rowLine = ctk.CTkFrame(self.tableFrame, width=522, height=2, fg_color='#dbdbdb')
+            rowLine.place(x=0, y=(row) * 38 - 1)
+
+
+    def bind_cell_click_events(self):
+        for row_index in range(self.table.rows):
+            for col_index in range(self.table.columns):
+                # Bind click event to each cell in the table
+                self.table.frame[row_index, col_index].bind("<Button-1>", lambda event, row=row_index: self.handle_cell_click(event, row))
+
+    def handle_cell_click(self, event, row_index):
+        if self.selected_row is not None:
+            self.deselect_row(self.selected_row)
+
+        self.select_row(row_index)
+        self.selected_row = row_index
+        
+        selected_row_data = self.table.get_row(row_index)
+        print(f"Selected row {row_index}: {selected_row_data}")
+        """Connect controller here"""
+
+    def select_row(self, row):
+        self.table.edit_row(row, fg_color='#EAEAEA') 
+
+    def deselect_row(self, row):
+        self.table.edit_row(row, fg_color='#F7F7F7') 
+
         
     def show_orderFrame(self):
-        self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=585, fg_color='#F7F7F7', corner_radius=7)
+        self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
         self.orderFrame.place(x=546, y=15)
         
-        self.label = ctk.CTkLabel(self.orderFrame, text="Order #0001", font=('Inter', 15, 'bold'), text_color='#2E2E2E')
-        self.label.place(x=95, y=12)
+        orderID = 1 # ID Counter, increments on click (save button)
+        
+        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID:04}", width=121, height=23, # Pads zeroes (length of 4), e.g. 0001
+                                         font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
+        self.orderIDLabel.place(x=82, y=12)
+        
+        self.orderColumnFrame = ctk.CTkFrame(self.orderFrame, width=285, height=24, corner_radius=0, fg_color='#E9E9E9')
+        self.orderColumnFrame.place(x=0, y=48)
+        
+        self.orderProduct = ctk.CTkLabel(self.orderColumnFrame, text='Product', width=106, height=22,
+                                         font=('Inter Semibold', 12), text_color='#B8B8B8', anchor='w')
+        self.orderProduct.place(x=10, y=1)
+        
+        self.orderQuantity = ctk.CTkLabel(self.orderColumnFrame, text='Qty', width=28, height=22,
+                                         font=('Inter Semibold', 12), text_color='#B8B8B8', anchor='center')
+        self.orderQuantity.place(x=148, y=1)
+        
+        self.orderPrice = ctk.CTkLabel(self.orderColumnFrame, text='Price', width=63, height=22,
+                                         font=('Inter Semibold', 12), text_color='#B8B8B8', anchor='w')
+        self.orderPrice.place(x=207, y=1)    
         
     def show_salesGraph(self):
         self.salesGraphFrame = ctk.CTkFrame(self.baseFrame, width=315, height=232, fg_color='#F7F7F7', corner_radius=7)

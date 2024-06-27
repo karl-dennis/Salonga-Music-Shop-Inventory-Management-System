@@ -189,11 +189,7 @@ class salesView(ctk.CTkFrame):
         self.row_counter -= 1
         
         self.update_total_price()
-
-        
-
-        
-            
+         
     def show_orderFrame(self):
         self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
         self.orderFrame.place(x=546, y=15)
@@ -403,19 +399,19 @@ class salesView(ctk.CTkFrame):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
     
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("Sales Page (Test)")
+# class App:
+#     def __init__(self):
+#         self.root = ctk.CTk()
+#         self.root.title("Sales Page (Test)")
 
-        self.sales_view = salesView(self.root, None)
-        self.sales_view.pack(fill=ctk.BOTH, expand=True)
+#         self.sales_view = salesView(self.root, None)
+#         self.sales_view.pack(fill=ctk.BOTH, expand=True)
 
-        self.root.update()
+#         self.root.update()
         
-    def run(self):
-        self.root.mainloop()
+#     def run(self):
+#         self.root.mainloop()
 
-if __name__ == "__main__":
-    app = App()
-    app.run()
+# if __name__ == "__main__":
+#     app = App()
+#     app.run()

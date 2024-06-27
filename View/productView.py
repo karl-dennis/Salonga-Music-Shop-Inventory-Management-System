@@ -233,10 +233,6 @@ class productView(ctk.CTkFrame):
         for row_values in table_values:
             reordered_row_values = [row_values[0], row_values[1], row_values[3], row_values[2], row_values[5], row_values[4], row_values[6]]
             reordered_table.append(reordered_row_values)
-
-        self.tableFrame = ctk.CTkScrollableFrame(self.productTableFrame, width=566, height=297, fg_color='#F7F7F7',
-                                                 corner_radius=0)
-        self.tableFrame.place(x=12, y=55)
         
         # Placing column titles
         column_titles = ["Product ID", "Product", "Type", "Brand", "Price", "Qty", "Status"]
@@ -261,6 +257,9 @@ class productView(ctk.CTkFrame):
         self.columnLine = ctk.CTkFrame(self.productTableFrame, width=598, height=2, fg_color='#D2D2D2')
         self.columnLine.place(x=0, y=53)
 
+        self.tableFrame = ctk.CTkScrollableFrame(self.productTableFrame, width=566, height=297, fg_color='#F7F7F7', corner_radius=0)
+        self.tableFrame.place(x=12, y=55)
+        
         # Placing table rows
         self.table = CTkTable(master=self.tableFrame, column=7, padx=0, pady=0, font=('Inter Medium', 12))
         if not reordered_table:
