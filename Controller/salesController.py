@@ -2,6 +2,8 @@ from Model.salesModel import salesModel
 from View.salesView import salesView
 import tkinter as tk
 from tkinter import messagebox
+import json
+from datetime import datetime
 
 class salesController:
     def __init__(self, parent):
@@ -43,3 +45,17 @@ class salesController:
 
     def get_product(self):
         return self.model.fetch_products()
+
+    def save_button_clicked(self, name, contact, totalPrice, added_rows):
+        # Handle the save action, using the name, contact, totalPrice, and added_rows
+        # products = json.dumps((added_rows))
+        # print(f"Name: {name}, Contact: {contact}, Total Price: {totalPrice}")
+        # for row in added_rows:
+        #     print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
+
+        date = datetime.now().strftime('%Y-%m-%d')
+        timestamp = datetime.now().strftime('%H:%M:%S')
+
+        products = json.dumps(added_rows)
+
+        self.model.save_transaction(name,contact,totalPrice,products, date, timestamp)
