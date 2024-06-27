@@ -1,26 +1,27 @@
-from Model.deliveryModel import deliveryModel
-from View.deliveryView import deliveryView
+from Model.deliveryTwoModel import deliveryTwoModel
+from View.deliveryTwoView import deliveryTwoView
 import tkinter as tk
 from tkinter import messagebox
 
-class deliveryController:
+class deliveryTwoController:
     def __init__(self, parent):
-        self.model = deliveryModel()
-        self.view = deliveryView(parent, self)
+        self.model = deliveryTwoModel()
+        self.view = deliveryTwoView(parent, self)
         
     def main(self):
         self.view.base_frame()
-        
+    
+    
     def show_firstPage(self):
         self.view.clear_base_frame()
-        self.view.show_firstPage()
+        from Controller.deliveryController import deliveryController
+        sales_controller = deliveryController(self.view.baseFrame)
+        sales_controller.main()
         
     def show_secondPage(self):
-        self.view.clear_base_frame()
-        from Controller.deliveryTwoController import deliveryTwoController
-        salesTwo_controller = deliveryTwoController(self.view.baseFrame)
-        salesTwo_controller.main()
-        
+        pass
+        # self.view.show_secondPage()
+    
     def set_active_tab(self, tab):
         self.view.active_tab = tab
         self.update_tab()
@@ -40,6 +41,3 @@ class deliveryController:
                 tab.configure(text_color=active_text)
             else:
                 tab.configure(text_color=inactive_text)
-
-    def get_product(self):
-        return self.model.fetch_products()

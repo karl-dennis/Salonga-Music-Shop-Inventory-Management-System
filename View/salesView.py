@@ -1,11 +1,13 @@
+import datetime
 import customtkinter as ctk
 import tkinter as tk
 from PIL import Image
 from CTkSpinbox import *
 from tkinter import messagebox
 import base64
-from PIL import Image, ImageTk
+from PIL import Image
 import io
+import uuid
 class salesView(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
@@ -14,6 +16,9 @@ class salesView(ctk.CTkFrame):
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
         
+        self.buyer_name = ctk.StringVar()
+        self.buyer_contact = ctk.StringVar()    
+    
         self.active_tab = 1
         self.search_query = ctk.StringVar()
 
@@ -22,6 +27,7 @@ class salesView(ctk.CTkFrame):
         
         self.row_counter = 0
         
+        self.price = None
         self.trashIcon = ctk.CTkImage(light_image=Image.open('./assets/trash.png'), size=(15,15))
         
         self.custom_styles()
@@ -166,11 +172,11 @@ class salesView(ctk.CTkFrame):
     def update_price(self, idx):
         for rowFrame, spinboxValue, product_idx in self.rowFrames:
             if rowFrame.winfo_ismapped(): # Check if row is visible
-                quantity = spinboxValue.get()
-                price = quantity * self.products[product_idx][5] # Calculates price before configuring
+                self.quantity = spinboxValue.get()
+                self.price = self.quantity * self.products[product_idx][5] # Calculates price before configuring
                 for widget in rowFrame.winfo_children():
                     if isinstance(widget, ctk.CTkLabel) and "₱" in widget.cget("text"):
-                        widget.configure(text=f'₱{price:,.2f}')
+                        widget.configure(text=f'₱{self.price:,.2f}')
         self.update_total_price()
             
     def update_total_price(self):
@@ -231,7 +237,7 @@ class salesView(ctk.CTkFrame):
         
         self.buyerNameEntry = ctk.CTkEntry(self.buyerInfoFrame, width=113, height=22, fg_color='#FFFFFF', 
                                            border_width=2, border_color='#CACACA', 
-                                           font=('Inter Medium', 11), text_color='#747474')
+                                           font=('Inter Medium', 11), text_color='#747474', textvariable=self.buyer_name)
         self.buyerNameEntry.place(x=118, y=7)
         
         self.buyerContactLabel = ctk.CTkLabel(self.buyerInfoFrame, width=98, height=16,
@@ -240,7 +246,7 @@ class salesView(ctk.CTkFrame):
         
         self.buyerContactEntry = ctk.CTkEntry(self.buyerInfoFrame, width=113, height=22, fg_color='#FFFFFF', 
                                            border_width=2, border_color='#CACACA', 
-                                           font=('Inter Medium', 11), text_color='#747474')
+                                           font=('Inter Medium', 11), text_color='#747474', textvariable=self.buyer_contact)
         self.buyerContactEntry.place(x=118, y=34)
         
         self.line = ctk.CTkFrame(self.buyerInfoFrame, width=285, height=2, fg_color='#CDCDCD')
@@ -370,7 +376,25 @@ class salesView(ctk.CTkFrame):
         # self.show_orderFrame()
 
     def save_button_clicked(self):
-        pass
+        name = self.buyer_name.get()
+        contact = self.buyer_contact.get()
+        totalPrice = self.total
+
+        # Collect data from all rows
+        added_rows = []
+        for rowFrame, spinboxValue, product_idx in self.rowFrames:
+            if rowFrame.winfo_ismapped():  # Check if row is visible
+                product = self.products[product_idx]
+                row_data = {
+                    'name': product[1],
+                    'brand': product[2],
+                    'price': product[5],
+                    'quantity': spinboxValue.get()
+                }
+                added_rows.append(row_data)
+
+        # Pass the collected data to the controller
+        self.controller.save_button_clicked(name, contact, totalPrice, added_rows)
      
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.firstPageFrame, width=160, height=22, fg_color='transparent')

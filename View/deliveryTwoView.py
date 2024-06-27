@@ -2,7 +2,7 @@ import customtkinter as ctk
 import tkinter as tk
 from CTkTable import *
 
-class salesTwoView(ctk.CTkFrame):
+class deliveryTwoView(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -420,9 +420,9 @@ class salesTwoView(ctk.CTkFrame):
 class App:
     def __init__(self):
         self.root = ctk.CTk()
-        self.root.title("Sales Two Page (Test)")
+        self.root.title("Delivery Two Page (Test)")
 
-        self.salesTwo_view = salesTwoView(self.root, None)
+        self.salesTwo_view = deliveryTwoView(self.root, None)
         self.salesTwo_view.pack(fill=ctk.BOTH, expand=True)
 
         self.root.update()
