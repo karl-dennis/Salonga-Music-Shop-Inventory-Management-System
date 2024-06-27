@@ -31,8 +31,6 @@ class salesTwoView(ctk.CTkFrame):
         self.show_secondPage()
         self.show_orderFrame()
         self.show_salesGraph()
-        self.show_revenue()
-        self.show_reports()
         self.show_historyTable()
         
         self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
@@ -410,41 +408,14 @@ class salesTwoView(ctk.CTkFrame):
         self.orderListFrame.place(x=0, y=72)
          
     def show_salesGraph(self):
-        self.salesGraphFrame = ctk.CTkFrame(self.baseFrame, width=315, height=232, fg_color='#F7F7F7', corner_radius=7)
+        self.salesGraphFrame = ctk.CTkFrame(self.baseFrame, width=522, height=232, fg_color='#F7F7F7', corner_radius=7)
         self.salesGraphFrame.place(x=12, y=367)
         
         self.label = ctk.CTkLabel(self.salesGraphFrame, text="Sales Graph", font=('Inter Medium', 13), text_color='#2E2E2E',
                                   width=130, height=16, anchor='w')
         self.label.place(x=12, y=8)
 
-    def show_revenue(self):
-        from PIL import Image
-        self.revenueFrame = ctk.CTkFrame(self.baseFrame, width=201, height=58, fg_color='#F7F7F7', 
-                                         bg_color='transparent', border_width=3, border_color='#5089B5',
-                                         corner_radius=7)
-        self.revenueFrame.place(x=334, y=367)
-        
-        self.icon = ctk.CTkImage(light_image=Image.open("./assets/revenue.png"), size=(30,30))
-        self.my_icon = ctk.CTkLabel(self.revenueFrame, text="", image=self.icon)
-        self.my_icon.place(x=13, y=10)
-        
-        self.label = ctk.CTkLabel(self.revenueFrame, text="Revenue (May 2024)", font=('Inter', 13, 'bold'), 
-                                  text_color='#5089B5', fg_color='transparent',
-                                  width=145, height=15, anchor='w')
-        self.label.place(x=50, y=13)
-        
-        self.label = ctk.CTkLabel(self.revenueFrame, text="₱18,049.25", font=('Inter Medium', 12), 
-                                  text_color='#5089B5', fg_color='transparent', 
-                                  width=130, height=12, anchor='w')
-        self.label.place(x=50, y=26)
-    
-    def show_reports(self):
-        self.reportsFrame = ctk.CTkFrame(self.baseFrame, width=201, height=165, fg_color='#F7F7F7', corner_radius=7)
-        self.reportsFrame.place(x=334, y=434)
-        
-        self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
-        self.label.place(x=14, y=7)
-    
+   
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
