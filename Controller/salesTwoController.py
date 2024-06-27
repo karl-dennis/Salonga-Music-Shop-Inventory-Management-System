@@ -41,3 +41,6 @@ class salesTwoController:
                 tab.configure(text_color=active_text)
             else:
                 tab.configure(text_color=inactive_text)
+
+    def fetch_transaction(self):
+        print(self.model.fetch_transaction())

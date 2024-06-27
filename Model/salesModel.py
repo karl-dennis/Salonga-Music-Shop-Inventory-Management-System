@@ -46,7 +46,7 @@ class salesModel:
         # for row in products_ordered:
         #     print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
         try:
-            print("adding transaction")
+            # print("adding transaction")
             transaction_id = self.generate_unique_id()
             self.cursor.execute('''INSERT INTO transactions (transaction_id, customer_name, customer_contact, products_ordered, revenue, date, timestamp)
                                 VALUES (?, ?, ?, ?, ?, ?, ?)''', (transaction_id, name, contact, products_ordered, totalPrice, date, timestamp))
