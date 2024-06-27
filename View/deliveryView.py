@@ -370,7 +370,23 @@ class deliveryView(ctk.CTkFrame):
         # self.show_orderFrame()
 
     def save_button_clicked(self):
-        pass
+        totalPrice = self.total
+
+        # Collect data from all rows
+        added_rows = []
+        for rowFrame, spinboxValue, product_idx in self.rowFrames:
+            if rowFrame.winfo_ismapped():  # Check if row is visible
+                product = self.products[product_idx]
+                row_data = {
+                    'name': product[1],
+                    'brand': product[2],
+                    'price': product[5],
+                    'quantity': spinboxValue.get()
+                }
+                added_rows.append(row_data)
+
+        # Pass the collected data to the controller
+        self.controller.save_button_clicked(totalPrice, added_rows)
      
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.firstPageFrame, width=160, height=22, fg_color='transparent')

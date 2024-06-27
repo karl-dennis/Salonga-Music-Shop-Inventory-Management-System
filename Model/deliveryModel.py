@@ -1,30 +1,17 @@
 import sqlite3
+import random
+import string
+from tkinter import messagebox
 class deliveryModel:
     def __init__(self):
         self.connectDatabase = None
         self.cursor = None
         self.connect_database()
-        # self.create_table_products()
+        self.create_delivery_table()
     def connect_database(self):
         try:
             self.connectDatabase = sqlite3.connect('salonga_music_shop.db')
             self.cursor = self.connectDatabase.cursor()
-        except sqlite3.Error as e:
-            print('Error:', e)
-
-    def create_table_products(self):
-        try:
-            create_table_query_products = '''CREATE TABLE IF NOT EXISTS products(
-                product_id TEXT PRIMARY KEY,
-                product_name TEXT,
-                product_brand TEXT,
-                product_type TEXT,
-                product_quantity INTEGER,
-                product_price REAL NOT NULL,
-                status TEXT NOT NULL,
-                product_image BLOB
-            )'''
-            self.cursor.execute(create_table_query_products)
         except sqlite3.Error as e:
             print('Error:', e)
 
@@ -39,12 +26,40 @@ class deliveryModel:
         except sqlite3.Error as e:
             print('Error: ', e)
 
-    def create_transaction_table(self):
+    def create_delivery_table(self):
         try:
-            create_table_query_transactions = '''CREATE TABLE IF NOT EXISTS transactions(
-                transaction_id TEXT PRIMARY KEY,
-                
+            create_table_query_delivery = '''CREATE TABLE IF NOT EXISTS delivery(
+                delivery_id TEXT PRIMARY KEY,
+                products_ordered TEXT NOT NULL,
+                sub_total REAL NOT NULL,
+                date TEXT NOT NULL,
+                timestamp TEXT NOT NULL
             )'''
-            self.cursor.execute(create_table_query_transactions)
+            self.cursor.execute(create_table_query_delivery)
         except sqlite3.Error as e:
             print('Error:', e)
+
+    def save_delivery(self, totalPrice, products_ordered, date, timestamp):
+
+        try:# print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {timestamp}")
+        # for row in products_ordered:
+        #     print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
+            print("adding transaction")
+            delivery_id = self.generate_unique_id()
+            self.cursor.execute('''INSERT INTO delivery (delivery_id, products_ordered, sub_total, date, timestamp)
+                                VALUES (?, ?, ?, ?, ?)''', (delivery_id, products_ordered, totalPrice, date, timestamp))
+
+            self.connectDatabase.commit()
+            messagebox.showinfo('Success', 'Delivery Saved')
+        except sqlite3.Error as e:
+            print('Error:', e)
+
+    def generate_unique_id(self):
+        while True:
+            letters = ''.join(random.choices(string.ascii_uppercase, k=3))
+            digits = ''.join(random.choices(string.digits, k=4))
+            unique_id = letters + digits
+
+            self.cursor.execute('''SELECT delivery_id FROM delivery WHERE delivery_id = ?''', (unique_id,))
+            if not self.cursor.fetchone():
+                return unique_id
