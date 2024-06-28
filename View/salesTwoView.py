@@ -255,15 +255,29 @@ class salesTwoView(ctk.CTkFrame):
         if self.selected_row == index:
             self.deselect_row(index)
             self.selected_row = None
+            self.clear_display_list()
         else:
             if self.selected_row is not None:
                 self.deselect_row(self.selected_row)
+                self.clear_display_list()
 
             self.select_row(index)
             self.selected_row = index   
             self.display_list(index)
         # selected_row_data = self.table.get_row(index)
         # print(f"Selected row {index}: {self.reordered_table[index]}")  
+    
+    def clear_display_list(self):
+        self.orderIDLabel.configure(text="Order #")
+        self.orderDateLabel.configure(text="")
+        self.orderTimeLabel.configure(text="")
+        self.buyerName.configure(text="")
+        self.buyerContact.configure(text="")
+        self.revenueValue.configure(text="")
+        
+        for frame in self.rowFrames:
+            frame.destroy()
+        self.rowFrames.clear()
         
     def select_row(self, row):
         self.table.edit_row(row, fg_color='#EAEAEA') 
@@ -284,10 +298,7 @@ class salesTwoView(ctk.CTkFrame):
         timestamp = row_values['timestamp']
         orderList = row_values['productsOrdered']
         
-        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID:04}", width=121, height=23,
-                                         anchor='w', 
-                                         font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
-        self.orderIDLabel.place(x=16, y=12)
+        self.orderIDLabel.configure(text=f"Order #{orderID:04}")
         
         self.orderDateLabel = ctk.CTkLabel(self.orderFrame, text=date, width=111, height=12, anchor='e',
                                            font=('Inter', 10, 'bold'), text_color='#696969')
@@ -297,35 +308,18 @@ class salesTwoView(ctk.CTkFrame):
                                            font=('Inter', 8, 'bold'), text_color='#696969')
         self.orderTimeLabel.place(x=211, y=24)
         
-        self.summaryFrame = ctk.CTkFrame(self.orderFrame, width=285, height=63, fg_color='#E7E7E7',
-                                         corner_radius=0)
-        self.summaryFrame.place(x=0, y=482)
-        
-        self.buyerNameLabel = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text="Buyer's Name: ",
-                                           font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
-        self.buyerNameLabel.place(x=17, y=10)
-        
-        buyerName = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text=name,
+        self.buyerName = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text=name,
                                  font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
-        buyerName.place(x=126, y=10)
-                
-        self.buyerContactLabel = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text='Contact #: ',
-                                              font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
-        self.buyerContactLabel.place(x=17, y=37)
+        self.buyerName.place(x=126, y=10)              
         
-        buyerContact = ctk.CTkLabel(self.summaryFrame, width=139, height=16, text=contact,
+        self.buyerContact = ctk.CTkLabel(self.summaryFrame, width=139, height=16, text=contact,
                                     font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
-        buyerContact.place(x=126, y=37)
-        
-        self.revenueLabel = ctk.CTkLabel(self.orderFrame, width=66, height=25, text='Revenue',
-                                         font=('Inter', 14, 'bold'), text_color='#747474', anchor='center')
-        self.revenueLabel.place(x=14, y=551)
-        
+        self.buyerContact.place(x=126, y=37)
         
         formatted_revenue = f'₱{revenue:,.2f}'
-        revenueValue = ctk.CTkLabel(self.orderFrame, width=96, height=25, text=formatted_revenue,
+        self.revenueValue = ctk.CTkLabel(self.orderFrame, width=96, height=25, text=formatted_revenue,
                                      font=('Inter', 14, 'bold'), text_color='#57AF20')
-        revenueValue.place(x=181, y=551)
+        self.revenueValue.place(x=181, y=551)
         
         
 
@@ -385,7 +379,12 @@ class salesTwoView(ctk.CTkFrame):
         self.orderFrame.place(x=546, y=15)
         
         orderID = 1 # ID Counter, increments on click (save button)
-                
+        
+        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text="Order #", width=121, height=23,
+                                         anchor='w', 
+                                         font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
+        self.orderIDLabel.place(x=16, y=12)
+        
         self.orderColumnFrame = ctk.CTkFrame(self.orderFrame, width=285, height=24, corner_radius=0, fg_color='#E9E9E9')
         self.orderColumnFrame.place(x=0, y=48)
         
@@ -403,7 +402,26 @@ class salesTwoView(ctk.CTkFrame):
         
         self.orderListFrame = ctk.CTkFrame(self.orderFrame, width=285, height=354, fg_color='transparent')
         self.orderListFrame.place(x=0, y=72)
-         
+        
+        self.summaryFrame = ctk.CTkFrame(self.orderFrame, width=285, height=63, fg_color='#E7E7E7',
+                                         corner_radius=0)
+        self.summaryFrame.place(x=0, y=482)
+
+        self.buyerNameLabel = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text="Buyer's Name: ",
+                                                font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
+        self.buyerNameLabel.place(x=17, y=10)
+
+        self.buyerContactLabel = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text='Contact #: ',
+                                                    font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
+        self.buyerContactLabel.place(x=17, y=37)
+
+        self.revenueLabel = ctk.CTkLabel(self.orderFrame, width=66, height=25, text='Revenue',
+                                                font=('Inter', 14, 'bold'), text_color='#747474', anchor='center')
+        self.revenueLabel.place(x=14, y=551)
+
+
+
+        
     def show_salesGraph(self):
         self.salesGraphFrame = ctk.CTkFrame(self.baseFrame, width=522, height=232, fg_color='#F7F7F7', corner_radius=7)
         self.salesGraphFrame.place(x=12, y=367)

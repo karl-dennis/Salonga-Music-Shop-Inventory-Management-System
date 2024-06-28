@@ -48,7 +48,7 @@ class deliveryView(ctk.CTkFrame):
             product_image_blob, name, brand, product_type, quantity, price = product
 
             price = float(price)
-            if quantity == 0:
+            if quantity > 5:
                 controller_index+=1
                 continue
 
@@ -151,7 +151,7 @@ class deliveryView(ctk.CTkFrame):
         
         spinboxValue = ctk.IntVar(value=0)
         self.productQuantity = CTkSpinbox(rowFrame, start_value=0, width=64, height=20,
-                                            min_value=0, max_value=quantity, variable=spinboxValue,
+                                            min_value=0 , variable=spinboxValue,
                                             font=('Inter Semibold', 10), text_color='#747474',
                                             fg_color='#F7F7F7',
                                             corner_radius=5, border_width=2, border_color='#CACACA',
@@ -222,30 +222,6 @@ class deliveryView(ctk.CTkFrame):
         self.orderListFrame = ctk.CTkFrame(self.orderFrame, width=285, height=354, fg_color='transparent')
         self.orderListFrame.place(x=0, y=72)
         
-        self.buyerInfoFrame = ctk.CTkFrame(self.orderFrame, width=285, height=64, fg_color='#F1F1F1')
-        self.buyerInfoFrame.place(x=0, y=426)
-        
-        self.buyerNameLabel = ctk.CTkLabel(self.buyerInfoFrame, width=98, height=16,
-                                           text="Buyer's Name: ", anchor='w', font=('Inter Bold', 12), text_color='#747474')
-        self.buyerNameLabel.place(x=17, y=10)
-        
-        self.buyerNameEntry = ctk.CTkEntry(self.buyerInfoFrame, width=113, height=22, fg_color='#FFFFFF', 
-                                           border_width=2, border_color='#CACACA', 
-                                           font=('Inter Medium', 11), text_color='#747474')
-        self.buyerNameEntry.place(x=118, y=7)
-        
-        self.buyerContactLabel = ctk.CTkLabel(self.buyerInfoFrame, width=98, height=16,
-                                           text="Phone #: ", anchor='w', font=('Inter Bold', 12), text_color='#747474')
-        self.buyerContactLabel.place(x=17, y=37)
-        
-        self.buyerContactEntry = ctk.CTkEntry(self.buyerInfoFrame, width=113, height=22, fg_color='#FFFFFF', 
-                                           border_width=2, border_color='#CACACA', 
-                                           font=('Inter Medium', 11), text_color='#747474')
-        self.buyerContactEntry.place(x=118, y=34)
-        
-        self.line = ctk.CTkFrame(self.buyerInfoFrame, width=285, height=2, fg_color='#CDCDCD')
-        self.line.place(x=0, y=63)
-        
         self.revenueFrame = ctk.CTkFrame(self.orderFrame, width=285, height=36, fg_color='#F1F1F1')
         self.revenueFrame.place(x=0, y=490)
         
@@ -281,7 +257,7 @@ class deliveryView(ctk.CTkFrame):
         
         self.selection1 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='New Sale',
                                         font=('Inter', 13, 'bold'), text_color='#2E2E2E',
-                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(1))
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7')
         self.selection1.place(x=3, y=0)
         
         self.selection2 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='Sales Report',
@@ -354,8 +330,9 @@ class deliveryView(ctk.CTkFrame):
         self.orderFrame.bind('<Button-1>', lambda event: self.orderFrame.focus_set())
 
     def clear_form(self):
-        self.buyerContactEntry.delete(0, 'end')
-        self.buyerNameEntry.delete(0, 'end')
+        pass
+        # self.buyerContactEntry.delete(0, 'end')
+        # self.buyerNameEntry.delete(0, 'end')
         
         self.selected_products = []
         for frame in self.rowFrames:
@@ -425,20 +402,3 @@ class deliveryView(ctk.CTkFrame):
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
-    
-# class App:
-#     def __init__(self):
-#         self.root = ctk.CTk()
-#         self.root.title("Sales Page (Test)")
-
-#         self.sales_view = salesView(self.root, None)
-#         self.sales_view.pack(fill=ctk.BOTH, expand=True)
-
-#         self.root.update()
-        
-#     def run(self):
-#         self.root.mainloop()
-
-# if __name__ == "__main__":
-#     app = App()
-#     app.run()

@@ -144,21 +144,17 @@ class deliveryTwoView(ctk.CTkFrame):
             {
                 'orderID': '0001',
                 'products_ordered': order1,
-                'buyerName': 'Fritz Gonzales',
-                'buyerContact': '0999-999-9999',
                 'totalRevenue': 300.0,
                 'date': '2023-06-26',
-                'timestamp': '12:00 PM',
+                'status': 'Delivered',
                 'orderList': product_orders[0],
             },
             {
                 'orderID': '0002',
                 'products_ordered': order2,
-                'buyerName': 'Lucas Ballesteros',
-                'buyerContact': '0987-654-3210',
                 'totalRevenue': 700.0,
                 'date': '2023-06-27',
-                'timestamp': '2:51 PM',
+                'status': 'Pending',
                 'orderList': product_orders[1],
             }
         ]
@@ -167,11 +163,9 @@ class deliveryTwoView(ctk.CTkFrame):
         for row_values in table_values:
             reordered_row_values = {
                 'orderID': row_values['orderID'],
-                'buyerName': row_values['buyerName'],
-                'buyerContact': row_values['buyerContact'],
                 'totalRevenue': row_values['totalRevenue'],
                 'date': row_values['date'],
-                'timestamp': row_values['timestamp'],
+                'status': row_values['status'],
                 'productsOrdered': row_values['orderList']
             }
             self.reordered_table.append(reordered_row_values)
@@ -180,8 +174,8 @@ class deliveryTwoView(ctk.CTkFrame):
         # for row in self.reordered_table:
         #     print(row)
  
-        column_titles = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Date', 'Time']
-        column_widths = [67, 101, 102, 91, 78, 65] # Table Width = 504
+        column_titles = ['Delivery ID', 'Date', 'Subtotal', 'Status']
+        column_widths = [132, 138, 131, 99] # Table Width = 500
         
         column_frame = ctk.CTkFrame(self.historyTableFrame, width=522, height=36, fg_color='#F3F3F3', bg_color='#DFDFDF', corner_radius=0)
         column_frame.place(x=0, y=0)
@@ -207,7 +201,7 @@ class deliveryTwoView(ctk.CTkFrame):
         self.tableFrame = ctk.CTkScrollableFrame(self.historyTableFrame, width=495, height=252, fg_color='#F7F7F7', corner_radius=0)
         self.tableFrame.place(x=12, y=37)
         
-        self.table = CTkTable(master=self.tableFrame, column=6, padx=0, pady=0, font=('Inter Semibold', 11), text_color='#747474',
+        self.table = CTkTable(master=self.tableFrame, column=4, padx=0, pady=0, font=('Inter Semibold', 11), text_color='#747474',
                               colors=['#F7F7F7', '#F7F7F7'],
                               )
         
@@ -218,19 +212,27 @@ class deliveryTwoView(ctk.CTkFrame):
         
         current_rows = self.table.rows  # Subtract 1 for the header row
         for _ in range(required_rows - current_rows):
-            self.table.add_row([''] * 6)  # Add empty rows to meet the required row count
+            self.table.add_row([''] * 4)  # Add empty rows to meet the required row count
             
         string_limit = 14
         for row_index, row_values in enumerate(self.reordered_table):
             # Populate table cells with formatted values
             self.table.insert(row_index, 0, row_values['orderID'])
-            self.table.insert(row_index, 1, row_values['buyerName'])
-            self.table.insert(row_index, 2, row_values['buyerContact'])
-            self.table.insert(row_index, 3, f"${row_values['totalRevenue']:.2f}".rstrip('0').rstrip('.'))  # Format revenue
-            self.table.insert(row_index, 4, row_values['date'])
-            self.table.insert(row_index, 5, row_values['timestamp'])
-    
-        cell_widths = [67, 101, 102, 91, 78, 65] # Table Width = 504
+            self.table.insert(row_index, 2, f"${row_values['totalRevenue']:.2f}".rstrip('0').rstrip('.'))  # Format revenue
+            self.table.insert(row_index, 1, row_values['date'])
+            # Conditional color setting for the status column
+            status_text = row_values['status']
+            if status_text == 'Delivered':
+                status_color = '#6CB510'
+            elif status_text == 'Pending':
+                status_color = '#BB9A25'
+            else:
+                status_color = '#868686'  # Default color
+            
+            self.table.insert(row_index, 3, status_text)
+            self.table.frame[row_index, 3].configure(text_color=status_color)  # Status
+
+        cell_widths = [132, 138, 131, 99] # Table Width = 500
         for row in range(self.table.rows):
             for column in range(self.table.columns):
                 self.table.frame[row, column].configure(width=cell_widths[column], height=36, 
@@ -255,15 +257,26 @@ class deliveryTwoView(ctk.CTkFrame):
         if self.selected_row == index:
             self.deselect_row(index)
             self.selected_row = None
+            self.clear_display_list()
         else:
             if self.selected_row is not None:
                 self.deselect_row(self.selected_row)
+                self.clear_display_list()
 
             self.select_row(index)
             self.selected_row = index   
             self.display_list(index)
         # selected_row_data = self.table.get_row(index)
         # print(f"Selected row {index}: {self.reordered_table[index]}")  
+        
+    def clear_display_list(self):
+        self.orderIDLabel.configure(text="Delivery #")
+        self.orderStatusLabel.configure(text="")
+        self.revenueValue.configure(text="")
+        
+        for frame in self.rowFrames:
+            frame.destroy()
+        self.rowFrames.clear()
         
     def select_row(self, row):
         self.table.edit_row(row, fg_color='#EAEAEA') 
@@ -277,55 +290,34 @@ class deliveryTwoView(ctk.CTkFrame):
         
         row_values = self.reordered_table[index]
         orderID = row_values['orderID']
-        name = row_values['buyerName']
-        contact = row_values['buyerContact']
         revenue = row_values['totalRevenue']  
-        date = row_values['date']
-        timestamp = row_values['timestamp']
+        status = row_values['status']
         orderList = row_values['productsOrdered']
         
-        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID:04}", width=121, height=23,
+        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Delivery #{orderID:04}", width=121, height=23,
                                          anchor='w', 
                                          font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
         self.orderIDLabel.place(x=16, y=12)
         
-        self.orderDateLabel = ctk.CTkLabel(self.orderFrame, text=date, width=111, height=12, anchor='e',
+        self.orderStatusLabel = ctk.CTkLabel(self.orderFrame, text=status, width=111, height=12, anchor='e',
                                            font=('Inter', 10, 'bold'), text_color='#696969')
-        self.orderDateLabel.place(x=164, y=12)
+        self.orderStatusLabel.place(x=164, y=12)
         
-        self.orderTimeLabel = ctk.CTkLabel(self.orderFrame, text=timestamp, width=62, height=8, anchor='e',
-                                           font=('Inter', 8, 'bold'), text_color='#696969')
-        self.orderTimeLabel.place(x=211, y=24)
+        self.summaryFrame = ctk.CTkFrame(self.orderFrame, width=285, height=36, fg_color='#F1F1F1', bg_color='#DFDFDF',
+                                         corner_radius=7)
+        self.summaryFrame.place(x=0, y=547)
         
-        self.summaryFrame = ctk.CTkFrame(self.orderFrame, width=285, height=63, fg_color='#E7E7E7',
-                                         corner_radius=0)
-        self.summaryFrame.place(x=0, y=482)
-        
-        self.buyerNameLabel = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text="Buyer's Name: ",
-                                           font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
-        self.buyerNameLabel.place(x=17, y=10)
-        
-        buyerName = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text=name,
-                                 font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
-        buyerName.place(x=126, y=10)
-                
-        self.buyerContactLabel = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text='Contact #: ',
-                                              font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
-        self.buyerContactLabel.place(x=17, y=37)
-        
-        buyerContact = ctk.CTkLabel(self.summaryFrame, width=139, height=16, text=contact,
-                                    font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
-        buyerContact.place(x=126, y=37)
-        
-        self.revenueLabel = ctk.CTkLabel(self.orderFrame, width=66, height=25, text='Revenue',
-                                         font=('Inter', 14, 'bold'), text_color='#747474', anchor='center')
+        self.revenueLabel = ctk.CTkLabel(self.orderFrame, width=66, height=25, text='Subtotal',
+                                         font=('Inter', 14, 'bold'), text_color='#747474', anchor='center',
+                                         fg_color='#F1F1F1')
         self.revenueLabel.place(x=14, y=551)
         
         
         formatted_revenue = f'₱{revenue:,.2f}'
-        revenueValue = ctk.CTkLabel(self.orderFrame, width=96, height=25, text=formatted_revenue,
-                                     font=('Inter', 14, 'bold'), text_color='#57AF20')
-        revenueValue.place(x=181, y=551)
+        self.revenueValue = ctk.CTkLabel(self.orderFrame, width=96, height=25, text=formatted_revenue,
+                                     font=('Inter', 14, 'bold'), text_color='#57AF20',
+                                     fg_color='#F1F1F1')
+        self.revenueValue.place(x=186, y=551)
         
         
 
@@ -377,9 +369,7 @@ class deliveryTwoView(ctk.CTkFrame):
             widget.destroy()
             
         self.rowFrames = []
-      
-    
-     
+       
     def show_orderFrame(self):
         self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
         self.orderFrame.place(x=546, y=15)
@@ -411,7 +401,6 @@ class deliveryTwoView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.salesGraphFrame, text="Sales Graph", font=('Inter Medium', 13), text_color='#2E2E2E',
                                   width=130, height=16, anchor='w')
         self.label.place(x=12, y=8)
-
    
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
