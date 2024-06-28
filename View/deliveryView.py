@@ -425,20 +425,3 @@ class deliveryView(ctk.CTkFrame):
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
-    
-# class App:
-#     def __init__(self):
-#         self.root = ctk.CTk()
-#         self.root.title("Sales Page (Test)")
-
-#         self.sales_view = salesView(self.root, None)
-#         self.sales_view.pack(fill=ctk.BOTH, expand=True)
-
-#         self.root.update()
-        
-#     def run(self):
-#         self.root.mainloop()
-
-# if __name__ == "__main__":
-#     app = App()
-#     app.run()
