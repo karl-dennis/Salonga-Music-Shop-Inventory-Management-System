@@ -1,3 +1,4 @@
+import re
 import datetime
 import customtkinter as ctk
 import tkinter as tk
@@ -141,7 +142,7 @@ class salesView(ctk.CTkFrame):
         self.deleteButton.place(x=3, y=8)
 
         self.rowLine = ctk.CTkFrame(rowFrame, width=285, height=2, fg_color='#E9E9E9')
-        self.rowLine.place(x=0, y=39)
+        self.rowLine.place(x=0, y=40)
 
         self.productName = ctk.CTkLabel(rowFrame, text=name, width=90, height=12,
                                         font=('Inter Semibold', 11), text_color='#747474', anchor='w')
@@ -206,7 +207,7 @@ class salesView(ctk.CTkFrame):
         
         orderID = 1 # ID Counter, increments on click (save button)
         
-        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID:04}", width=121, height=23, # Pads zeroes (length of 4), e.g. 0001
+        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text="New Order", width=121, height=23, # Pads zeroes (length of 4), e.g. 0001
                                          font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
         self.orderIDLabel.place(x=82, y=12)
         
@@ -376,26 +377,55 @@ class salesView(ctk.CTkFrame):
         # self.show_orderFrame()
 
     def save_button_clicked(self):
-        name = self.buyer_name.get()
-        contact = self.buyer_contact.get()
+        name = self.buyer_name.get().strip()
+        contact = self.buyer_contact.get().strip()
         totalPrice = self.total
+
+        # Validation for empty name and contact fields
+        if not name:
+            messagebox.showinfo('Error', 'Name cannot be empty')
+            return  # Exit the function if name is empty
+
+        if not contact:
+            messagebox.showinfo('Error', 'Contact number cannot be empty')
+            return  # Exit the function if contact is empty
+
+        # Validation for Philippine phone number (must be 11 digits, optionally with dashes)
+        phone_pattern = r'^09\d{9}$'
+        if not re.match(phone_pattern, contact):
+            messagebox.showinfo('Error', 'Contact number must be an 11-digit number starting with 09')
+            return  # Exit the function if contact number is invalid
+
+        if not self.rowFrames:
+            messagebox.showinfo('Error', 'No items to save')
+            return  # Exit the function if rowFrames is empty
 
         # Collect data from all rows
         added_rows = []
         for rowFrame, spinboxValue, product_idx in self.rowFrames:
             if rowFrame.winfo_ismapped():  # Check if row is visible
-                product = self.products[product_idx]
-                row_data = {
-                    'name': product[1],
-                    'brand': product[2],
-                    'price': product[5],
-                    'quantity': spinboxValue.get()
-                }
-                added_rows.append(row_data)
+                quantity = spinboxValue.get()
+                if quantity > 0:  # Only include rows with quantity greater than 0
+                    product = self.products[product_idx]
+                    row_data = {
+                        'name': product[1],
+                        'brand': product[2],
+                        'price': product[5],
+                        'quantity': quantity
+                    }
+                    added_rows.append(row_data)
+                    self.clear_form()
+                else:
+                    messagebox.showinfo('Error', 'Quantity cannot be 0')
+                    return  # Exit the function if any quantity is 0
+
+        if not added_rows:
+            messagebox.showinfo('Error', 'No valid items to save')
+            return  # Exit the function if no valid items were collected
 
         # Pass the collected data to the controller
         self.controller.save_button_clicked(name, contact, totalPrice, added_rows)
-     
+        self.clear_form()
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.firstPageFrame, width=160, height=22, fg_color='transparent')
         self.searchFrame.place(x=349, y=14) 

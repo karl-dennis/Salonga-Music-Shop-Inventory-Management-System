@@ -172,7 +172,7 @@ class salesTwoView(ctk.CTkFrame):
         cell_widths = [67, 101, 102, 91, 78, 65]
         for row in range(self.table.rows):
             for column in range(self.table.columns):
-                self.table.frame[row, column].configure(width=cell_widths[column], height=36,
+                self.table.frame[row, column].configure(width=cell_widths[column], height=38,
                                                         fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
 
@@ -184,7 +184,7 @@ class salesTwoView(ctk.CTkFrame):
         # Add row separators
         for row in range(1, self.table.rows + 1):
             rowLine = ctk.CTkFrame(self.tableFrame, width=522, height=2, fg_color='#dbdbdb')
-            rowLine.place(x=0, y=(row) * 38 - 1)
+            rowLine.place(x=0, y=(row) * 38)
 
     def bind_cell_click_events(self):
         for row_index in range(self.table.rows):
