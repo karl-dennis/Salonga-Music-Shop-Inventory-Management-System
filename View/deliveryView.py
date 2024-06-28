@@ -200,7 +200,7 @@ class deliveryView(ctk.CTkFrame):
         
         orderID = 1 # ID Counter, increments on click (save button)
         
-        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID:04}", width=121, height=23, # Pads zeroes (length of 4), e.g. 0001
+        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text="New Delivery", width=121, height=23, # Pads zeroes (length of 4), e.g. 0001
                                          font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
         self.orderIDLabel.place(x=82, y=12)
         
@@ -225,7 +225,7 @@ class deliveryView(ctk.CTkFrame):
         self.revenueFrame = ctk.CTkFrame(self.orderFrame, width=285, height=36, fg_color='#F1F1F1')
         self.revenueFrame.place(x=0, y=490)
         
-        self.revenueTitle = ctk.CTkLabel(self.revenueFrame, text='Revenue', width=66, height=25, anchor='center',
+        self.revenueTitle = ctk.CTkLabel(self.revenueFrame, text='Subtotal', width=66, height=25, anchor='center',
                                          font=('Inter Bold', 14), text_color='#747474')
         self.revenueTitle.place(x=14, y=5)
                 

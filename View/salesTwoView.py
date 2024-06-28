@@ -238,7 +238,7 @@ class salesTwoView(ctk.CTkFrame):
         date = row_values[4]
         timestamp = row_values[6]
 
-        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID:04}", width=121, height=23,
+        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID}", width=121, height=23,
                                          anchor='w', font=('Inter', 15, 'bold'), text_color='#2E2E2E')
         self.orderIDLabel.place(x=16, y=12)
 
