@@ -41,9 +41,10 @@ class deliveryModel:
 
     def save_delivery(self, totalPrice, products_ordered, date, timestamp):
 
-        try:# print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {timestamp}")
-        # for row in products_ordered:
-        #     print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
+        try:
+            # print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {timestamp}")
+            # for row in products_ordered:
+            # print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
             print("adding transaction")
             delivery_id = self.generate_unique_id()
             self.cursor.execute('''INSERT INTO delivery (delivery_id, products_ordered, sub_total, date, timestamp)

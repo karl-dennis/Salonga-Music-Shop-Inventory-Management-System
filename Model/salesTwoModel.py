@@ -39,6 +39,20 @@ class salesTwoModel:
         except sqlite3.Error as e:
             print('Error:', e)
 
+    def fetch_transaction(self):
+        # print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {timestamp}")
+        # for row in products_ordered:
+        #     print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
+        try:
+            # print("adding transaction")
+            self.cursor.execute('''SELECT * FROM transactions''')
+
+            transaction_data = self.cursor.fetchall()
+
+            return transaction_data
+        except sqlite3.Error as e:
+            print('Error:', e)
+
     # def save_transaction(self, name, contact, totalPrice, products_ordered, date, timestamp):
     #     # print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {timestamp}")
     #     # for row in products_ordered:
