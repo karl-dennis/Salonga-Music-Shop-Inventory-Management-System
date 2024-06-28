@@ -48,7 +48,7 @@ class deliveryView(ctk.CTkFrame):
             product_image_blob, name, brand, product_type, quantity, price = product
 
             price = float(price)
-            if quantity == 0:
+            if quantity > 5:
                 controller_index+=1
                 continue
 
@@ -151,7 +151,7 @@ class deliveryView(ctk.CTkFrame):
         
         spinboxValue = ctk.IntVar(value=0)
         self.productQuantity = CTkSpinbox(rowFrame, start_value=0, width=64, height=20,
-                                            min_value=0, max_value=quantity, variable=spinboxValue,
+                                            min_value=0 , variable=spinboxValue,
                                             font=('Inter Semibold', 10), text_color='#747474',
                                             fg_color='#F7F7F7',
                                             corner_radius=5, border_width=2, border_color='#CACACA',
