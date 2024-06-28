@@ -111,7 +111,7 @@ class salesTwoView(ctk.CTkFrame):
         for row_values in table_values:
             # Parse the tuple into a dictionary
             orderID, buyerName, buyerContact, orderList_json, totalRevenue, date, timestamp = row_values
-            orderList = json.loads(orderList_json)  # Convert JSON string to Python object
+            self.orderList_JSON = json.loads(orderList_json)  # Convert JSON string to Python object
 
             reordered_row_values = [row_values[0], row_values[1], row_values[3], row_values[2], row_values[5], row_values[4], row_values[6]]
             self.reordered_table.append(reordered_row_values)
@@ -209,80 +209,71 @@ class salesTwoView(ctk.CTkFrame):
         self.table.edit_row(row, fg_color='#EAEAEA') 
 
     def deselect_row(self, row):
-        self.table.edit_row(row, fg_color='#F7F7F7') 
-        
+        self.table.edit_row(row, fg_color='#F7F7F7')
+
     def display_list(self, index):
-        
         self.refresh_list()
-        
+
         row_values = self.reordered_table[index]
-        orderID = row_values['orderID']
-        name = row_values['buyerName']
-        contact = row_values['buyerContact']
-        revenue = row_values['totalRevenue']  
-        date = row_values['date']
-        timestamp = row_values['timestamp']
-        orderList = row_values['productsOrdered']
-        
+        orderID = row_values[0]
+        name = row_values[1]
+        contact = row_values[3]
+        orderList = json.loads(row_values[2])  # Convert JSON string to Python object
+        revenue = row_values[5]
+        date = row_values[4]
+        timestamp = row_values[6]
+
         self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID:04}", width=121, height=23,
-                                         anchor='w', 
-                                         font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
+                                         anchor='w', font=('Inter', 15, 'bold'), text_color='#2E2E2E')
         self.orderIDLabel.place(x=16, y=12)
-        
+
         self.orderDateLabel = ctk.CTkLabel(self.orderFrame, text=date, width=111, height=12, anchor='e',
                                            font=('Inter', 10, 'bold'), text_color='#696969')
         self.orderDateLabel.place(x=164, y=12)
-        
+
         self.orderTimeLabel = ctk.CTkLabel(self.orderFrame, text=timestamp, width=62, height=8, anchor='e',
                                            font=('Inter', 8, 'bold'), text_color='#696969')
         self.orderTimeLabel.place(x=211, y=24)
-        
-        self.summaryFrame = ctk.CTkFrame(self.orderFrame, width=285, height=63, fg_color='#E7E7E7',
-                                         corner_radius=0)
+
+        self.summaryFrame = ctk.CTkFrame(self.orderFrame, width=285, height=63, fg_color='#E7E7E7', corner_radius=0)
         self.summaryFrame.place(x=0, y=482)
-        
+
         self.buyerNameLabel = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text="Buyer's Name: ",
                                            font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
         self.buyerNameLabel.place(x=17, y=10)
-        
+
         buyerName = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text=name,
                                  font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
         buyerName.place(x=126, y=10)
-                
+
         self.buyerContactLabel = ctk.CTkLabel(self.summaryFrame, width=98, height=16, text='Contact #: ',
                                               font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
         self.buyerContactLabel.place(x=17, y=37)
-        
+
         buyerContact = ctk.CTkLabel(self.summaryFrame, width=139, height=16, text=contact,
                                     font=('Inter', 12, 'bold'), text_color='#747474', anchor='w')
         buyerContact.place(x=126, y=37)
-        
+
         self.revenueLabel = ctk.CTkLabel(self.orderFrame, width=66, height=25, text='Revenue',
                                          font=('Inter', 14, 'bold'), text_color='#747474', anchor='center')
         self.revenueLabel.place(x=14, y=551)
-        
-        
+
         formatted_revenue = f'₱{revenue:,.2f}'
         revenueValue = ctk.CTkLabel(self.orderFrame, width=96, height=25, text=formatted_revenue,
-                                     font=('Inter', 14, 'bold'), text_color='#57AF20')
+                                    font=('Inter', 14, 'bold'), text_color='#57AF20')
         revenueValue.place(x=181, y=551)
-        
-        
 
-        
-        # print(f"\nOrder ID: {orderID}\nName: {name}\nContact: {contact}\nRevenue: {revenue}\nDate: {date}\nTimestamp: {timestamp}\nOrder List: {orderList}")
-        self.row_counter = 0
+        # Loop through orderList and display products
+        self.rowFrames = []
         y_position = 0
         for product in orderList:
-            productName = product['productName']
-            productBrand = product['productBrand']
-            productQuantity = product['productQuantity']
-            computedPrice = product['computedPrice']
-
-            # print(f"Product Name: {productName}, Brand: {productBrand}, Quantity: {productQuantity}, Price: {computedPrice}")
+            productName = product['name']
+            productBrand = product['brand']
+            productQuantity = product['quantity']
+            computedPrice = product['price']
 
             rowFrame = ctk.CTkFrame(self.orderListFrame, width=285, height=40, fg_color='transparent')
-            
+
             self.rowLine = ctk.CTkFrame(rowFrame, width=285, height=2, fg_color='#E9E9E9')
             self.rowLine.place(x=0, y=39)
 
@@ -291,27 +282,25 @@ class salesTwoView(ctk.CTkFrame):
             self.productName.place(x=10, y=7)
 
             self.productBrand = ctk.CTkLabel(rowFrame, text=productBrand, width=90, height=12,
-                                            font=('Inter Semibold', 9), text_color='#747474', anchor='w')
+                                             font=('Inter Semibold', 9), text_color='#747474', anchor='w')
             self.productBrand.place(x=10, y=21)
-
 
             formatted_price = f'₱{computedPrice:,.2f}'
             self.productPrice = ctk.CTkLabel(rowFrame, text=formatted_price, width=69, height=14,
-                                        font=('Inter Semibold', 10), text_color='#747474', anchor='w')
+                                             font=('Inter Semibold', 10), text_color='#747474', anchor='w')
             self.productPrice.place(x=207, y=11)
-                    
-            self.productQuantity = ctk.CTkLabel(rowFrame, text=productQuantity, width=28, height=14, 
+
+            self.productQuantity = ctk.CTkLabel(rowFrame, text=productQuantity, width=28, height=14,
                                                 font=('Inter Semibold', 10), text_color='#747474', anchor='center')
             self.productQuantity.place(x=148, y=12)
             rowFrame.place(x=0, y=y_position)
-            
+
             self.rowLine = ctk.CTkFrame(rowFrame, width=285, height=2, fg_color='#E9E9E9')
             self.rowLine.place(x=0, y=39)
-            
+
             y_position += 40
             self.rowFrames.append(rowFrame)
-            self.row_counter += 1
-                 
+
     def refresh_list(self):
         for widget in self.rowFrames:
             widget.destroy()
