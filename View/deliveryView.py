@@ -398,7 +398,7 @@ class deliveryView(ctk.CTkFrame):
                 print(f"Performing search for: {query}")
             
         self.searchEntry.bind('<Return>', lambda event: perform_search())
-    
+        
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()

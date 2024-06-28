@@ -52,9 +52,9 @@ class deliveryController:
         #     print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
 
         date = datetime.now().strftime('%Y-%m-%d')
-        timestamp = datetime.now().strftime('%H:%M:%S')
 
         products = json.dumps(added_rows)
+        status = "Pending" # Default status
 
-        self.model.save_delivery(totalPrice, products, date, timestamp)
+        self.model.save_delivery(totalPrice, products, date, status)
 

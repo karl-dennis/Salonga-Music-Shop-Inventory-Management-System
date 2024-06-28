@@ -33,23 +33,22 @@ class deliveryModel:
                 products_ordered TEXT NOT NULL,
                 sub_total REAL NOT NULL,
                 date TEXT NOT NULL,
-                timestamp TEXT NOT NULL
+                status TEXT NOT NULL
             )'''
             self.cursor.execute(create_table_query_delivery)
         except sqlite3.Error as e:
             print('Error:', e)
 
-    def save_delivery(self, totalPrice, products_ordered, date, timestamp):
+    def save_delivery(self, totalPrice, products_ordered, date, status):
 
         try:
             # print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {timestamp}")
             # for row in products_ordered:
             # print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
-            print("adding transaction")
+            print("Adding Delivery")
             delivery_id = self.generate_unique_id()
-            self.cursor.execute('''INSERT INTO delivery (delivery_id, products_ordered, sub_total, date, timestamp)
-                                VALUES (?, ?, ?, ?, ?)''', (delivery_id, products_ordered, totalPrice, date, timestamp))
-
+            self.cursor.execute('''INSERT INTO delivery (delivery_id, products_ordered, sub_total, date, status)
+                                VALUES (?, ?, ?, ?, ?)''', (delivery_id, products_ordered, totalPrice, date, status))
             self.connectDatabase.commit()
             messagebox.showinfo('Success', 'Delivery Saved')
         except sqlite3.Error as e:

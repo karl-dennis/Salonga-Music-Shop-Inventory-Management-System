@@ -111,7 +111,7 @@ class salesTwoView(ctk.CTkFrame):
         for row_values in table_values:
             # Parse the tuple into a dictionary
             orderID, buyerName, buyerContact, orderList_json, totalRevenue, date, timestamp = row_values
-            self.orderList_JSON = json.loads(orderList_json)  # Convert JSON string to Python object
+            self.orderList_JSON = json.loads(orderList_json)
 
             reordered_row_values = [row_values[0], row_values[1], row_values[3], row_values[2], row_values[5], row_values[4], row_values[6]]
             self.reordered_table.append(reordered_row_values)

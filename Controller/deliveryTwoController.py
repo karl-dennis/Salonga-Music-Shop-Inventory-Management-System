@@ -41,3 +41,6 @@ class deliveryTwoController:
                 tab.configure(text_color=active_text)
             else:
                 tab.configure(text_color=inactive_text)
+
+    def fetch_delivery(self):
+        return self.model.fetch_delivery()
