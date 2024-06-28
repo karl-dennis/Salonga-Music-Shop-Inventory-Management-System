@@ -14,8 +14,7 @@ class salesController:
         self.view.base_frame()
         
     def show_firstPage(self):
-        self.view.clear_base_frame()
-        self.view.show_firstPage()
+        pass
         
     def show_secondPage(self):
         self.view.clear_base_frame()
