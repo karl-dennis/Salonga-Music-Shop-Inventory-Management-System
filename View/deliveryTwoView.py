@@ -182,27 +182,26 @@ class deliveryTwoView(ctk.CTkFrame):
         # Configure cell widths and colors after inserting all data
         cell_widths = [132, 138, 131, 99]  # Adjusted based on your table width
         for row in range(self.table.rows):
-        #     # Determine status_color based on current row's status_text
-        #     # print(self.reordered_table[row][3])
-        #     # print(row)
-        #     status_text = self.reordered_table[row][3]
-        #     if status_text == 'Delivered':
-        #         status_color = '#6CB510'
-        #     elif status_text == 'Pending':
-        #         status_color = '#BB9A25'
-        #     else:
-        #         status_color = '#868686'  # Default color
+            # Determine status_color based on current row's status_text
+            status_text = self.reordered_table[row][3]
+            if status_text == 'Delivered':
+                status_color = '#6CB510'
+            elif status_text == 'Pending':
+                status_color = '#BB9A25'
+            else:
+                status_color = '#868686'  # Default color
+            
 
             # Configure each cell in the row
             for column in range(self.table.columns):
                 self.table.frame[row, column].configure(width=cell_widths[column], height=36,
                                                         fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
-
+                
                 # Apply specific configuration for the Status column (assuming index 3)
                 # if column == 3:
-                    # self.table.frame[row, column].configure(text_color=status_color, font=('Inter Semibold', 12))
-
+                self.table.frame[row, 3].configure(text_color=status_color, font=('Inter Semibold', 12))
+                    
         self.table.pack(fill='y', expand=True)
 
         self.selected_row = None
