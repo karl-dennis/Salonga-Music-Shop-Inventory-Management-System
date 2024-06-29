@@ -42,7 +42,7 @@ class deliveryModel:
     def save_delivery(self, totalPrice, products_ordered, date, status):
 
         try:
-            # print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {timestamp}")
+            # print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {status}")
             # for row in products_ordered:
             # print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
             print("Adding Delivery")
