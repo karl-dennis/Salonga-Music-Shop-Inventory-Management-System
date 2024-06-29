@@ -44,3 +44,8 @@ class deliveryTwoController:
 
     def fetch_delivery(self):
         return self.model.fetch_delivery()
+
+    def update_delivery_status(self, delivery_id, new_status):
+        self.model.update_delivery_status(delivery_id, new_status)
+
+

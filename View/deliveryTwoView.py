@@ -120,8 +120,8 @@ class deliveryTwoView(ctk.CTkFrame):
 
             reordered_row_values = [row_values[0], row_values[2], row_values[3], row_values[4], row_values[1]]
             self.reordered_table.append(reordered_row_values)
-        print(table_values)
-        print(self.reordered_table)
+        # print(table_values)
+        # print(self.reordered_table)
         # print("Reordered Table:")
         # for row in self.reordered_table:
         #     print(row)
@@ -190,18 +190,18 @@ class deliveryTwoView(ctk.CTkFrame):
                 status_color = '#BB9A25'
             else:
                 status_color = '#868686'  # Default color
-            
+
 
             # Configure each cell in the row
             for column in range(self.table.columns):
                 self.table.frame[row, column].configure(width=cell_widths[column], height=36,
                                                         fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
-                
+
                 # Apply specific configuration for the Status column (assuming index 3)
                 # if column == 3:
                 self.table.frame[row, 3].configure(text_color=status_color, font=('Inter Semibold', 12))
-                    
+
         self.table.pack(fill='y', expand=True)
 
         self.selected_row = None
@@ -311,6 +311,12 @@ class deliveryTwoView(ctk.CTkFrame):
                                                 variable=self.status_var)
         self.statusDropdown.place(x=178, y=14)
 
+        # Bind an event to capture when the dropdown button is clicked
+        self.statusDropdown.bind("<Button-1>", self.on_dropdown_clicked)
+
+        # Initial update of dropdown colors based on default status
+        self.update_status_dropdown_colors()
+
         # Bind an event to update colors when dropdown value changes
         self.status_var.trace_add('write', self.update_status_dropdown_colors)
 
@@ -341,7 +347,7 @@ class deliveryTwoView(ctk.CTkFrame):
             productBrand = product['brand']
             productQuantity = product['quantity']
             computedPrice = product['price']
-            
+
 
             # print(f"Product Name: {productName}, Brand: {productBrand}, Quantity: {productQuantity}, Price: {computedPrice}")
 
@@ -374,6 +380,19 @@ class deliveryTwoView(ctk.CTkFrame):
             y_position += 40
             self.rowFrames.append(rowFrame)
             self.row_counter += 1
+
+    def on_dropdown_clicked(self, event):
+        # This function will be called when the dropdown button is clicked
+        if self.selected_row is not None:
+            selected_delivery_id = self.reordered_table[self.selected_row][0]
+            # print(f"Selected delivery ID: {selected_delivery_id}")
+            selected_value = self.status_var.get()
+            self.controller.update_delivery_status(selected_delivery_id, selected_value)
+            # print(f"Selected status: {selected_value}")
+        else:
+            print("No row selected.")
+
+
 
     def refresh_list(self):
         for widget in self.rowFrames:

@@ -1,4 +1,5 @@
 import sqlite3
+from tkinter import messagebox
 
 class deliveryTwoModel:
     def __init__(self):
@@ -49,3 +50,9 @@ class deliveryTwoModel:
             return transaction_data
         except sqlite3.Error as e:
             print('Error:', e)
+
+    def update_delivery_status(self, delivery_id, new_status):
+        # Update the status of the selected delivery
+        self.cursor.execute('UPDATE delivery SET status = ? WHERE delivery_id = ?', (new_status, delivery_id))
+        self.connectDatabase.commit()
+        messagebox.showinfo('Success', 'Status Updated')
