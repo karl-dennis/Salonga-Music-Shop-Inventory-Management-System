@@ -102,7 +102,7 @@ class deliveryTwoView(ctk.CTkFrame):
         self.historyTableFrame.place(x=0, y=52)
 
         table_values = self.controller.fetch_delivery()
-        print(table_values)
+        # print(table_values)
         if table_values is None:
             table_values = []
 
@@ -120,7 +120,8 @@ class deliveryTwoView(ctk.CTkFrame):
 
             reordered_row_values = [row_values[0], row_values[2], row_values[3], row_values[4], row_values[1]]
             self.reordered_table.append(reordered_row_values)
-
+        print(table_values)
+        print(self.reordered_table)
         # print("Reordered Table:")
         # for row in self.reordered_table:
         #     print(row)
@@ -172,25 +173,25 @@ class deliveryTwoView(ctk.CTkFrame):
         # Loop through reordered_table and populate table cells
         for row_index, row_values in enumerate(self.reordered_table):
             # Populate table cells with formatted values
-            self.table.insert(row_index, 0, row_values[0])
-            self.table.insert(row_index, 1, row_values[3])
+            self.table.insert(row_index, 0, row_values[0]) # Delivery ID
+            self.table.insert(row_index, 1, row_values[2]) # Date
             self.table.insert(row_index, 2,
-                              f"${row_values[1]:.2f}".rstrip('0').rstrip('.'))  # Format revenue
-            self.table.insert(row_index, 3, row_values[4])  # Insert status_text directly
+                              f"${row_values[1]:.2f}".rstrip('0').rstrip('.'))  # Subtotal
+            self.table.insert(row_index, 3, row_values[3])  # Status
 
         # Configure cell widths and colors after inserting all data
         cell_widths = [132, 138, 131, 99]  # Adjusted based on your table width
         for row in range(self.table.rows):
-            # Determine status_color based on current row's status_text
-            print(self.reordered_table[row][3])
-            print(row)
-            status_text = self.reordered_table[row][3]
-            if status_text == 'Delivered':
-                status_color = '#6CB510'
-            elif status_text == 'Pending':
-                status_color = '#BB9A25'
-            else:
-                status_color = '#868686'  # Default color
+        #     # Determine status_color based on current row's status_text
+        #     # print(self.reordered_table[row][3])
+        #     # print(row)
+        #     status_text = self.reordered_table[row][3]
+        #     if status_text == 'Delivered':
+        #         status_color = '#6CB510'
+        #     elif status_text == 'Pending':
+        #         status_color = '#BB9A25'
+        #     else:
+        #         status_color = '#868686'  # Default color
 
             # Configure each cell in the row
             for column in range(self.table.columns):
@@ -199,8 +200,8 @@ class deliveryTwoView(ctk.CTkFrame):
                                                         corner_radius=0, anchor='w')
 
                 # Apply specific configuration for the Status column (assuming index 3)
-                if column == 3:
-                    self.table.frame[row, column].configure(text_color=status_color, font=('Inter Semibold', 12))
+                # if column == 3:
+                    # self.table.frame[row, column].configure(text_color=status_color, font=('Inter Semibold', 12))
 
         self.table.pack(fill='y', expand=True)
 
@@ -266,10 +267,12 @@ class deliveryTwoView(ctk.CTkFrame):
         self.refresh_list()
 
         row_values = self.reordered_table[index]
-        orderID = row_values['orderID']
-        revenue = row_values['totalRevenue']
-        status = row_values['status']
-        orderList = row_values['productsOrdered']
+        # print(row_values)
+        orderID = row_values[0]
+        revenue = row_values[1]
+        date = row_values[2]
+        status = row_values[3]
+        orderList = json.loads(row_values[4])
 
         self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Delivery #{orderID}", width=121, height=23,
                                          anchor='w',
@@ -333,11 +336,13 @@ class deliveryTwoView(ctk.CTkFrame):
         # print(f"\nOrder ID: {orderID}\nName: {name}\nContact: {contact}\nRevenue: {revenue}\nDate: {date}\nTimestamp: {timestamp}\nOrder List: {orderList}")
         self.row_counter = 0
         y_position = 0
+        print(orderList)
         for product in orderList:
-            productName = product['productName']
-            productBrand = product['productBrand']
-            productQuantity = product['productQuantity']
-            computedPrice = product['computedPrice']
+            productName = product['name']
+            productBrand = product['brand']
+            productQuantity = product['quantity']
+            computedPrice = product['price']
+            
 
             # print(f"Product Name: {productName}, Brand: {productBrand}, Quantity: {productQuantity}, Price: {computedPrice}")
 

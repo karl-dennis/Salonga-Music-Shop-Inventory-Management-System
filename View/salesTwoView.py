@@ -266,6 +266,7 @@ class salesTwoView(ctk.CTkFrame):
         # Loop through orderList and display products
         self.rowFrames = []
         y_position = 0
+        print(orderList)
         for product in orderList:
             productName = product['name']
             productBrand = product['brand']
