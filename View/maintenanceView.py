@@ -210,7 +210,7 @@ class maintenanceView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.accountsTableFrame, text="Accounts", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
         
-        table_values = self.controller.get_employees_with_accounts()
+        self.table_values = self.controller.get_employees_with_accounts()
         """ [employeeID, username, firstName, lastName, birthdate, email, LOA, status] """
         # table_values = [
         #     ['A0001', 'seris', 'Karl', 'Rodriguez', '10/20/02', 'abcdefghij@tip.edu.ph', 'Admin', 'Active'],
@@ -219,7 +219,7 @@ class maintenanceView(ctk.CTkFrame):
         
         self.reordered_table = []
         
-        for row_values in table_values:
+        for row_values in self.table_values:
             fullname = row_values[2] + ' ' + row_values[3]
             reordered_row_values = [row_values[0], row_values[1], fullname, row_values[4], row_values[5], row_values[6], row_values[7]]
             self.reordered_table.append(reordered_row_values)
@@ -350,11 +350,28 @@ class maintenanceView(ctk.CTkFrame):
     def select_row(self, row):
         self.table.edit_row(row, fg_color='#EAEAEA')
         print(f"Selected row {row}: {self.reordered_table[row]}")
-        #config row
+        self.id = self.table_values[row][0]
+        # self.username_entry.set(value=self.reordered_table[row][1])
+        self.username_entry.set(value=self.table_values[row][1])
+        self.passwordEntry.configure(state='disabled')
+        self.firstname_entry.set(value=self.table_values[row][2])
+        self.lastname_entry.set(value=self.table_values[row][3])
+        self.birthday_entry.set(value=self.table_values[row][4])
+        self.email_entry.set(value=self.table_values[row][5])
+        self.loaDropdown.set(value=self.table_values[row][6])
 
     def deselect_row(self, row):
         self.table.edit_row(row, fg_color='#F7F7F7')
         print(f"Deselected row {row}: {self.reordered_table[row]}")
+
+        self.username_entry.set(value='')
+        self.passwordEntry.configure(state='normal')
+        self.password_entry.set(value='')
+        self.firstname_entry.set(value='')
+        self.lastname_entry.set(value='')
+        self.birthday_entry.set(value='')
+        self.email_entry.set(value='')
+        self.loaDropdown.set(value='')
         
     def update_status_dropdown_colors(self, status_var, status_dropdown):
         status = status_var.get()
@@ -396,17 +413,50 @@ class maintenanceView(ctk.CTkFrame):
         self.loaDropdown.set('Select')
 
     def save_button_clicked(self):
-        username = self.username_entry.get()
-        password = self.password_entry.get()
-        first_name = self.firstname_entry.get()
-        last_name = self.lastname_entry.get()
-        birthdate = self.birthday_entry.get()
-        email = self.email_entry.get()
-        loa = self.loaDropdown.get()
-        self.controller.save_button_clicked(username, password, first_name, last_name, birthdate, email, loa)
-        self.clear_form()
+        if self.selected_row is not None:
+            id = self.id
+            username = self.username_entry.get()
+            # password = self.password_entry.get()
+            first_name = self.firstname_entry.get()
+            last_name = self.lastname_entry.get()
+            birthdate = self.birthday_entry.get()
+            email = self.email_entry.get()
+            loa = self.loaDropdown.get()
 
-        self.show_accountsTable()
+            # Assuming you want to update the selected row with the new data
+            self.reordered_table[self.selected_row] = [id, username, f"{first_name} {last_name}", birthdate, email,
+                                                       loa, 'Active']
+            # Update the table display (not implemented here, but you should update your table view accordingly)
+
+            self.clear_form()
+            self.deselect_row(self.selected_row)  # Deselect the row after saving
+
+            # Assuming you have a method in the controller to handle saving
+            self.controller.update(id,username, first_name, last_name, birthdate, email, loa)
+            self.show_accountsTable()
+        else:
+            username = self.username_entry.get()
+            password = self.password_entry.get()
+            first_name = self.firstname_entry.get()
+            last_name = self.lastname_entry.get()
+            birthdate = self.birthday_entry.get()
+            email = self.email_entry.get()
+            loa = self.loaDropdown.get()
+            self.controller.save_button_clicked(username, password, first_name, last_name, birthdate, email, loa)
+            self.clear_form()
+            self.show_accountsTable()
+    # def save_button_clicked(self):
+    #     username = self.username_entry.get()
+    #     password = self.password_entry.get()
+    #     first_name = self.firstname_entry.get()
+    #     last_name = self.lastname_entry.get()
+    #     birthdate = self.birthday_entry.get()
+    #     email = self.email_entry.get()
+    #     loa = self.loaDropdown.get()
+    #     self.controller.save_button_clicked(username, password, first_name, last_name, birthdate, email, loa)
+    #     self.clear_form()
+    #
+    #     self.show_accountsTable()
 
     
     

@@ -62,3 +62,6 @@ class maintenanceController:
 
     def save_button_clicked(self, username, password, first_name, last_name, birthdate, email, loa):
         self.model.signup(username, password, first_name, last_name, birthdate, email, loa)
+
+    def update(self, id, username, first_name, last_name, birthdate, email, loa):
+        self.model.update(id, username, first_name, last_name, birthdate, email, loa)

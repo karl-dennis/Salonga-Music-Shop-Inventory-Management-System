@@ -122,3 +122,22 @@ class maintenanceModel:
             self.cursor.execute('''SELECT delivery_id FROM delivery WHERE delivery_id = ?''', (unique_id,))
             if not self.cursor.fetchone():
                 return unique_id
+
+    def update(self, id, username, first_name, last_name, birthdate, email, loa):
+        # Assuming your table name is 'users' and the primary key is 'user_id'
+        update_query = """
+            UPDATE employees 
+            SET first_name = ?, last_name = ?, birthday = ?, email_address = ?, level_of_access = ?
+            WHERE employee_id = ?
+        """
+
+        update_accounts = """UPDATE accounts SET username = ? WHERE employee_id = ?"""
+        # Replace 'user_id' with your actual primary key column name
+
+        # Assuming self.selected_row gives you the user_id of the selected row
+        # Adjust this part according to how you identify the row to update in your table
+
+        # Execute the update query
+        self.cursor.execute(update_query, (first_name, last_name, birthdate, email, loa, id))
+        self.cursor.execute(update_accounts, (username, id))
+        self.connectDatabase.commit()
