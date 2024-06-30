@@ -27,7 +27,7 @@ class calendarView(ctk.CTkFrame):
                                      othermonthbackground='#E6E6E6', othermonthforeground='#BFBFBF',
                                      othermonthwebackground='#E6E6E6', othermonthweforeground='#BFBFBF',
                                      bordercolor='#92A3AA', width=268, height=200,
-                                     style="CalendarButton.TButton") 
+                                     style="CalendarButton.TButton")
         
         self.calendar.pack(fill="both", expand=True, padx=5, pady=5)
         self.calendar.bind("<<CalendarSelected>>", self.on_click)

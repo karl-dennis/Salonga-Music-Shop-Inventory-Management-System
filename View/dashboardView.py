@@ -42,6 +42,7 @@ class dashboardView(ctk.CTk):
         self._selection_3()
         self._selection_4()
         self._selection_5()
+        self._selection_6()
 
     def main(self):
         self.mainloop()
@@ -118,6 +119,12 @@ class dashboardView(ctk.CTk):
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=lambda: self.set_active_selection(5))
         self.selection5.place(x=10, y=330)
+        
+    def _selection_6(self):
+        self.selection6 = ctk.CTkButton(self.leftFrame, text="About", font=('Consolas', 18, 'bold'), 
+                                        text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
+                                        width=156, height=48, command=lambda: self.set_active_selection(6))
+        self.selection6.place(x=10, y=396)
             
     def show_dashboard(self): # Execute on click
             self.clear_base_frame()
@@ -189,6 +196,8 @@ class dashboardView(ctk.CTk):
                 self.controller.show_deliveries()
             case 5:
                 self.controller.show_maintenance()
+            case 6:
+                self.controller.show_about()
     
     def update_button(self):
         active_fg = '#FFFFFF'
@@ -198,7 +207,7 @@ class dashboardView(ctk.CTk):
         active_text ='#2D2D2D'
         inactive_text ='#595959'
         
-        for i in range(1, 6):
+        for i in range(1, 7):
             button = getattr(self, f'selection{i}')
             if i == self.active_selection:
                 button.configure(fg_color=active_fg, hover_color=active_hover, text_color=active_text)

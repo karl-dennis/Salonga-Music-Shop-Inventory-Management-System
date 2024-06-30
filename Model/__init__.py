@@ -8,6 +8,11 @@ from Model.deliveryModel import *
 from Model.deliveryTwoModel import *
 from Model.inventoryModel import *
 from Model.maintenanceModel import *
+from Model.maintenanceTwoModel import *
+from Model.maintenanceThreeModel import *
+from Model.maintenanceFourModel import *
+from Model.aboutModel import *
+from Model.aboutTwoModel import *
 from Model.graphSalesModel import *
 from Model.statisticModel import *
 from Model.stockAlertsModel import *
@@ -18,6 +23,7 @@ from Model.resetPassModel import *
 __all__ = ["signupModel", "loginModel", "dashboardModel",
            "productModel", "salesModel", "salesTwoModel",
            "deliveryModel", "deliveryTwoModel", "inventoryModel", 
-           "maintenanceModel", "graphSalesModel", "stockAlertsModel", 
-           "statisticModel", "calendarModel", "verifyEmailModel", 
-           "resetPassModel"]
+           "maintenanceModel", "maintenanceTwoModel", "maintenanceThreeModel",
+           "maintenanceFourModel", "aboutModel", "aboutTwoModel"
+           "graphSalesModel", "stockAlertsModel", "statisticModel", 
+           "calendarModel", "verifyEmailModel", "resetPassModel"]
