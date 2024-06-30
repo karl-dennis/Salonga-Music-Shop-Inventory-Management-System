@@ -217,13 +217,13 @@ class maintenanceView(ctk.CTkFrame):
         """ [employeeID, username, firstName, lastName, birthdate, email, LOA, status] """
         table_values = [
             ['A0001', 'seris', 'Karl', 'Rodriguez', '10/20/02', 'abcdefghij@tip.edu.ph', 'Admin', 'Active'],
-            ['E0001', 'kurt', 'Fritz', 'Gonzales', '11/21/02', 'klmnopqrstu@tip.edu.ph', 'Employee', 'Active'],
+            ['E0001', 'kurt', 'Fritz', 'Gonzales', '11/21/02', 'klmnopqrstu@tip.edu.ph', 'Employee', 'Inactive'],
         ]
         
         self.reordered_table = []
         
         for row_values in table_values:
-            fullname = row_values[2] + row_values[3]
+            fullname = row_values[2] + ' ' + row_values[3]
             reordered_row_values = [row_values[0], row_values[1], fullname, row_values[4], row_values[5], row_values[6], row_values[7]]
             self.reordered_table.append(reordered_row_values)
         
@@ -256,10 +256,10 @@ class maintenanceView(ctk.CTkFrame):
         columnLine.place(x=0, y=53)
         
         """ Table Rows """
-        self.tableFrame = ctk.CTkScrollableFrame(self.accountsTableFrame, width=560, height=469, fg_color='#F7F7F7', corner_radius=0)
-        self.tableFrame.place(x=17, y=55)
+        self.tableFrame = ctk.CTkScrollableFrame(self.accountsTableFrame, width=567, height=469, fg_color='#F7F7F7', corner_radius=0)
+        self.tableFrame.place(x=14, y=55)
         
-        self.table = CTkTable(master=self.tableFrame, column=7, padx=0, pady=0, font=('Inter Medium', 10), text_color='#747474',
+        self.table = CTkTable(master=self.tableFrame, column=6, padx=0, pady=0, font=('Inter Medium', 10), text_color='#747474',
                               colors=['#F7F7F7', '#F7F7F7'])
         
         if not self.reordered_table:
@@ -271,7 +271,6 @@ class maintenanceView(ctk.CTkFrame):
         for _ in range(required_rows - current_rows):
             self.table.add_row([''] * 4)
         
-        string_limit = 14
         for row_index, row_values in enumerate(self.reordered_table):
             self.table.insert(row_index, 0, row_values[0])
             self.table.insert(row_index, 1, row_values[1])
@@ -279,30 +278,96 @@ class maintenanceView(ctk.CTkFrame):
             self.table.insert(row_index, 3, row_values[3])
             self.table.insert(row_index, 4, row_values[4])
             self.table.insert(row_index, 5, row_values[5])
-            self.table.insert(row_index, 6, row_values[6])
+
         
         
-        cell_widths = [90, 82, 96, 70, 93, 76, 60] # Table Width = 567
-        for row in range(self.table.rows):
-            status_text = self.reordered_table[row][3]
-            if status_text == 'Active':
-                status_color = '#6CB510'
-            elif status_text == 'Inactive':
-                status_color = '#A65656'
-            else:
-                status_color = '#868686'  # Default color
-                
+        cell_widths = [90, 82, 96, 70, 93, 76] # Table Width = 507
+        for row in range(self.table.rows):                
             for column in range(self.table.columns):
                 self.table.frame[row, column].configure(width=cell_widths[column], height=25,
                                                         fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
 
-                self.table.frame[row, 6].configure(text_color=status_color, font=('Inter Medium', 8)) # Status
+                # self.table.frame[row, 6].configure(text_color=status_color, font=('Inter Medium', 8)) # Status
                 self.table.frame[row, 4].configure(font=('Inter Medium', 6)) # Email
 
-        self.table.pack(fill='y', expand=True)
+        self.table.pack(fill='y', expand=True, anchor='w')
 
+        self.selected_row = None
+        self.bind_cell_click_events()
         
+        for row in range(1, self.table.rows + 1):
+            rowLine = ctk.CTkFrame(self.tableFrame, width=567, height=2, fg_color='#dbdbdb')
+            rowLine.place(x=0, y=(row) * 25 - 1)
+            
+        self.status_colors = {
+            'Active': {
+                'text_color': '#6CB510',
+                'button_color': '#D1EFBE',
+                'fg_color': '#D1EFBE',
+                'button_hover_color': '#D1EFBE'
+            },
+            'Inactive': {
+                'text_color': '#A65656',
+                'button_color': '#EECECE',
+                'fg_color': '#EECECE',
+                'button_hover_color': '#EECECE'
+            },
+        }
+        
+        self.status_vars = [] 
+        self.status_dropdowns = []
+        for row in range(0, self.table.rows):
+            status_var = ctk.StringVar(value=self.reordered_table[row][6])
+            status_dropdown = ctk.CTkOptionMenu(self.tableFrame,
+                                                values=["Active", "Inactive"],
+                                                width=60, height=13,
+                                                font=('Inter Semibold', 8),
+                                                corner_radius=8,
+                                                variable=status_var)
+            status_dropdown.place(x=510, y=5 + (row * 25))
+
+            status_var.trace_add('write', lambda *args, sv=status_var, sd=status_dropdown: self.update_status_dropdown_colors(sv, sd))
+            self.update_status_dropdown_colors(status_var, status_dropdown)
+
+            self.status_vars.append(status_var)
+            self.status_dropdowns.append(status_dropdown)
+
+    def bind_cell_click_events(self):
+        for row_index in range(self.table.rows):
+            for col_index in range(self.table.columns):
+                self.table.frame[row_index, col_index].bind("<Button-1>",
+                                                            lambda event, row=row_index: self.handle_cell_click(event, row))
+
+    def handle_cell_click(self, event, index):
+        if self.selected_row == index:
+            self.deselect_row(index)
+            self.selected_row = None
+        else:
+            if self.selected_row is not None:
+                self.deselect_row(self.selected_row)
+
+            self.select_row(index)
+            self.selected_row = index
+            
+    def select_row(self, row):
+        self.table.edit_row(row, fg_color='#EAEAEA')
+        print(f"Selected row {row}: {self.reordered_table[row]}")
+
+    def deselect_row(self, row):
+        self.table.edit_row(row, fg_color='#F7F7F7')
+        print(f"Deselected row {row}: {self.reordered_table[row]}")
+        
+    def update_status_dropdown_colors(self, status_var, status_dropdown):
+        status = status_var.get()
+        colors = self.status_colors.get(status, self.status_colors['Active'])
+
+        status_dropdown.configure(text_color=colors['text_color'],
+                                button_color=colors['button_color'],
+                                fg_color=colors['fg_color'],
+                                button_hover_color=colors['button_hover_color'])
+
+    
     def _toggle_password_button(self):
         self.eye_open = ctk.CTkImage(light_image=Image.open('./assets/eye-open.png'), size=(15, 15))
         self.eye_closed = ctk.CTkImage(light_image=Image.open('./assets/eye-closed.png'), size=(15, 15))
