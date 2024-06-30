@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class maintenanceView(ctk.CTkFrame):
+class maintenanceFourView(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -23,18 +23,18 @@ class maintenanceView(ctk.CTkFrame):
         
         self.place(x=0, y=0) # Place productView Frame, do not change this
 
-        self.show_maintenanceOne()
+        self.show_maintenanceFour()
             
-    def show_maintenanceOne(self):
-        self.maintenanceOneFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7', corner_radius=7)
-        self.maintenanceOneFrame.place(x=11, y=15)
+    def show_maintenanceFour(self):
+        self.maintenanceFourFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7', corner_radius=7)
+        self.maintenanceFourFrame.place(x=11, y=15)
             
-        self.tabFrame = ctk.CTkFrame(self.maintenanceOneFrame, width=820, height=51, fg_color='transparent')
+        self.tabFrame = ctk.CTkFrame(self.maintenanceFourFrame, width=820, height=51, fg_color='transparent')
         self.tabFrame.place(x=0, y=0)
         
         self.selection1 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage Users',
-                                        font=('Inter', 13, 'bold'), text_color='#2E2E2E',
-                                        fg_color='#F7F7F7', hover_color='#F7F7F7')
+                                        font=('Inter', 13, 'bold'), text_color='#9A9A9A',
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(1))
         self.selection1.place(x=9, y=14)
         
         self.selection2 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='User Logs',
@@ -48,24 +48,24 @@ class maintenanceView(ctk.CTkFrame):
         self.selection3.place(x=271, y=14)
 
         self.selection4 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='System',
-                                        font=('Inter', 13, 'bold'), text_color='#9A9A9A',
-                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(4))
+                                        font=('Inter', 13, 'bold'), text_color='#2E2E2E',
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7')
         self.selection4.place(x=402, y=14)
 
         self.tabLine = ctk.CTkFrame(self.tabFrame, width=78, height=4, fg_color='#5089B5', corner_radius=7)
-        self.tabLine.place(x=28, y=39)
-
+        self.tabLine.place(x=421, y=39)
+    
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
-    
+        
 class App:
     def __init__(self):
         self.root = ctk.CTk()
-        self.root.title("Maintenance Page (Test)")
+        self.root.title("Maintenance Four Page (Test)")
         
-        self.maintenance_view = maintenanceView(self.root, None)
-        self.maintenance_view.pack(fill=ctk.BOTH, expand=True)
+        self.maintenancefour_view = maintenanceFourView(self.root, None)
+        self.maintenancefour_view.pack(fill=ctk.BOTH, expand=True)
         
     def run(self):
         self.root.mainloop()

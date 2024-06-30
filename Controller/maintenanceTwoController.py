@@ -1,24 +1,24 @@
-from Model.maintenanceModel import maintenanceModel
-from View.maintenanceView import maintenanceView
+from Model.maintenanceTwoModel import maintenanceTwoModel
+from View.maintenanceTwoView import maintenanceTwoView
 import tkinter as tk
 from tkinter import messagebox
 
-class maintenanceController:
+class maintenanceTwoController:
     def __init__(self, parent):
-        self.model = maintenanceModel()
-        self.view = maintenanceView(parent, self)
+        self.model = maintenanceTwoModel()
+        self.view = maintenanceTwoView(parent, self)
         
     def main(self):
         self.view.base_frame()
         
     def show_maintenanceOne(self):
-        pass
+        self.view.clear_base_frame()
+        from Controller.maintenanceController import maintenanceController
+        maintenance_controller = maintenanceController(self.view.baseFrame)
+        maintenance_controller.main()
     
     def show_maintenanceTwo(self):
-        self.view.clear_base_frame()
-        from Controller.maintenanceTwoController import maintenanceTwoController
-        maintenanceTwo_controller = maintenanceTwoController(self.view.baseFrame)
-        maintenanceTwo_controller.main()
+        pass
     
     def show_maintenanceThree(self):
         self.view.clear_base_frame()
@@ -31,7 +31,7 @@ class maintenanceController:
         from Controller.maintenanceFourController import maintenanceFourController
         maintenanceFour_controller = maintenanceFourController(self.view.baseFrame)
         maintenanceFour_controller.main()
-        
+    
     def set_active_tab(self, tab):
         self.view.active_tab = tab
         self.update_tab()
@@ -56,4 +56,3 @@ class maintenanceController:
             else:
                 tab.configure(text_color=inactive_text)
     
-        
