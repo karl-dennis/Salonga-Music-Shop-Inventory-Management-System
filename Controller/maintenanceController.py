@@ -8,18 +8,6 @@ class maintenanceController:
         self.model = maintenanceModel()
         self.view = maintenanceView(parent, self)
     
-    def get_brand(self):
-        return self.model.fetch_brand()
-    
-    def get_type(self):
-        return self.model.fetch_type()
-    
-    def get_data(self):
-        return self.model.fetch_data
-    
-    
-    
-    
     def main(self):
         self.view.base_frame()
         
@@ -68,4 +56,3 @@ class maintenanceController:
             else:
                 tab.configure(text_color=inactive_text)
     
-        

@@ -9,6 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import io
+import pandas as pd
+import sqlite3
 
 class productView(ctk.CTkFrame):
 
@@ -185,17 +187,24 @@ class productView(ctk.CTkFrame):
         self.plot(self.innerFrame)
 
     def plot(self, inner_frame):
-        categories = ['Brass', 'Woodwind', 'Percussion', 'String']
-        stocks = [[10, 5, 5, 2], [15, 10, 5, 3], [10, 10, 5, 4], [20, 10, 5, 2]]  # Sublists represent subgroups of bars for each category
+        # categories = ['Brass', 'Woodwind', 'Percussion', 'String']
+        # stocks = [[10, 5, 5, 2], [15, 10, 5, 3], [10, 10, 5, 4], [20, 10, 5, 2]]  # Sublists represent subgroups of bars for each category
+
+        conn = sqlite3.connect('salonga_music_shop.db')
+
+        query = "SELECT product_type, product_quantity FROM products"
+        df = pd.read_sql_query(query, conn)
+
+        # print(df)
 
         fig = plt.figure(figsize=(4, 2.5))
 
         ax = fig.add_subplot(111)
-        x = np.arange(len(categories))
+        x = np.arange(len(df['product_type']))
         width = 0.1  # Width of each bar group
 
         # Plotting each subgroup of bars for each category
-        for i, sublist in enumerate(stocks):
+        for i, sublist in enumerate(df['product_quantity']):
             ax.bar(x + width * i, sublist, width=width, label=f'Subgroup {i + 1}')
 
         fig.set_facecolor("#F7F7F7")
@@ -203,8 +212,8 @@ class productView(ctk.CTkFrame):
         ax.set_xlabel('Categories')
         ax.set_ylabel('Stocks')
         ax.set_title('Stocks by Category')
-        ax.set_xticks(x + width * (len(stocks) - 1) / 2)
-        ax.set_xticklabels(categories)
+        ax.set_xticks(x + width * (len(df['product_quantity']) - 1) / 2)
+        ax.set_xticklabels(df['product_type'])
         ax.legend()
 
         canvas = FigureCanvasTkAgg(fig, master=inner_frame)
