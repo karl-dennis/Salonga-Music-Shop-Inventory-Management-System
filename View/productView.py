@@ -229,8 +229,7 @@ class productView(ctk.CTkFrame):
     
 
     def show_productTable(self):
-        self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7',
-                                              corner_radius=7)
+        self.productTableFrame = ctk.CTkFrame(self.productFrame, width=598, height=352, fg_color='#F7F7F7', corner_radius=7)
         self.productTableFrame.place(x=231, y=252)
 
         self.label = ctk.CTkLabel(self.productTableFrame, text="Stock Levels", font=('Inter Medium', 13),

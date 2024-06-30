@@ -24,6 +24,8 @@ class maintenanceFourView(ctk.CTkFrame):
         self.place(x=0, y=0) # Place productView Frame, do not change this
 
         self.show_maintenanceFour()
+        self.show_userLogsTable()
+            
             
     def show_maintenanceFour(self):
         self.maintenanceFourFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7', corner_radius=7)
@@ -60,6 +62,10 @@ class maintenanceFourView(ctk.CTkFrame):
         self.tabLine = ctk.CTkFrame(self.tabFrame, width=78, height=4, fg_color='#5089B5', corner_radius=7)
         self.tabLine.place(x=421, y=39)
     
+    def show_userLogsTable(self):
+        self.userLogsTableFrame = ctk.CTkFrame(self.baseFrame, width=820, height=526, fg_color='#F7F7F7', corner_radius=7)
+        self.userLogsTableFrame.place(x=11, y=79)
+        
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
