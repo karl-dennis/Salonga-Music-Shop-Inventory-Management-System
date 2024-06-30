@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-class productModel:
+class maintenanceThreeModel:
     def __init__(self):
         self.connectDatabase = None
         self.cursor = None
@@ -36,8 +36,7 @@ class productModel:
                 product_quantity INTEGER,
                 product_price REAL NOT NULL,
                 status TEXT NOT NULL,
-                product_image BLOB,
-                capital_price REAL NOT NULL
+                product_image BLOB
             )'''
             self.cursor.execute(create_table_query_products)
         except sqlite3.Error as e:
@@ -53,7 +52,7 @@ class productModel:
             self.cursor.execute(create_table_query_stocks)
         except sqlite3.Error as e:
             print('Error:', e)
-    
+
     def create_brand_table(self):
         try:
             create_table_query_stocks = '''CREATE TABLE IF NOT EXISTS brands(

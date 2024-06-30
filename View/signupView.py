@@ -162,6 +162,7 @@ class signupView(ctk.CTk):
     def _birthday_entry(self): # TODO: implement tkcalendar instead of ctk.CTkEntry
         # self.birthdayEntry = ctk.CTkEntry(self.birthdayFrame, textvariable=self.birthday)
         # self.birthdayEntry.pack(side='left', padx=5, pady=5)
+        sv_ttk.set_theme("light")
         self.calendarEntry = DateEntry(self.birthdayFrame, textvariable=self.birthday, 
                                        firstweekday='sunday', showweeknumbers=False,
                                        background='#F7F7F7', foreground='#393939', 

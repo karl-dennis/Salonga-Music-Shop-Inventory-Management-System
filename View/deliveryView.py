@@ -200,7 +200,7 @@ class deliveryView(ctk.CTkFrame):
         
         orderID = 1 # ID Counter, increments on click (save button)
         
-        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text=f"Order #{orderID:04}", width=121, height=23, # Pads zeroes (length of 4), e.g. 0001
+        self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text="New Delivery", width=121, height=23, # Pads zeroes (length of 4), e.g. 0001
                                          font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
         self.orderIDLabel.place(x=82, y=12)
         
@@ -225,7 +225,7 @@ class deliveryView(ctk.CTkFrame):
         self.revenueFrame = ctk.CTkFrame(self.orderFrame, width=285, height=36, fg_color='#F1F1F1')
         self.revenueFrame.place(x=0, y=490)
         
-        self.revenueTitle = ctk.CTkLabel(self.revenueFrame, text='Revenue', width=66, height=25, anchor='center',
+        self.revenueTitle = ctk.CTkLabel(self.revenueFrame, text='Subtotal', width=66, height=25, anchor='center',
                                          font=('Inter Bold', 14), text_color='#747474')
         self.revenueTitle.place(x=14, y=5)
                 
@@ -349,16 +349,25 @@ class deliveryView(ctk.CTkFrame):
     def save_button_clicked(self):
         totalPrice = self.total
 
+        # Check if there are no selected products
+        if not self.rowFrames:
+            messagebox.showwarning("Warning", "No products selected. Please add products before saving.")
+            return
+
         # Collect data from all rows
         added_rows = []
         for rowFrame, spinboxValue, product_idx in self.rowFrames:
             if rowFrame.winfo_ismapped():  # Check if row is visible
+                quantity = spinboxValue.get()
+                if quantity == 0:
+                    messagebox.showwarning("Warning", "Quantity for all selected products must be greater than 0.")
+                    return
                 product = self.products[product_idx]
                 row_data = {
                     'name': product[1],
                     'brand': product[2],
                     'price': product[5],
-                    'quantity': spinboxValue.get()
+                    'quantity': quantity
                 }
                 added_rows.append(row_data)
 
@@ -398,7 +407,7 @@ class deliveryView(ctk.CTkFrame):
                 print(f"Performing search for: {query}")
             
         self.searchEntry.bind('<Return>', lambda event: perform_search())
-    
+        
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()

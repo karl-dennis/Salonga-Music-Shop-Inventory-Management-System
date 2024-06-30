@@ -2,6 +2,7 @@ import sqlite3
 import random
 import string
 from tkinter import messagebox
+import json
 class salesModel:
     def __init__(self):
         self.connectDatabase = None
@@ -46,7 +47,7 @@ class salesModel:
         # for row in products_ordered:
         #     print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
         try:
-            print("adding transaction")
+            # print("adding transaction")
             transaction_id = self.generate_unique_id()
             self.cursor.execute('''INSERT INTO transactions (transaction_id, customer_name, customer_contact, products_ordered, revenue, date, timestamp)
                                 VALUES (?, ?, ?, ?, ?, ?, ?)''', (transaction_id, name, contact, products_ordered, totalPrice, date, timestamp))
@@ -56,6 +57,49 @@ class salesModel:
         except sqlite3.Error as e:
             print('Error:', e)
 
+    def save_transaction(self, name, contact, totalPrice, products_ordered, date, timestamp):
+        try:
+
+            transaction_id = self.generate_unique_id()
+
+            # Begin transaction
+            self.cursor.execute("BEGIN TRANSACTION")
+
+
+            # Insert transaction details into transactions table
+            self.cursor.execute('''INSERT INTO transactions (transaction_id, customer_name, customer_contact, products_ordered, revenue, date, timestamp)
+                                VALUES (?, ?, ?, ?, ?, ?, ?)''',
+                                (transaction_id, name, contact, products_ordered, totalPrice, date, timestamp))
+
+
+            convert_json = json.loads(products_ordered)
+            # Update product quantities in products table
+            # print(products_ordered)
+            for product in convert_json:
+                product_name = product['name']
+                quantity_sold = product['quantity']
+
+                # Retrieve current quantity from products table
+                self.cursor.execute('''SELECT product_quantity FROM products WHERE product_name = ?''', (product_name,))
+                current_quantity = self.cursor.fetchone()[0]
+
+                # Calculate new quantity after sale
+                new_quantity = current_quantity - quantity_sold
+
+                # Update quantity in products table
+                self.cursor.execute('''UPDATE products SET product_quantity = ? WHERE product_name = ?''',
+                                    (new_quantity, product_name))
+
+            # Commit the transaction
+            self.connectDatabase.commit()
+
+            # Display success message
+            messagebox.showinfo('Success', 'Transaction Successful')
+
+        except sqlite3.Error as e:
+            # Rollback transaction if there's an error
+            self.connectDatabase.rollback()
+            print('Error:', e)
     def generate_unique_id(self):
         while True:
             letters = ''.join(random.choices(string.ascii_uppercase, k=3))

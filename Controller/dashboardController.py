@@ -47,5 +47,10 @@ class dashboardController:
         from Controller.maintenanceController import maintenanceController
         maintenance_controller = maintenanceController(self.view.baseFrame)
         maintenance_controller.main()
+        
+    def show_about(self):
+        from Controller.aboutController import aboutController
+        about_controller = aboutController(self.view.baseFrame)
+        about_controller.main()
 
 

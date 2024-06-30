@@ -1,18 +1,21 @@
-from Model.maintenanceModel import maintenanceModel
-from View.maintenanceView import maintenanceView
+from Model.maintenanceFiveModel import maintenanceFiveModel
+from View.maintenanceFiveView import maintenanceFiveView
 import tkinter as tk
 from tkinter import messagebox
 
-class maintenanceController:
+class maintenanceFiveController:
     def __init__(self, parent):
-        self.model = maintenanceModel()
-        self.view = maintenanceView(parent, self)
-    
+        self.model = maintenanceFiveModel()
+        self.view = maintenanceFiveView(parent, self)
+        
     def main(self):
         self.view.base_frame()
         
     def show_maintenanceOne(self):
-        pass
+        self.view.clear_base_frame()
+        from Controller.maintenanceController import maintenanceController
+        maintenance_controller = maintenanceController(self.view.baseFrame)
+        maintenance_controller.main()
     
     def show_maintenanceTwo(self):
         self.view.clear_base_frame()
@@ -33,11 +36,8 @@ class maintenanceController:
         maintenanceFour_controller.main()
     
     def show_maintenanceFive(self):
-        self.view.clear_base_frame()
-        from Controller.maintenanceFiveController import maintenanceFiveController
-        maintenanceFive_controller = maintenanceFiveController(self.view.baseFrame)
-        maintenanceFive_controller.main()
-        
+        pass
+    
     def set_active_tab(self, tab):
         self.view.active_tab = tab
         self.update_tab()
@@ -64,12 +64,3 @@ class maintenanceController:
             else:
                 tab.configure(text_color=inactive_text)
     
-    def get_employees_with_accounts(self):
-        print(self.model.fetch_employees_with_accounts())
-        return self.model.fetch_employees_with_accounts()
-
-    def save_button_clicked(self, username, password, first_name, last_name, birthdate, email, loa):
-        self.model.signup(username, password, first_name, last_name, birthdate, email, loa)
-
-    def update(self, id, username, first_name, last_name, birthdate, email, loa):
-        self.model.update(id, username, first_name, last_name, birthdate, email, loa)
