@@ -8,7 +8,7 @@ class maintenanceThreeView(ctk.CTkFrame):
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
 
-        self.active_tab = 1
+        self.active_tab = 3
         self.search_query = ctk.StringVar()
         
         self.custom_styles()

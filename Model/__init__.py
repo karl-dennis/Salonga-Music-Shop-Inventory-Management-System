@@ -11,6 +11,8 @@ from Model.maintenanceModel import *
 from Model.maintenanceTwoModel import *
 from Model.maintenanceThreeModel import *
 from Model.maintenanceFourModel import *
+from Model.aboutModel import *
+from Model.aboutTwoModel import *
 from Model.graphSalesModel import *
 from Model.statisticModel import *
 from Model.stockAlertsModel import *
@@ -22,6 +24,6 @@ __all__ = ["signupModel", "loginModel", "dashboardModel",
            "productModel", "salesModel", "salesTwoModel",
            "deliveryModel", "deliveryTwoModel", "inventoryModel", 
            "maintenanceModel", "maintenanceTwoModel", "maintenanceThreeModel",
-           "maintenanceFourModel", "graphSalesModel", "stockAlertsModel", 
-           "statisticModel", "calendarModel", "verifyEmailModel", 
-           "resetPassModel"]
+           "maintenanceFourModel", "aboutModel", "aboutTwoModel"
+           "graphSalesModel", "stockAlertsModel", "statisticModel", 
+           "calendarModel", "verifyEmailModel", "resetPassModel"]
