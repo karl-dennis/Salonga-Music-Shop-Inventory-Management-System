@@ -44,7 +44,7 @@ class maintenanceView(ctk.CTkFrame):
         self.maintenanceOneFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7', corner_radius=7)
         self.maintenanceOneFrame.place(x=11, y=15)
             
-        self.tabFrame = ctk.CTkFrame(self.maintenanceOneFrame, width=820, height=51, fg_color='transparent')
+        self.tabFrame = ctk.CTkFrame(self.maintenanceOneFrame, width=820, height=51, bg_color='#DFDFDF', fg_color='#F7F7F7', corner_radius=7)
         self.tabFrame.place(x=0, y=0)
         
         self.selection1 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage Users',
