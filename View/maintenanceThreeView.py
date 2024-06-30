@@ -5,8 +5,6 @@ from tkinter import filedialog
 from tkinter import messagebox
 from CTkTable import *
 
-
-
 class maintenanceThreeView(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
@@ -22,39 +20,43 @@ class maintenanceThreeView(ctk.CTkFrame):
         self.image_data = None
         self.search_query = ctk.StringVar()
 
-        self.importIcon = ctk.CTkImage(light_image=Image.open('./assets/import.png'), size=(36,33))
+        self.importIcon = ctk.CTkImage(light_image=Image.open('./assets/import.png'), size=(36, 33))
 
         self.custom_styles()
         self.base_frame()
- 
+
     def custom_styles(self):
         pass
 
-    def base_frame(self):    
+    def base_frame(self):
         self.baseFrame = ctk.CTkFrame(self, width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         self.baseFrame.place(x=0, y=0)
-        
-        self.place(x=0, y=0) # Place productView Frame, do not change this
+
+        self.place(x=0, y=0)  # Place productView Frame, do not change this
 
         self.show_maintenanceThree()
         self.show_productReg()
         self.show_productTable()
-            
-    def show_maintenanceThree(self):
-        self.maintenanceThreeFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7', corner_radius=7)
-        self.maintenanceThreeFrame.place(x=11, y=15)
-            
-        self.tabFrame = ctk.CTkFrame(self.maintenanceThreeFrame, width=820, height=51, bg_color='#DFDFDF', fg_color='#F7F7F7', corner_radius=7)
-        self.tabFrame.place(x=0, y=0)
         
+    def show_maintenanceThree(self):
+        self.maintenanceThreeFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7',
+                                                  corner_radius=7)
+        self.maintenanceThreeFrame.place(x=11, y=15)
+
+        self.tabFrame = ctk.CTkFrame(self.maintenanceThreeFrame, width=820, height=51, bg_color='#DFDFDF',
+                                     fg_color='#F7F7F7', corner_radius=7)
+        self.tabFrame.place(x=0, y=0)
+
         self.selection1 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage Users',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
-                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(1))
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7',
+                                        command=lambda: self.controller.set_active_tab(1))
         self.selection1.place(x=9, y=14)
-        
+
         self.selection2 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='User Logs',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
-                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(2))
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7',
+                                        command=lambda: self.controller.set_active_tab(2))
         self.selection2.place(x=140, y=14)
 
         self.selection3 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage Products',
@@ -64,7 +66,8 @@ class maintenanceThreeView(ctk.CTkFrame):
 
         self.selection4 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage Sales',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
-                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(4))
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7',
+                                        command=lambda: self.controller.set_active_tab(4))
         self.selection4.place(x=402, y=14)
 
         self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage System',
@@ -91,7 +94,7 @@ class maintenanceThreeView(ctk.CTkFrame):
                                          hover_color='#FFFFFF', command=self.select_image,
                                          anchor='center')
         self.imageButton.place(x=0, y=0)
-        
+
         self.nameFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.nameFrame.place(x=25, y=85)
         
@@ -103,6 +106,7 @@ class maintenanceThreeView(ctk.CTkFrame):
                                        bg_color='transparent', fg_color='#FAFAFA',
                                        border_color='#CACACA', border_width=2,
                                        font=('Inter Medium', 12), text_color='#595959', textvariable=self.name_entry)
+
         self.nameEntry.place(x=0, y=26)
 
         self.brandFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
@@ -142,6 +146,7 @@ class maintenanceThreeView(ctk.CTkFrame):
                                             button_color='#CACACA')
         self.typeDropdown.set('Select')
         self.typeDropdown.place(x=0, y=26)
+
         
         self.quantityFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
         self.quantityFrame.place(x=25, y=253)
@@ -218,6 +223,7 @@ class maintenanceThreeView(ctk.CTkFrame):
                                         )
         self.saveButton.place(x=88, y=0)
         
+
     def show_productTable(self):
         self.productTableFrame = ctk.CTkFrame(self.baseFrame, width=596, height=526, fg_color='#F7F7F7',
                                               corner_radius=7)
@@ -230,6 +236,7 @@ class maintenanceThreeView(ctk.CTkFrame):
         table_values = self.controller.get_data()
         self.reordered_table = []
         for row_values in table_values:
+          
             reordered_row_values = [row_values[0], row_values[1], row_values[3], row_values[2], row_values[5], row_values[4], row_values[6]]
             self.reordered_table.append(reordered_row_values)
         
@@ -265,7 +272,7 @@ class maintenanceThreeView(ctk.CTkFrame):
             required_rows = 0
         else:
             required_rows = len(self.reordered_table)
-        
+
         current_rows = self.table.rows  # Subtract 1 for the header row
         for _ in range(required_rows - current_rows):
             self.table.add_row([''] * 7)  # Add empty rows to meet the required row count
@@ -282,6 +289,7 @@ class maintenanceThreeView(ctk.CTkFrame):
         cell_widths = [98, 96, 91, 86, 70, 60, 65]
         for row in range(0, self.table.rows):
             for column in range(self.table.columns): 
+
                 self.table.frame[row, column].configure(width=cell_widths[column], height=25,
                                                         fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
@@ -301,8 +309,7 @@ class maintenanceThreeView(ctk.CTkFrame):
                 self.table.insert(row, 6, status)
                 self.table.frame[row, 6].configure(text_color=status_color)  # Status
                 self.table.frame[row, 5].configure(text_color=status_color, font=('Inter', 12))  # Quantity
-        
-           
+                  
         self.table.pack(fill='both', expand=True)
         
         self.selected_row = None
@@ -328,7 +335,7 @@ class maintenanceThreeView(ctk.CTkFrame):
 
             self.select_row(index)
             self.selected_row = index
-            
+
     def select_row(self, row):
         self.table.edit_row(row, fg_color='#EAEAEA')
         print(f"Selected row {row}: {self.reordered_table[row]}")
@@ -336,7 +343,7 @@ class maintenanceThreeView(ctk.CTkFrame):
     def deselect_row(self, row):
         self.table.edit_row(row, fg_color='#F7F7F7')
         print(f"Deselected row {row}: {self.reordered_table[row]}")
-        
+
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
 
@@ -370,8 +377,7 @@ class maintenanceThreeView(ctk.CTkFrame):
         else:
             # Defaults to import icon if none is selected
             self.imageButton.configure(image=self.importIcon)
-    
-        
+
     def clear_form(self):
         self.imageButton.configure(image=self.importIcon)
         self.nameEntry.delete(0, 'end')
@@ -387,27 +393,28 @@ class maintenanceThreeView(ctk.CTkFrame):
         quantity = self.quantity.get()
         price = self.price.get()
         image = self.image_data
-        self.controller.save_button_clicked(product_name,type,brand,quantity,price,image)
+        self.controller.save_button_clicked(product_name, type, brand, quantity, price, image)
         messagebox.showinfo('Success', 'Product Added Successfully')
         self.clear_form()
 
         self.show_productTable()
-    
-    
+
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
-    
+
+
 class App:
     def __init__(self):
         self.root = ctk.CTk()
         self.root.title("Maintenance Three Page (Test)")
-        
+
         self.maintenancethree_view = maintenanceThreeView(self.root, None)
         self.maintenancethree_view.pack(fill=ctk.BOTH, expand=True)
-        
+
     def run(self):
         self.root.mainloop()
+
 
 if __name__ == "__main__":
     app = App()

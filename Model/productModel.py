@@ -36,7 +36,8 @@ class productModel:
                 product_quantity INTEGER,
                 product_price REAL NOT NULL,
                 status TEXT NOT NULL,
-                product_image BLOB
+                product_image BLOB,
+                capital_price REAL NOT NULL
             )'''
             self.cursor.execute(create_table_query_products)
         except sqlite3.Error as e:
