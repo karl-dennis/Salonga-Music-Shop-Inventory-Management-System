@@ -56,3 +56,9 @@ class maintenanceController:
             else:
                 tab.configure(text_color=inactive_text)
     
+    def get_employees_with_accounts(self):
+        print(self.model.fetch_employees_with_accounts())
+        return self.model.fetch_employees_with_accounts()
+
+    def save_button_clicked(self, username, password, first_name, last_name, birthdate, email, loa):
+        self.model.signup(username, password, first_name, last_name, birthdate, email, loa)

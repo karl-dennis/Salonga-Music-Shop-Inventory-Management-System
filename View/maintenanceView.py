@@ -23,12 +23,9 @@ class maintenanceView(ctk.CTkFrame):
         self.birthday_entry = ctk.StringVar()
         self.email_entry = ctk.StringVar()
         
-        
-        self.price = ctk.StringVar()
-        
         self.custom_styles()
         self.base_frame()
- 
+
     def custom_styles(self):
         pass
 
@@ -213,12 +210,12 @@ class maintenanceView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.accountsTableFrame, text="Accounts", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
         
-        # table_values = self.controller.fetch_accounts()
+        table_values = self.controller.get_employees_with_accounts()
         """ [employeeID, username, firstName, lastName, birthdate, email, LOA, status] """
-        table_values = [
-            ['A0001', 'seris', 'Karl', 'Rodriguez', '10/20/02', 'abcdefghij@tip.edu.ph', 'Admin', 'Active'],
-            ['E0001', 'kurt', 'Fritz', 'Gonzales', '11/21/02', 'klmnopqrstu@tip.edu.ph', 'Employee', 'Inactive'],
-        ]
+        # table_values = [
+        #     ['A0001', 'seris', 'Karl', 'Rodriguez', '10/20/02', 'abcdefghij@tip.edu.ph', 'Admin', 'Active'],
+        #     ['E0001', 'kurt', 'Fritz', 'Gonzales', '11/21/02', 'klmnopqrstu@tip.edu.ph', 'Employee', 'Inactive'],
+        # ]
         
         self.reordered_table = []
         
@@ -353,6 +350,7 @@ class maintenanceView(ctk.CTkFrame):
     def select_row(self, row):
         self.table.edit_row(row, fg_color='#EAEAEA')
         print(f"Selected row {row}: {self.reordered_table[row]}")
+        #config row
 
     def deselect_row(self, row):
         self.table.edit_row(row, fg_color='#F7F7F7')
@@ -396,20 +394,19 @@ class maintenanceView(ctk.CTkFrame):
     def clear_form(self):
         self.usernameEntry.delete(0, 'end')
         self.loaDropdown.set('Select')
-        self.typeDropdown.set('Select')
-        self.quantityEntry.delete(0, 'end')
-        self.priceEntry.delete(0, 'end')
-    
+
     def save_button_clicked(self):
-        product_name = self.username_entry.get()
-        type = self.typeDropdown.get()
-        brand = self.loaDropdown.get()
-        quantity = self.quantity.get()
-        price = self.price.get()
-        image = self.image_data
-        self.controller.save_button_clicked(product_name,type,brand,quantity,price,image)
-        messagebox.showinfo('Success', 'Product Added Successfully')
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        first_name = self.firstname_entry.get()
+        last_name = self.lastname_entry.get()
+        birthdate = self.birthday_entry.get()
+        email = self.email_entry.get()
+        loa = self.loaDropdown.get()
+        self.controller.save_button_clicked(username, password, first_name, last_name, birthdate, email, loa)
         self.clear_form()
+
+        self.show_accountsTable()
 
     
     

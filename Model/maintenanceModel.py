@@ -1,6 +1,6 @@
 import sqlite3
-import tkinter as tk
-from datetime import datetime
+import string
+import random
 from tkinter import messagebox
 import bcrypt
 
@@ -12,7 +12,7 @@ class maintenanceModel:
         self.create_table_employees()
         self.create_table_accounts()
 
-    def signup(self, username, password, firstName, lastName, birthday, email):
+    def signup(self, username, password, first_name, last_name, birthdate, email, loa):
         try:
             # Check if username already exists
             self.cursor.execute('''SELECT username FROM accounts WHERE username=?''', (username,))
@@ -24,16 +24,20 @@ class maintenanceModel:
             encoded_password = password.encode('utf-8')
             hashed_password = bcrypt.hashpw(encoded_password, bcrypt.gensalt()).decode('utf-8')
 
+            unique_id = self.generate_unique_id()
+            status = 'Active'
+
             # Insert data into employees table first
-            employeesData = (firstName, lastName, birthday, email)
-            self.cursor.execute('''INSERT INTO employees (first_name, last_name, birthday, email_address) 
-                VALUES (?, ?, ?, ?)''', employeesData)
+            employeesData = (unique_id, first_name, last_name, birthdate, email, loa, status)
+            print(employeesData)
+            self.cursor.execute('''INSERT INTO employees (employee_id, first_name, last_name, birthday, email_address, level_of_access, status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)''', employeesData)
 
             # Get the last inserted employee_id
-            employee_id = self.cursor.lastrowid
+            # employee_id = self.cursor.lastrowid
 
             # Insert data into accounts table
-            accountsData = (employee_id, username, hashed_password)
+            accountsData = (unique_id, username, hashed_password)
             self.cursor.execute('''INSERT INTO accounts (employee_id, username, password) 
                 VALUES (?, ?, ?)''', accountsData)
 
@@ -74,7 +78,7 @@ class maintenanceModel:
     def create_table_employees(self):
         try:
             create_table_query_employees = '''CREATE TABLE IF NOT EXISTS employees(
-            employee_id TEXT PRIMARY KEY, first_name TEXT, last_name TEXT, birthday TEXT, email_address TEXT, status TEXT
+            employee_id TEXT PRIMARY KEY, first_name TEXT, last_name TEXT, birthday TEXT, email_address TEXT, level_of_access TEXT, status TEXT
             )'''
             self.cursor.execute(create_table_query_employees)
         except sqlite3.Error as e:
@@ -82,9 +86,10 @@ class maintenanceModel:
 
     def fetch_employees_with_accounts(self):
         try:
+            self.create_database()
             fetch_query = '''
             SELECT employees.employee_id, employees.first_name, employees.last_name, employees.birthday, employees.email_address,
-                   accounts.username, employees.status
+                   accounts.username, employees.level_of_access, employees.status
             FROM employees
             LEFT JOIN accounts ON employees.employee_id = accounts.employee_id
             '''
@@ -92,19 +97,28 @@ class maintenanceModel:
             results = self.cursor.fetchall()
             employees_with_accounts = []
             for row in results:
-                employee = {
-                    'employee_id': row[0],
-                    'first_name': row[1],
-                    'last_name': row[2],
-                    'birthday': row[3],
-                    'email_address': row[4],
-                    'username': row[5],
-                    'status': row[6]
-                }
+                employee = [
+                    row[0],  # employee_id
+                    row[5],  # username
+                    row[1],  # first_name
+                    row[2],  # last_name
+                    row[3],  # birthday
+                    row[4],  # email
+                    row[6],  # loa
+                    row[7]   # status
+                ]
                 employees_with_accounts.append(employee)
             return employees_with_accounts
         except sqlite3.Error as e:
             print('Error:', e)
             return []
 
+    def generate_unique_id(self):
+        while True:
+            letters = ''.join(random.choices(string.ascii_uppercase, k=3))
+            digits = ''.join(random.choices(string.digits, k=4))
+            unique_id = letters + digits
 
+            self.cursor.execute('''SELECT delivery_id FROM delivery WHERE delivery_id = ?''', (unique_id,))
+            if not self.cursor.fetchone():
+                return unique_id
