@@ -53,6 +53,7 @@ class deliveryTwoModel:
 
     def update_delivery_status(self, delivery_id, new_status):
         # Update the status of the selected delivery
+        print(f'In Model\ndelivery_id: {delivery_id}\nStatus: {new_status}')
         self.cursor.execute('UPDATE delivery SET status = ? WHERE delivery_id = ?', (new_status, delivery_id))
         self.connectDatabase.commit()
         messagebox.showinfo('Success', 'Status Updated')

@@ -385,14 +385,32 @@ class deliveryTwoView(ctk.CTkFrame):
         # This function will be called when the dropdown button is clicked
         if self.selected_row is not None:
             selected_delivery_id = self.reordered_table[self.selected_row][0]
-            # print(f"Selected delivery ID: {selected_delivery_id}")
+            # Get the newly selected value from the dropdown
             selected_value = self.status_var.get()
+
+            # Update the delivery status in the controller
             self.controller.update_delivery_status(selected_delivery_id, selected_value)
-            # print(f"Selected status: {selected_value}")
+
+            # Update the status in the local table data
+            self.reordered_table[self.selected_row][3] = selected_value
+
+            # Update the specific cell in the table to reflect the new status
+            self.update_status_cell(self.selected_row, selected_value)
         else:
             print("No row selected.")
 
+    def update_status_cell(self, row_index, new_status):
+        # Determine the status color based on the new status
+        if new_status == 'Delivered':
+            status_color = '#6CB510'
+        elif new_status == 'Pending':
+            status_color = '#BB9A25'
+        else:
+            status_color = '#868686'  # Default color
 
+        # Update the cell text and color in the table
+        self.table.insert(row_index, 3, new_status)
+        self.table.frame[row_index, 3].configure(text_color=status_color, font=('Inter Semibold', 12))
 
     def refresh_list(self):
         for widget in self.rowFrames:
