@@ -3,6 +3,8 @@ from tkinter import messagebox
 from PIL import Image
 from tkinter import ttk
 from tkcalendar import DateEntry
+from CTkTable import *
+
 class maintenanceView(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
@@ -39,7 +41,8 @@ class maintenanceView(ctk.CTkFrame):
         self.show_maintenanceOne()
         self.show_manageAcc()
         self._toggle_password_button()
-            
+        self.show_accountsTable()
+        
     def show_maintenanceOne(self):
         self.maintenanceOneFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7', corner_radius=7)
         self.maintenanceOneFrame.place(x=11, y=15)
@@ -73,7 +76,10 @@ class maintenanceView(ctk.CTkFrame):
     def show_manageAcc(self):
         self.manageAccFrame = ctk.CTkFrame(self.baseFrame, width=210, height=526, fg_color='#F7F7F7', corner_radius=7)
         self.manageAccFrame.place(x=11, y=79)
-       
+
+        self.label = ctk.CTkLabel(self.manageAccFrame, text="Manage Users", font=('Inter Medium', 13), text_color='#2E2E2E')
+        self.label.place(x=14, y=7)
+        
         self.usernameFrame = ctk.CTkFrame(self.manageAccFrame, width=160, height=56, fg_color='transparent')
         self.usernameFrame.place(x=25, y=39)
         
@@ -198,13 +204,105 @@ class maintenanceView(ctk.CTkFrame):
                                         text='Save', font=('Consolas', 12), text_color='#F7F7F7', command=self.save_button_clicked
                                         )
         self.saveButton.place(x=88, y=0)
-        
-        self.label = ctk.CTkLabel(self.manageAccFrame, text="Manage Users", font=('Inter Medium', 13), text_color='#2E2E2E')
-        self.label.place(x=14, y=7)
     
     def show_accountsTable(self):
-        pass
-    
+        self.accountsTableFrame = ctk.CTkFrame(self.baseFrame, width=596, height=526, corner_radius=7,
+                                               fg_color='#F7F7F7', bg_color='#DFDFDF')
+        self.accountsTableFrame.place(x=235, y=79)
+
+        self.label = ctk.CTkLabel(self.accountsTableFrame, text="Accounts", font=('Inter Medium', 13), text_color='#2E2E2E')
+        self.label.place(x=14, y=7)
+        
+        # table_values = self.controller.fetch_accounts()
+        """ [employeeID, username, firstName, lastName, birthdate, email, LOA, status] """
+        table_values = [
+            ['A0001', 'seris', 'Karl', 'Rodriguez', '10/20/02', 'abcdefghij@tip.edu.ph', 'Admin', 'Active'],
+            ['E0001', 'kurt', 'Fritz', 'Gonzales', '11/21/02', 'klmnopqrstu@tip.edu.ph', 'Employee', 'Active'],
+        ]
+        
+        self.reordered_table = []
+        
+        for row_values in table_values:
+            fullname = row_values[2] + row_values[3]
+            reordered_row_values = [row_values[0], row_values[1], fullname, row_values[4], row_values[5], row_values[6], row_values[7]]
+            self.reordered_table.append(reordered_row_values)
+        
+        # firstName + lastName = Full Name
+        column_titles = ['Employee ID', 'Username', 'Full Name', 'Birthdate', 'Email', 'LOA', 'Status']
+        column_widths = [90, 82, 96, 70, 93, 76, 60] # Table Width = 567
+        
+        column_frame = ctk.CTkFrame(self.accountsTableFrame, width=567, height=25, fg_color='#F7F7F7',
+                                    bg_color='#DFDFDF', corner_radius=0)
+        column_frame.place(x=17, y=26)
+        
+        """ Table Columns """
+        x_position = 0
+        for column, (title, width) in enumerate(zip(column_titles, column_widths)):
+            self.columnLabel = ctk.CTkLabel(
+                column_frame,
+                width=column_widths[column],
+                height=25,
+                text=title,
+                fg_color='#F7F7F7',
+                font=('Inter Semibold', 12),
+                text_color='#9E9E9E',
+                corner_radius=0,
+                anchor='w'
+            )
+            self.columnLabel.place(x=0 + x_position, y=3)
+            x_position += width
+        
+        columnLine = ctk.CTkFrame(self.accountsTableFrame, width=596, height=2, fg_color='#dbdbdb')
+        columnLine.place(x=0, y=53)
+        
+        """ Table Rows """
+        self.tableFrame = ctk.CTkScrollableFrame(self.accountsTableFrame, width=560, height=469, fg_color='#F7F7F7', corner_radius=0)
+        self.tableFrame.place(x=17, y=55)
+        
+        self.table = CTkTable(master=self.tableFrame, column=7, padx=0, pady=0, font=('Inter Medium', 10), text_color='#747474',
+                              colors=['#F7F7F7', '#F7F7F7'])
+        
+        if not self.reordered_table:
+            required_rows = 0
+        else:
+            required_rows= len(self.reordered_table)
+        
+        current_rows = self.table.rows
+        for _ in range(required_rows - current_rows):
+            self.table.add_row([''] * 4)
+        
+        string_limit = 14
+        for row_index, row_values in enumerate(self.reordered_table):
+            self.table.insert(row_index, 0, row_values[0])
+            self.table.insert(row_index, 1, row_values[1])
+            self.table.insert(row_index, 2, row_values[2])
+            self.table.insert(row_index, 3, row_values[3])
+            self.table.insert(row_index, 4, row_values[4])
+            self.table.insert(row_index, 5, row_values[5])
+            self.table.insert(row_index, 6, row_values[6])
+        
+        
+        cell_widths = [90, 82, 96, 70, 93, 76, 60] # Table Width = 567
+        for row in range(self.table.rows):
+            status_text = self.reordered_table[row][3]
+            if status_text == 'Active':
+                status_color = '#6CB510'
+            elif status_text == 'Inactive':
+                status_color = '#A65656'
+            else:
+                status_color = '#868686'  # Default color
+                
+            for column in range(self.table.columns):
+                self.table.frame[row, column].configure(width=cell_widths[column], height=25,
+                                                        fg_color='#F7F7F7', text_color='#868686',
+                                                        corner_radius=0, anchor='w')
+
+                self.table.frame[row, 6].configure(text_color=status_color, font=('Inter Medium', 8)) # Status
+                self.table.frame[row, 4].configure(font=('Inter Medium', 6)) # Email
+
+        self.table.pack(fill='y', expand=True)
+
+        
     def _toggle_password_button(self):
         self.eye_open = ctk.CTkImage(light_image=Image.open('./assets/eye-open.png'), size=(15, 15))
         self.eye_closed = ctk.CTkImage(light_image=Image.open('./assets/eye-closed.png'), size=(15, 15))
