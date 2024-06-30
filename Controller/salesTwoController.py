@@ -44,3 +44,7 @@ class salesTwoController:
 
     def fetch_transaction(self):
         return self.model.fetch_transaction()
+
+    def perform_search(self, query):
+        filtered_transactions = self.model.search_transactions(query)
+        return filtered_transactions

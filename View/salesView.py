@@ -400,11 +400,11 @@ class salesView(ctk.CTkFrame):
             messagebox.showinfo('Error', 'No items to save')
             return  # Exit the function if rowFrames is empty
 
-        # Collect data from all rows
         added_rows = []
+
         for rowFrame, spinboxValue, product_idx in self.rowFrames:
             if rowFrame.winfo_ismapped():  # Check if row is visible
-                quantity = spinboxValue.get()
+                quantity = int(spinboxValue.get())  # Get the quantity and convert to int
                 if quantity > 0:  # Only include rows with quantity greater than 0
                     product = self.products[product_idx]
                     row_data = {
@@ -414,10 +414,11 @@ class salesView(ctk.CTkFrame):
                         'quantity': quantity
                     }
                     added_rows.append(row_data)
-                    self.clear_form()
                 else:
                     messagebox.showinfo('Error', 'Quantity cannot be 0')
                     return  # Exit the function if any quantity is 0
+
+        self.clear_form()
 
         if not added_rows:
             messagebox.showinfo('Error', 'No valid items to save')
