@@ -1,35 +1,16 @@
-from Model.maintenanceThreeModel import maintenanceThreeModel
-from View.maintenanceThreeView import maintenanceThreeView
+from Model.maintenanceFiveModel import maintenanceFiveModel
+from View.maintenanceFiveView import maintenanceFiveView
 import tkinter as tk
 from tkinter import messagebox
 
-class maintenanceThreeController:
+class maintenanceFiveController:
     def __init__(self, parent):
-        self.model = maintenanceThreeModel()
-        self.view = maintenanceThreeView(parent, self)
+        self.model = maintenanceFiveModel()
+        self.view = maintenanceFiveView(parent, self)
         
     def main(self):
         self.view.base_frame()
-    
-    def save_button_clicked(self, product_name, type, brand, quantity, price, image):
-        # For debugging purposes
-        # print('In controller')
-        # print(f'Product Name: {product_name}')
-        # print(f'Product Type: {type}')
-        # print(f'Product Brand: {brand}')
-        # print(f'Product Quantity: {quantity}')
-        # print(f'Product Price: {price}')
-        self.model.add_products(product_name,type,brand,quantity,price, image)
-
-    def get_brand(self):
-        return self.model.fetch_brand()
-
-    def get_type(self):
-        return self.model.fetch_type()
-
-    def get_data(self):
-        return self.model.fetch_data()
-    
+        
     def show_maintenanceOne(self):
         self.view.clear_base_frame()
         from Controller.maintenanceController import maintenanceController
@@ -43,7 +24,10 @@ class maintenanceThreeController:
         maintenanceTwo_controller.main()
     
     def show_maintenanceThree(self):
-        pass
+        self.view.clear_base_frame()
+        from Controller.maintenanceThreeController import maintenanceThreeController
+        maintenanceThree_controller = maintenanceThreeController(self.view.baseFrame)
+        maintenanceThree_controller.main()
         
     def show_maintenanceFour(self):
         self.view.clear_base_frame()
@@ -52,10 +36,7 @@ class maintenanceThreeController:
         maintenanceFour_controller.main()
     
     def show_maintenanceFive(self):
-        self.view.clear_base_frame()
-        from Controller.maintenanceFiveController import maintenanceFiveController
-        maintenanceFive_controller = maintenanceFiveController(self.view.baseFrame)
-        maintenanceFive_controller.main()
+        pass
     
     def set_active_tab(self, tab):
         self.view.active_tab = tab

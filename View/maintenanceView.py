@@ -65,11 +65,16 @@ class maintenanceView(ctk.CTkFrame):
                                         fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(3))
         self.selection3.place(x=271, y=14)
 
-        self.selection4 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='System',
+        self.selection4 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage Sales',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
                                         fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(4))
         self.selection4.place(x=402, y=14)
 
+        self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage System',
+                                        font=('Inter', 13, 'bold'), text_color='#9A9A9A',
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(5))
+        self.selection5.place(x=533, y=14)
+        
         self.tabLine = ctk.CTkFrame(self.tabFrame, width=78, height=4, fg_color='#5089B5', corner_radius=7)
         self.tabLine.place(x=28, y=39)
 

@@ -12,6 +12,7 @@ from View.maintenanceView import *
 from View.maintenanceTwoView import *
 from View.maintenanceThreeView import *
 from View.maintenanceFourView import *
+from View.maintenanceFiveView import *
 from View.aboutView import *
 from View.aboutTwoView import *
 from View.graphSalesVIew import *
@@ -25,6 +26,6 @@ __all__ = ["signupView", "loginView", "dashboardView",
            "productView", "salesView", "salesTwoView", 
            "deliveryView", "deliveryTwoView", "inventoryView", 
            "maintenanceView", "maintenanceTwoView", "maintenanceThreeView",
-           "maintenanceFourView", "aboutView", "aboutTwoView",
+           "maintenanceFourView", "maintenanceFiveView", "aboutView", "aboutTwoView",
            "graphSalesView", "stockAlertsView", "statisticView", 
            "calendarView", "verifyEmailView", "resetPassView"]
