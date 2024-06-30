@@ -32,6 +32,12 @@ class maintenanceFourController:
     def show_maintenanceFour(self):
         pass
     
+    def show_maintenanceFive(self):
+        self.view.clear_base_frame()
+        from Controller.maintenanceFiveController import maintenanceFiveController
+        maintenanceFive_controller = maintenanceFiveController(self.view.baseFrame)
+        maintenanceFive_controller.main()
+    
     def set_active_tab(self, tab):
         self.view.active_tab = tab
         self.update_tab()
@@ -44,12 +50,14 @@ class maintenanceFourController:
             self.show_maintenanceThree()
         elif tab == 4:
             self.show_maintenanceFour()
-            
+        elif tab == 5:
+            self.show_maintenanceFive()
+        
     def update_tab(self):
         active_text = '#2E2E2E'
         inactive_text = '#9A9A9A'
 
-        for i in range(1, 5):
+        for i in range(1, 6):
             tab = getattr(self.view, f'selection{i}')
             if i == self.view.active_tab:
                 tab.configure(text_color=active_text)
