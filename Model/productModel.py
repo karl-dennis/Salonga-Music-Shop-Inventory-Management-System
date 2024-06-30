@@ -3,6 +3,9 @@ import random
 import string
 import io
 from PIL import Image
+import pandas as pd
+import matplotlib.pyplot as plt
+
 
 class productModel:
     def __init__(self):

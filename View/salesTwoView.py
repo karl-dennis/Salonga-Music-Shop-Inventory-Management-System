@@ -82,17 +82,26 @@ class salesTwoView(ctk.CTkFrame):
                 self.search_query.set('Search')
 
         self.searchEntry.bind('<FocusIn>', on_entry_click)
-        self.searchEntry.bind('<FocusOut>', on_focus_out)    
-        
+        self.searchEntry.bind('<FocusOut>', on_focus_out)
+
         def perform_search():
             query = self.search_query.get()
             if query.strip() != '':
                 query = self.search_query.get()
-                
-                """Insert model/controller here"""
-                
-                print(f"Performing search for: {query}")
-            
+
+                print(self.controller.perform_search(query))
+
+                for row_values in query:
+                    # Parse the tuple into a dictionary
+                    orderID, buyerName, buyerContact, orderList_json, totalRevenue, date, timestamp = row_values
+                    self.orderList_JSON = json.loads(orderList_json)
+
+                    reordered_row_values = [row_values[0], row_values[1], row_values[3], row_values[2], row_values[5],
+                                            row_values[4], row_values[6]]
+                    self.reordered_table.append(reordered_row_values)
+
+                # print(f"Performing search for: {query}")
+
         self.searchEntry.bind('<Return>', lambda event: perform_search())
 
     def show_historyTable(self):
