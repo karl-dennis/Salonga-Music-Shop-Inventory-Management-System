@@ -17,10 +17,11 @@ class productView(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.name_entry = tk.StringVar()
-        self.quantity = tk.StringVar()
-        self.price = tk.StringVar()
-        self.search_query = tk.StringVar()
+        self.name_entry = ctk.StringVar()
+        self.quantity = ctk.StringVar()
+        self.sellingPrice = ctk.StringVar()
+        self.capitalPrice = ctk.StringVar()
+        self.search_query = ctk.StringVar()
         self.image_data = None
 
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
@@ -69,7 +70,7 @@ class productView(ctk.CTkFrame):
         self.imageButton.place(x=0, y=0)
         
         self.nameFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
-        self.nameFrame.place(x=24, y=186)
+        self.nameFrame.place(x=24, y=181)
         
         self.nameLabel = ctk.CTkLabel(self.nameFrame, text='Product Name', font=('Inter Medium', 12), text_color='#595959',
                                        width=106, height=26, bg_color='transparent', anchor='w')
@@ -82,7 +83,7 @@ class productView(ctk.CTkFrame):
         self.nameEntry.place(x=0, y=26)
 
         self.brandFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
-        self.brandFrame.place(x=24, y=250)
+        self.brandFrame.place(x=24, y=236)
         
         self.brandButton = ctk.CTkButton(self.brandFrame, image=self.icon, text='', width=15, height=15, 
                                         fg_color='transparent', hover_color='#F7F7F7', anchor='center', command=self.brand_button_clicked)
@@ -105,7 +106,7 @@ class productView(ctk.CTkFrame):
         self.brandDropdown.place(x=0, y=26)
         
         self.typeFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
-        self.typeFrame.place(x=24, y=314)
+        self.typeFrame.place(x=24, y=292)
                 
         self.typeButton = ctk.CTkButton(self.typeFrame, image=self.icon, text='', width=15, height=15, 
                                         fg_color='transparent', hover_color='#F7F7F7', anchor='center', command=self.type_button_clicked)
@@ -128,7 +129,7 @@ class productView(ctk.CTkFrame):
         self.typeDropdown.place(x=0, y=26)
         
         self.quantityFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
-        self.quantityFrame.place(x=24, y=378)
+        self.quantityFrame.place(x=24, y=348)
         
         self.quantityLabel = ctk.CTkLabel(self.quantityFrame, text='Initial Quantity', font=('Inter Medium', 12), text_color='#595959',
                                           width=106, height=26, bg_color='transparent', anchor='w')
@@ -140,19 +141,33 @@ class productView(ctk.CTkFrame):
                                        font=('Inter Medium', 12), text_color='#595959', textvariable=self.quantity)
         self.quantityEntry.place(x=0, y=26)
         
-        self.priceFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
-        self.priceFrame.place(x=24, y=442)
+        self.sellingPriceFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
+        self.sellingPriceFrame.place(x=24, y=405)
         
-        self.priceLabel = ctk.CTkLabel(self.priceFrame, text='Price', font=('Inter Medium', 12), text_color='#595959',
+        self.sellingPriceLabel = ctk.CTkLabel(self.sellingPriceFrame, text='Selling Price', font=('Inter Medium', 12), text_color='#595959',
                                        width=106, height=26, bg_color='transparent', anchor='w')
-        self.priceLabel.place(x=5, y=0)
+        self.sellingPriceLabel.place(x=5, y=0)
         
         
-        self.priceEntry = ctk.CTkEntry(self.priceFrame, width=160, height=30, corner_radius=7, 
+        self.sellingPriceEntry = ctk.CTkEntry(self.sellingPriceFrame, width=160, height=30, corner_radius=7, 
                                        bg_color='transparent', fg_color='#FAFAFA',
                                        border_color='#CACACA', border_width=2,
-                                       font=('Inter Medium', 12), text_color='#595959', textvariable=self.price)
-        self.priceEntry.place(x=0, y=26)
+                                       font=('Inter Medium', 12), text_color='#595959', textvariable=self.sellingPrice)
+        self.sellingPriceEntry.place(x=0, y=26)
+        
+        self.capitalPriceFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=56, fg_color='transparent')
+        self.capitalPriceFrame.place(x=24, y=460)
+        
+        self.capitalPriceLabel = ctk.CTkLabel(self.capitalPriceFrame, text='Capital Price', font=('Inter Medium', 12), text_color='#595959',
+                                       width=106, height=26, bg_color='transparent', anchor='w')
+        self.capitalPriceLabel.place(x=5, y=0)
+        
+        
+        self.capitalPriceEntry = ctk.CTkEntry(self.capitalPriceFrame, width=160, height=30, corner_radius=7, 
+                                       bg_color='transparent', fg_color='#FAFAFA',
+                                       border_color='#CACACA', border_width=2,
+                                       font=('Inter Medium', 12), text_color='#595959', textvariable=self.capitalPrice)
+        self.capitalPriceEntry.place(x=0, y=26)
         
         self.buttonFrame = ctk.CTkFrame(self.productRegFrame, width=160, height=26, bg_color='transparent', fg_color='transparent')
         self.buttonFrame.place(x=24, y=532)    
@@ -395,8 +410,9 @@ class productView(ctk.CTkFrame):
         self.brandDropdown.set('Select')
         self.typeDropdown.set('Select')
         self.quantityEntry.delete(0, 'end')
-        self.priceEntry.delete(0, 'end')
-
+        self.sellingPriceEntry.delete(0, 'end')
+        self.capitalPriceEntry.delete(0, 'end')
+        
     def brand_button_clicked(self):
         # Function to handle brand input dialog
         brand_name = simpledialog.askstring("Enter Brand", "Enter the brand name:")
@@ -423,7 +439,7 @@ class productView(ctk.CTkFrame):
         type = self.typeDropdown.get()
         brand = self.brandDropdown.get()
         quantity = self.quantity.get()
-        price = self.price.get()
+        price = self.sellingPrice.get()
         image = self.image_data
         self.controller.save_button_clicked(product_name,type,brand,quantity,price,image)
         messagebox.showinfo('Success', 'Product Added Successfully')
