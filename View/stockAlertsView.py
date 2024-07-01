@@ -34,16 +34,15 @@ class stockAlertsView(ctk.CTkFrame):
                                                    fg_color='#F7F7F7', bg_color='#DFDFDF')
         self.salesHistoryTableFrame.place(x=0, y=30)
         
-        # table_values = self.controller.get_data()
-        table_values = [
-            ['O0001', 'Fritz', 'Gonzales', '09212267656', 12500, '10:59 PM'],
-            ['O0002', 'Bob', 'Gomez', '09212267656', 8700, '02:51 AM'],
-        ]
+        table_values = self.controller.fetch_transaction()
+        # table_values = [
+        #     ['O0001', 'Fritz', 'Gonzales', '09212267656', 12500, '10:59 PM'],
+        #     ['O0002', 'Bob', 'Gomez', '09212267656', 8700, '02:51 AM'],
+        # ]
         
         self.reordered_table = []
         for row_values in table_values:
-            fullname = row_values[1] + ' ' + row_values[2]
-            reordered_row_values = [row_values[0], fullname, row_values[3], row_values[4], row_values[5]]
+            reordered_row_values = [row_values[0], row_values[1], row_values[2], row_values[3], row_values[4]]
             self.reordered_table.append(reordered_row_values)
         
         column_titles = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Time']
