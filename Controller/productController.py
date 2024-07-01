@@ -11,7 +11,7 @@ class productController:
     def main(self):
         self.view.base_frame()
 
-    def save_button_clicked(self, product_name, type, brand, quantity, price, image):
+    def save_button_clicked(self, product_name, type, brand, quantity, price, image, capital_price):
         # For debugging purposes
         # print('In controller')
         # print(f'Product Name: {product_name}')
@@ -19,7 +19,7 @@ class productController:
         # print(f'Product Brand: {brand}')
         # print(f'Product Quantity: {quantity}')
         # print(f'Product Price: {price}')
-        self.model.add_products(product_name,type,brand,quantity,price, image)
+        self.model.add_products(product_name,type,brand,quantity,price, image, capital_price)
 
     def add_brand(self, brand):
         self.model.add_brand(brand)

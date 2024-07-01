@@ -70,7 +70,7 @@ class productModel:
         except sqlite3.Error as e:
             print('Error:', e)
 
-    def add_products(self, name, product_type, brand, quantity, price, image):
+    def add_products(self, name, product_type, brand, quantity, price, image, capital_price):
         quantity = int(quantity)
         price = float(price)
 
@@ -88,12 +88,12 @@ class productModel:
         else:
             image_data = image
 
-        product_data = [product_id, name, brand, product_type, quantity, price, status, image_data]
+        product_data = [product_id, name, brand, product_type, quantity, price, status, image_data, capital_price]
 
         try:
             # Insert the new product into the products table
-            self.cursor.execute('''INSERT INTO products (product_id, product_name, product_brand, product_type, product_quantity, product_price, status, product_image)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', product_data)
+            self.cursor.execute('''INSERT INTO products (product_id, product_name, product_brand, product_type, product_quantity, product_price, status, product_image, capital_price)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', product_data)
             self.connectDatabase.commit()
 
             # Insert the initial stock entries into the stock_items table
@@ -109,9 +109,10 @@ class productModel:
             print('Error:', e)
 
     def fetch_data(self):
+        availability = 'For Sale'
         self.cursor.execute('''SELECT product_id, product_name, product_brand, product_type, 
                                               product_quantity, product_price, status 
-                                       FROM products''')
+                                       FROM products WHERE availability = ?''', (availability,))
         data = self.cursor.fetchall()
         converted_data = [list(row) for row in data]
         return converted_data

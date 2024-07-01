@@ -94,7 +94,7 @@ class maintenanceTwoView(ctk.CTkFrame):
             reordered_row_values = [row_values[0], row_values[1], action, row_values[3], row_values[4]]
             self.reordered_table.append(reordered_row_values)
 
-        column_titles = ['Date', 'Timestamp', 'Action', 'Employee ID', 'Status']
+        column_titles = ['Date', 'Timestamp', 'Action', 'Employee ID', 'Role']
         column_widths = [165, 165, 165, 165, 120]  # Table Width = 780
 
         column_frame = ctk.CTkFrame(self.userLogsTableFrame, width=780, height=28, fg_color='#F7F7F7',

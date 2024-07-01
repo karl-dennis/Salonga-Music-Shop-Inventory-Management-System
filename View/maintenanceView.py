@@ -435,9 +435,8 @@ class maintenanceView(ctk.CTkFrame):
             loa = self.loaDropdown.get()
 
             # Assuming you want to update the selected row with the new data
-            self.reordered_table[self.selected_row] = [id, username, f"{first_name} {last_name}", birthdate, email,
-                                                       loa, 'Active']
-            # Update the table display (not implemented here, but you should update your table view accordingly)
+            # self.reordered_table[self.selected_row] = [id, username, f"{first_name} {last_name}", birthdate, email,
+            #                                            loa, 'Active']
 
             self.clear_form()
             self.deselect_row(self.selected_row)  # Deselect the row after saving
