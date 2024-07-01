@@ -71,7 +71,7 @@ class maintenanceView(ctk.CTkFrame):
                                         fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(4))
         self.selection4.place(x=402, y=14)
 
-        self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage System',
+        self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Backup & Restore',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
                                         fg_color='#F7F7F7', hover_color='#F7F7F7', command=self.show_systemDialog)
         self.selection5.place(x=533, y=14)
@@ -277,7 +277,7 @@ class maintenanceView(ctk.CTkFrame):
         
         current_rows = self.table.rows
         for _ in range(required_rows - current_rows):
-            self.table.add_row([''] * 4)
+            self.table.add_row([''] * 6)
         
         for row_index, row_values in enumerate(self.reordered_table):
             self.table.insert(row_index, 0, row_values[0])

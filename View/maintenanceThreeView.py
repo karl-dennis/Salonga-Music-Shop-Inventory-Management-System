@@ -73,7 +73,7 @@ class maintenanceThreeView(ctk.CTkFrame):
                                         command=lambda: self.controller.set_active_tab(4))
         self.selection4.place(x=402, y=14)
 
-        self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage System',
+        self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Backup & Restore',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
                                         fg_color='#F7F7F7', hover_color='#F7F7F7', command=self.show_systemDialog)
         self.selection5.place(x=533, y=14)
