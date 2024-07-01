@@ -408,10 +408,15 @@ class maintenanceThreeView(ctk.CTkFrame):
             widget.destroy()
 
     def show_systemDialog(self):
-        if self.system_dialog is None or not self.system_dialog.winfo_exists():
-            self.system_dialog = SystemDialog(self)  
-        else:
-            self.system_dialog.focus() 
+        if self.system_dialog is None:
+            self.system_dialog = SystemDialog(self)
+            self.system_dialog.grab_set()  # Make the SystemDialog modal
+            self.system_dialog.protocol("WM_DELETE_WINDOW", self.on_systemDialog_close)
+            self.wait_window(self.system_dialog)
+            
+    def on_systemDialog_close(self):
+        self.system_dialog.destroy()
+        self.system_dialog = None
             
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
@@ -420,8 +425,10 @@ class SystemDialog(ctk.CTkToplevel):
         self.title("Backup & Restore")
         self.configure(fg_color='#EBEBEB')
         self.resizable(False, False)        
-        
+        ctk.set_appearance_mode("light")
         self.center_window()
+        self.transient()
+        self.grab_set()
         
         backupFrame = ctk.CTkFrame(self, width=120, height=148, fg_color='transparent')
         backupFrame.place(x=36, y=33)
@@ -494,7 +501,7 @@ class SystemDialog(ctk.CTkToplevel):
         x = (self.winfo_screenwidth() // 2) - (width // 2)
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f'{370}x{220}+{x}+{y}')
-        
+       
 class App:
     def __init__(self):
         self.root = ctk.CTk()
