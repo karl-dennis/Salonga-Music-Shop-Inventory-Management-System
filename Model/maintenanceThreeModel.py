@@ -12,12 +12,13 @@ class maintenanceThreeModel:
         self.connectDatabase = None
         self.cursor = None
         self.connect_database()
-        self.create_table_products()
-
-        self.create_brand_table()
-        self.create_table_stock()
-
-        self.create_product_type_table()
+        self.add_column()
+        # self.create_table_products()
+        #
+        # self.create_brand_table()
+        # self.create_table_stock()
+        #
+        # self.create_product_type_table()
 
     def connect_database(self):
         try:
@@ -101,8 +102,8 @@ class maintenanceThreeModel:
                         VALUES (?, ?)''', stock_data)
             self.connectDatabase.commit()
 
-            print(f"Product added with ID: {product_id}")
-            print(f"{quantity} stock items added for product ID: {product_id}")
+            # print(f"Product added with ID: {product_id}")
+            # print(f"{quantity} stock items added for product ID: {product_id}")
 
         except sqlite3.Error as e:
             print('Error:', e)
@@ -126,7 +127,7 @@ class maintenanceThreeModel:
                 return unique_id
 
     def add_brand(self, new_brand):
-        print(f"Adding brand: {new_brand}")
+        # print(f"Adding brand: {new_brand}")
         try:
             self.cursor.execute('''INSERT INTO brands (brand) VALUES (?)''', (new_brand,))
             self.connectDatabase.commit()
@@ -145,10 +146,17 @@ class maintenanceThreeModel:
     def fetch_brand(self):
         self.cursor.execute('''SELECT * FROM brands''')
         brands = self.cursor.fetchall()
-        print(brands)
+        # print(brands)
         return [brand[0] for brand in brands]
 
     def fetch_type(self):
         self.cursor.execute('''SELECT * FROM product_type''')
         product_type_list = self.cursor.fetchall()
         return [product_types[0] for product_types in product_type_list]
+
+    def add_column(self):
+        try:
+            self.cursor.execute('''ALTER TABLE products ADD COLUMN capital_price INTEGER''')
+            self.connectDatabase.commit()
+        except sqlite3.Error as e:
+            print('Error', e)
