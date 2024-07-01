@@ -63,4 +63,6 @@ class maintenanceTwoController:
                 tab.configure(text_color=active_text)
             else:
                 tab.configure(text_color=inactive_text)
-    
+
+    def get_event(self):
+        return self.model.fetch_event()

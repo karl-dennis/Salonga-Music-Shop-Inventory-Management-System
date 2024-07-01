@@ -5,11 +5,13 @@ import random
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from Model.maintenanceTwoModel import *
 
 
 class loginModel:
     def __init__(self):
         self.connectDatabase()
+        self.maintenance = maintenanceTwoModel()
     
     def login(self, username, password):
         try:
@@ -26,6 +28,16 @@ class loginModel:
             # Verify the provided password against the stored hashed password
             if bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
                 print('Success: User logged in successfully.')
+                print(type(username))
+                self.cursor.execute('''SELECT employee_id FROM accounts WHERE username=?''', (username,))
+                id = self.cursor.fetchone()
+                print(id)
+                emp_id = id[0]
+                print(emp_id)
+                self.cursor.execute('''SELECT level_of_access FROM employees WHERE employee_id=?''', (emp_id,))
+                role = self.cursor.fetchone()
+                print(role)
+                self.maintenance.log_event(username, emp_id, role[0])
                 return True
             else:
                 print('Error: Incorrect password.')
