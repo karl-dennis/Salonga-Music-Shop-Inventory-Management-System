@@ -43,7 +43,8 @@ class dashboardView(ctk.CTk):
         self._selection_4()
         self._selection_5()
         self._selection_6()
-
+        self._logout_button()
+        
     def main(self):
         self.mainloop()
 
@@ -125,7 +126,14 @@ class dashboardView(ctk.CTk):
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=lambda: self.set_active_selection(6))
         self.selection6.place(x=10, y=396)
-            
+    
+    def _logout_button(self):
+        self.logoutButton = ctk.CTkButton(self.leftFrame, text="Log Out", font=('Consolas', 15), text_color='#F8F8F8', hover_color='#4f4f4f',
+                                          fg_color='#595959', bg_color='#EDEDED', width=123, height=32, corner_radius=20, command=self.controller.show_login)
+        self.logoutButton.place(x=28, y=603)
+    
+    
+    
     def show_dashboard(self): # Execute on click
             self.clear_base_frame()
             self.show_calendar()

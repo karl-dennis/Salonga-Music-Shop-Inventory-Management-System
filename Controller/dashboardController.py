@@ -4,7 +4,7 @@ from View.dashboardView import dashboardView
 from View.productView import productView
 import tkinter as tk
 from tkinter import messagebox
-
+from datetime import datetime
 
 class dashboardController:
     def __init__(self):
@@ -25,6 +25,17 @@ class dashboardController:
     def show_dashboard(self): 
         self.view.show_dashboard()
 
+    def show_login(self):
+        from Controller.loginController import loginController
+        
+        current_datetime = datetime.now()
+        current_time_date_str = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+        print(current_time_date_str)
+        
+        self.view.destroy()
+        login_controller = loginController()
+        login_controller.main()
+    
     def show_products(self):
         self.view.clear_base_frame()
         from Controller.productController import productController
