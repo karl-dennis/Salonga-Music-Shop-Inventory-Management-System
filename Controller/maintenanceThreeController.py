@@ -85,3 +85,9 @@ class maintenanceThreeController:
                 tab.configure(text_color=active_text)
             else:
                 tab.configure(text_color=inactive_text)
+
+    def get_capital_price(self, product_id):
+        return self.model.get_capital_price(product_id)
+
+    def get_product_image(self, product_id):
+        return self.model.get_product_image(product_id)

@@ -12,7 +12,8 @@ class maintenanceThreeModel:
         self.connectDatabase = None
         self.cursor = None
         self.connect_database()
-        self.add_column()
+        # self.delete_column()
+        # self.add_column()
         # self.create_table_products()
         #
         # self.create_brand_table()
@@ -110,7 +111,7 @@ class maintenanceThreeModel:
 
     def fetch_data(self):
         self.cursor.execute('''SELECT product_id, product_name, product_brand, product_type, 
-                                              product_quantity, product_price, status 
+                                              product_quantity, product_price, status
                                        FROM products''')
         data = self.cursor.fetchall()
         converted_data = [list(row) for row in data]
@@ -156,7 +157,28 @@ class maintenanceThreeModel:
 
     def add_column(self):
         try:
-            self.cursor.execute('''ALTER TABLE products ADD COLUMN capital_price INTEGER''')
+            self.cursor.execute('''ALTER TABLE products ADD COLUMN capital_price REAL''')
             self.connectDatabase.commit()
         except sqlite3.Error as e:
             print('Error', e)
+
+    def delete_column(self):
+        try:
+            self.cursor.execute('''ALTER TABLE products DROP COLUMN capital_price''')
+            self.connectDatabase.commit()
+        except sqlite3.Error as e:
+            print('Error', e)
+
+    def get_capital_price(self, product_id):
+        try:
+            self.cursor.execute('''SELECT capital_price FROM products WHERE product_id = ?''', (product_id,))
+            return self.cursor.fetchone()
+        except sqlite3.Error as e:
+            print('Error: ', e)
+
+    def get_product_image(self, product_id):
+        try:
+            self.cursor.execute('''SELECT product_image FROM products WHERE product_id = ?''', (product_id,))
+            return self.cursor.fetchone()
+        except sqlite3.Error as e:
+            print('Error: ', e)
