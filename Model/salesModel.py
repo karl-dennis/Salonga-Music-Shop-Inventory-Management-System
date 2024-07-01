@@ -18,8 +18,9 @@ class salesModel:
 
     def fetch_products(self):
         try:
+            availability = 'For Sale'
             self.cursor.execute('''SELECT product_image, product_name, product_brand, product_type, product_quantity, product_price
-            FROM products''')
+            FROM products WHERE availability = ?''', (availability,))
 
             data = self.cursor.fetchall()
             infos = [list(row) for row in data]

@@ -1,51 +1,62 @@
+import sqlite3
 import customtkinter as ctk
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
+import seaborn as sns
+import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
 class graphSalesView(ctk.CTkFrame):
     def __init__(self, master, controller):
-        super().__init__(master, 
-                        #  width=400, height=352, 
-                         fg_color='transparent', corner_radius=7)
+        super().__init__(master, fg_color='transparent', corner_radius=7)
         self.controller = controller
         self.create_widgets()
-        
+
     def create_widgets(self):
         # Add your widgets here
-        inner_frame = ctk.CTkFrame(self, width=432, height=280, fg_color='#F7F7F7')
-        inner_frame.pack_propagate(0)
-        inner_frame.pack()
-        
-        self.plot(inner_frame)
-        
-        label = ctk.CTkLabel(inner_frame, text="Sales Graph", font=('Inter Medium', 12), text_color='#2E2E2E',
-                             width=80, height=14)
-        label.place(x=13, y=12)
-        
-        view_all = ctk.CTkButton(inner_frame, text="View All", font=("Inter Medium", 12, 'underline'), 
-                                            text_color="#2E8EC4", fg_color='transparent', hover_color='#F7F7F7',
-                                            width=60, height=14)
-        view_all.place(x=362, y=9)
-        
-        
+        self.inner_frame = ctk.CTkFrame(self, width=432, height=280, fg_color='#F7F7F7')
+        self.inner_frame.pack_propagate(0)
+        self.inner_frame.pack(fill='both', expand=True)
+
+        self.plot(self.inner_frame)
+
+        label = ctk.CTkLabel(self.inner_frame, text="Sales Graph", font=('Inter Medium', 12), text_color='#2E2E2E')
+        label.place(relx=0.03, rely=0.05)
+
+        view_all = ctk.CTkButton(self.inner_frame, text="View All", font=("Inter Medium", 12, 'underline'),
+                                 text_color="#2E8EC4", fg_color='transparent', hover_color='#F7F7F7')
+        view_all.place(relx=0.85, rely=0.03)
 
     def plot(self, inner_frame):
-        categories = ['A', 'B', 'C', 'D', 'E']
-        values = [23, 45, 56, 78, 33]
+        conn = sqlite3.connect('salonga_music_shop.db')
+        query = '''
+            SELECT date, SUM(revenue) as total_revenue
+            FROM transactions
+            GROUP BY date
+            ORDER BY date
+        '''
+        # Execute the query and store the result in a DataFrame
+        data = pd.read_sql_query(query, conn)
+        conn.close()
 
-        fig, ax = plt.subplots(figsize=(3.5, 3.5))
+        # Set the Seaborn style and palette
+        sns.set(style="whitegrid", palette="tab10")
+
+        fig, ax = plt.subplots()
         fig.set_facecolor("#F7F7F7")
         ax.set_facecolor("#F7F7F7")
-        
-        ax.pie(values, labels=categories, autopct='%1.1f%%', startangle=90, colors=plt.cm.tab20.colors)
-        ax.axis('equal')
-        ax.set_title('Donut Chart')
-        
-        center_circle = plt.Circle((0, 0), 0.7, color='white', fc='white', linewidth=1.25)
-        ax.add_artist(center_circle)
-        
+
+        # Plot the line chart
+        sns.lineplot(data=data, x='date', y='total_revenue', marker='o', ax=ax)
+
+        # Customize the plot
+        ax.set_title('Daily Revenue')
+        ax.set_xlabel('Date')
+        ax.set_ylabel('Total Revenue')
+        ax.grid(True, color='white')
+
+        # Display the plot in a Tkinter canvas
         canvas = FigureCanvasTkAgg(fig, master=inner_frame)
         canvas.draw()
-        canvas.get_tk_widget().place(x=80, y=20)
-        
+        # Set the plot size to be slightly smaller than the frame
+        canvas.get_tk_widget().place(relx=0.05, rely=0.05, relwidth=0.9, relheight=0.9)
