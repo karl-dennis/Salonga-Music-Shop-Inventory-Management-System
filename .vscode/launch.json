@@ -9,7 +9,7 @@
             "name": "Python: Current File",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/View/aboutTwoView.py",
+            "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal"
         }
     ]
