@@ -1,6 +1,10 @@
 import customtkinter as ctk
 from CTkTable import *
-
+import shutil
+import os
+import datetime
+from tkinter import filedialog
+from PIL import Image
 
 class maintenanceTwoView(ctk.CTkFrame):
 
@@ -60,11 +64,13 @@ class maintenanceTwoView(ctk.CTkFrame):
                                         command=lambda: self.controller.set_active_tab(4))
         self.selection4.place(x=402, y=14)
 
-        self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage System',
+        self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Backup & Restore',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
-                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(5))
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=self.show_systemDialog)
         self.selection5.place(x=533, y=14)
 
+        self.system_dialog = None
+        
         self.tabLine = ctk.CTkFrame(self.tabFrame, width=78, height=4, fg_color='#5089B5', corner_radius=7)
         self.tabLine.place(x=159, y=39)
 
@@ -156,6 +162,101 @@ class maintenanceTwoView(ctk.CTkFrame):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
 
+    def show_systemDialog(self):
+        if self.system_dialog is None:
+            self.system_dialog = SystemDialog(self)
+            self.system_dialog.grab_set()  # Make the SystemDialog modal
+            self.system_dialog.protocol("WM_DELETE_WINDOW", self.on_systemDialog_close)
+            self.wait_window(self.system_dialog)
+            
+    def on_systemDialog_close(self):
+        self.system_dialog.destroy()
+        self.system_dialog = None
+            
+class SystemDialog(ctk.CTkToplevel):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.geometry("370x220")
+        self.title("Backup & Restore")
+        self.configure(fg_color='#EBEBEB')
+        self.resizable(False, False)        
+        ctk.set_appearance_mode("light")
+        self.center_window()
+        self.transient()
+        self.grab_set()
+        
+        backupFrame = ctk.CTkFrame(self, width=120, height=148, fg_color='transparent')
+        backupFrame.place(x=36, y=33)
+        
+        backup_icon = ctk.CTkImage(light_image=Image.open('./assets/backup.png'), size=(102, 79))
+        backupButton = ctk.CTkButton(backupFrame, image=backup_icon, text='', width=110, height=110,
+                                     border_width=3, border_color='#B5B5B5', fg_color='#E2E2E2', corner_radius=7,
+                                     hover_color='#E2E2E2', anchor='center', bg_color='#EBEBEB',
+                                     command=self.backup_database)
+        backupButton.place(x=0, y=0)
+        
+        backupLabel = ctk.CTkLabel(backupFrame, width=120, height=32, 
+                                   text="Create a secure backup\nof your data.",
+                                   font=('Inter Medium', 10), text_color='#696969')
+        backupLabel.place(x=0, y=116)
+        
+        restoreFrame = ctk.CTkFrame(self, width=120, height=148, fg_color='transparent')
+        restoreFrame.place(x=213, y=33)
+        
+        restore_icon = ctk.CTkImage(light_image=Image.open('./assets/restore.png'), size=(102, 79))
+        restoreButton = ctk.CTkButton(restoreFrame, image=restore_icon, text='', width=110, height=110,
+                                     border_width=3, border_color='#0792C5', fg_color='#1FB2E7', corner_radius=7,
+                                     hover_color='#1FB2E7', anchor='center', bg_color='#EBEBEB',
+                                     command=self.restore_database)
+        restoreButton.place(x=0, y=0)
+        
+        restoreLabel = ctk.CTkLabel(restoreFrame, width=120, height=32, 
+                                   text="Restore your data from\na previous backup.",
+                                   font=('Inter Medium', 10), text_color='#0792C5')
+        restoreLabel.place(x=0, y=116)
+    
+    def backup_database(self):
+        database_path = './salonga_music_shop.db'
+        backup_folder = filedialog.askdirectory(title='Select Backup Folder')
+
+        if not backup_folder:
+            return
+
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        backup_file = os.path.join(backup_folder, f'backup_{timestamp}.db')
+
+        try:
+            shutil.copy(database_path, backup_file)
+            print(f"Database backed up successfully to {backup_file}")
+        except Exception as e:
+            print(f"Error during backup: {str(e)}")
+    
+    def restore_database(self):
+        # Example: Database file path (adjust according to your actual path)
+        database_path = './salonga_music_shop.db'
+
+        # Prompt the user to choose a backup file
+        backup_file = filedialog.askopenfilename(title='Select Backup File', filetypes=[('Database files', '*.db')])
+
+        if not backup_file:
+            # User canceled the dialog
+            return
+
+        try:
+            # Perform the restore by copying the backup file to the database path
+            shutil.copy(backup_file, database_path)
+            print(f"Database restored successfully from {backup_file}")
+        except Exception as e:
+            print(f"Error during restore: {str(e)}")
+            
+    def center_window(self):
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.winfo_screenheight() // 2) - (height // 2)
+        self.geometry(f'{370}x{220}+{x}+{y}')
+ 
 
 class App:
     def __init__(self):

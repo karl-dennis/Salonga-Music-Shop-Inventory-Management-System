@@ -176,7 +176,7 @@ class deliveryTwoView(ctk.CTkFrame):
             self.table.insert(row_index, 0, row_values[0]) # Delivery ID
             self.table.insert(row_index, 1, row_values[2]) # Date
             self.table.insert(row_index, 2,
-                              f"${row_values[1]:.2f}".rstrip('0').rstrip('.'))  # Subtotal
+                              f"₱{row_values[1]:.2f}".rstrip('0').rstrip('.'))  # Subtotal
             self.table.insert(row_index, 3, row_values[3])  # Status
 
         # Configure cell widths and colors after inserting all data

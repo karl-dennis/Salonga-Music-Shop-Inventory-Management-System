@@ -60,7 +60,7 @@ class maintenanceFourView(ctk.CTkFrame):
                                         fg_color='#F7F7F7', hover_color='#F7F7F7')
         self.selection4.place(x=402, y=14)
 
-        self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Manage System',
+        self.selection5 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='Backup & Restore',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
                                         fg_color='#F7F7F7', hover_color='#F7F7F7', command=self.show_systemDialog)
         self.selection5.place(x=533, y=14)
@@ -229,7 +229,12 @@ class maintenanceFourView(ctk.CTkFrame):
         if self.system_dialog is None:
             self.system_dialog = SystemDialog(self)
             self.system_dialog.grab_set()  # Make the SystemDialog modal
+            self.system_dialog.protocol("WM_DELETE_WINDOW", self.on_systemDialog_close)
             self.wait_window(self.system_dialog)
+            
+    def on_systemDialog_close(self):
+        self.system_dialog.destroy()
+        self.system_dialog = None
             
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
@@ -238,7 +243,7 @@ class SystemDialog(ctk.CTkToplevel):
         self.title("Backup & Restore")
         self.configure(fg_color='#EBEBEB')
         self.resizable(False, False)        
-        
+        ctk.set_appearance_mode("light")
         self.center_window()
         self.transient()
         self.grab_set()

@@ -165,7 +165,7 @@ class dashboardView(ctk.CTk):
         inventory_view.place(x=305, y=15)
 
     def show_stock_alerts(self):
-        stock_alerts_controller = stockAlertsController()
+        stock_alerts_controller = stockAlertsController(self.baseFrame)
         stock_alerts_view = stockAlertsView(self.baseFrame, stock_alerts_controller)
         stock_alerts_view.place(x=15, y=325)
     

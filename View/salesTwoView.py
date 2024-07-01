@@ -173,7 +173,7 @@ class salesTwoView(ctk.CTkFrame):
             self.table.insert(row_index, 0, row_values[0])  # Order ID
             self.table.insert(row_index, 1, row_values[1])  # Buyer Name
             self.table.insert(row_index, 2, str(row_values[3]))  # Buyer Contact
-            self.table.insert(row_index, 3, f"${row_values[5]:.2f}".rstrip('0').rstrip('.'))  # Total Revenue
+            self.table.insert(row_index, 3, f"₱{row_values[5]:.2f}".rstrip('0').rstrip('.'))  # Total Revenue
             self.table.insert(row_index, 4, row_values[4])  # Date
             self.table.insert(row_index, 5, row_values[6])  # Timestamp
 
@@ -191,7 +191,7 @@ class salesTwoView(ctk.CTkFrame):
         self.bind_cell_click_events()
 
         # Add row separators
-        for row in range(1, self.table.rows + 1):
+        for row in range(1, self.table.rows):
             rowLine = ctk.CTkFrame(self.tableFrame, width=522, height=2, fg_color='#dbdbdb')
             rowLine.place(x=0, y=(row) * 38)
 

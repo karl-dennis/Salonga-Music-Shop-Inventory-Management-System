@@ -43,7 +43,6 @@ class productView(ctk.CTkFrame):
         
         self.show_productReg()
         self.show_productGraph()
-        self.show_reports()
         self.show_productTable()
         self.search_bar()
         
@@ -51,7 +50,6 @@ class productView(ctk.CTkFrame):
         self.productTableFrame.bind('<Button-1>', lambda event: self.productTableFrame.focus_set())
         self.productRegFrame.bind('<Button-1>', lambda event: self.productRegFrame.focus_set())
         self.productGraphFrame.bind('<Button-1>', lambda event: self.productGraphFrame.focus_set())
-        self.reportsFrame.bind('<Button-1>', lambda event: self.reportsFrame.focus_set())
         
     def show_productReg(self):
         self.icon = ctk.CTkImage(light_image=Image.open('./assets/plus.png'), size=(15,15)) # Icon implementation
@@ -188,7 +186,7 @@ class productView(ctk.CTkFrame):
         self.label.place(x=14, y=7)
         
     def show_productGraph(self):
-        self.productGraphFrame = ctk.CTkFrame(self.productFrame, width=382, height=232, fg_color='#F7F7F7', corner_radius=7)
+        self.productGraphFrame = ctk.CTkFrame(self.productFrame, width=598, height=232, fg_color='#F7F7F7', corner_radius=7)
         self.productGraphFrame.place(x=231, y=10)
         
         self.label = ctk.CTkLabel(self.productGraphFrame, text="Stock Graph", font=('Inter Medium', 13), text_color='#2E2E2E')
@@ -235,12 +233,6 @@ class productView(ctk.CTkFrame):
         canvas.draw()
         canvas.get_tk_widget().place(x=90, y=10)  # Adjust x and y to position the plot correctly within the inner frame
 
-    def show_reports(self):
-        self.reportsFrame = ctk.CTkFrame(self.productFrame, width=207, height=232, fg_color='#F7F7F7', corner_radius=7)
-        self.reportsFrame.place(x=622, y=10)
-        
-        self.label = ctk.CTkLabel(self.reportsFrame, text="Reports", font=('Inter Medium', 13), text_color='#2E2E2E')
-        self.label.place(x=14, y=7)
     
 
     def show_productTable(self):
