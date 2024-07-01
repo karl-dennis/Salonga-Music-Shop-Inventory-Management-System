@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from CTkTable import *
-
+from PIL import Image
 
 class maintenanceFourView(ctk.CTkFrame):
 
@@ -230,10 +230,48 @@ class maintenanceFourView(ctk.CTkFrame):
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.geometry("400x300")
-
-        self.label = ctk.CTkLabel(self, text="ToplevelWindow")
-        self.label.pack(padx=20, pady=20)
+        self.geometry("370x220")
+        self.title("Backup & Restore")
+        self.configure(fg_color='#EBEBEB')
+        self.resizable(False, False)        
+        
+        self.center_window()
+        
+        backupFrame = ctk.CTkFrame(self, width=120, height=148, fg_color='transparent')
+        backupFrame.place(x=36, y=33)
+        
+        backup_icon = ctk.CTkImage(light_image=Image.open('./assets/backup.png'), size=(102, 79))
+        backupButton = ctk.CTkButton(backupFrame, image=backup_icon, text='', width=110, height=110,
+                                     border_width=3, border_color='#B5B5B5', fg_color='#E2E2E2', corner_radius=7,
+                                     hover_color='#E2E2E2', anchor='center', bg_color='#EBEBEB')
+        backupButton.place(x=0, y=0)
+        
+        backupLabel = ctk.CTkLabel(backupFrame, width=120, height=32, 
+                                   text="Create a secure backup\nof your data.",
+                                   font=('Inter Medium', 10), text_color='#696969')
+        backupLabel.place(x=0, y=116)
+        
+        restoreFrame = ctk.CTkFrame(self, width=120, height=148, fg_color='transparent')
+        restoreFrame.place(x=213, y=33)
+        
+        restore_icon = ctk.CTkImage(light_image=Image.open('./assets/restore.png'), size=(102, 79))
+        restoreButton = ctk.CTkButton(restoreFrame, image=restore_icon, text='', width=110, height=110,
+                                     border_width=3, border_color='#0792C5', fg_color='#1FB2E7', corner_radius=7,
+                                     hover_color='#1FB2E7', anchor='center', bg_color='#EBEBEB')
+        restoreButton.place(x=0, y=0)
+        
+        restoreLabel = ctk.CTkLabel(restoreFrame, width=120, height=32, 
+                                   text="Restore your data from\na previous backup.",
+                                   font=('Inter Medium', 10), text_color='#0792C5')
+        restoreLabel.place(x=0, y=116)
+        
+    def center_window(self):
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.winfo_screenheight() // 2) - (height // 2)
+        self.geometry(f'{370}x{220}+{x}+{y}')
         
 class App:
     def __init__(self):
