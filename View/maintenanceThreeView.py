@@ -23,6 +23,7 @@ class maintenanceThreeView(ctk.CTkFrame):
         self.capital_price = ctk.StringVar()
         self.image_data = None
         self.search_query = ctk.StringVar()
+        self.availability_var = ctk.StringVar()
 
         self.importIcon = ctk.CTkImage(light_image=Image.open('./assets/import.png'), size=(36, 33))
 
@@ -210,7 +211,7 @@ class maintenanceThreeView(ctk.CTkFrame):
                                             font=('Inter Medium', 12), text_color='#595959',
                                             dropdown_font=('Inter Medium', 12), dropdown_text_color='#595959',
                                             dropdown_fg_color='#FAFAFA', dropdown_hover_color='#e4e4e4',
-                                            button_color='#CACACA')
+                                            button_color='#CACACA', variable=self.availability_var)
         self.availabilityDropdown.set('Select')
         self.availabilityDropdown.place(x=0, y=26)
 
@@ -238,9 +239,9 @@ class maintenanceThreeView(ctk.CTkFrame):
                                   text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        table_values = self.controller.get_data()
+        self.table_values = self.controller.get_data()
         self.reordered_table = []
-        for row_values in table_values:
+        for row_values in self.table_values:
 
             reordered_row_values = [row_values[0], row_values[1], row_values[3], row_values[2], row_values[5], row_values[4], row_values[6]]
             self.reordered_table.append(reordered_row_values)
@@ -343,19 +344,18 @@ class maintenanceThreeView(ctk.CTkFrame):
 
     def select_row(self, row):
         self.table.edit_row(row, fg_color='#EAEAEA')
-        print(f"Selected row {row}: {self.reordered_table[row]}")
-
         capital_price = self.controller.get_capital_price(self.reordered_table[row][0])
-
+        availability = self.controller.get_availability(self.reordered_table[row][0])
+        self.id = self.table_values[row][0]
         self.name_entry.set(value=self.reordered_table[row][1])
         self.capital_price.set(value=capital_price)
         self.quantity.set(value=self.reordered_table[row][5])
         self.price.set(value=self.reordered_table[row][4])
+        self.availabilityDropdown.set(value=availability[0])
         self.brandDropdown.set(value=self.reordered_table[row][3])
         self.typeDropdown.set(value=self.reordered_table[row][2])
         image = self.controller.get_product_image(self.reordered_table[row][0])
         imageblob = image[0]
-        self.image_data = None
         if imageblob:
             product_image = Image.open(io.BytesIO(imageblob))
             # product_image.thumbnail((66, 66))
@@ -373,26 +373,30 @@ class maintenanceThreeView(ctk.CTkFrame):
             resized_image = product_image.resize((new_width, new_height))
             product_image = ctk.CTkImage(light_image=product_image, size=(new_width, new_height))
 
-        else:
-            product_image = self.placeholderIcon
+            self.imageButton = ctk.CTkButton(self.imageFrame, image=product_image, text='', width=58, height=58,
+                                             border_width=2.5, border_color='#B8B8B8', corner_radius=7,
+                                             fg_color='#FFFFFF', bg_color='#F7F7F7',
+                                             hover_color='#FFFFFF', command=self.select_image,
+                                             anchor='center')
 
-        self.imageButton = ctk.CTkButton(self.imageFrame, image=product_image, text='', width=58, height=58,
-                                         border_width=2.5, border_color='#B8B8B8', corner_radius=7,
-                                         fg_color='#FFFFFF', bg_color='#F7F7F7',
-                                         hover_color='#FFFFFF', command=self.select_image,
-                                         anchor='center')
+        else:
+            self.imageButton.configure(image=self.importIcon)
+
+
         self.imageButton.grid(row=0, column=0)
         self.imageButton.grid_propagate(0)
 
     def deselect_row(self, row):
         self.table.edit_row(row, fg_color='#F7F7F7')
-        print(f"Deselected row {row}: {self.reordered_table[row]}")
         self.name_entry.set(value='')
         self.capital_price.set(value='')
         self.quantity.set(value='')
         self.price.set(value='')
-        self.brandDropdown.set(value='')
-        self.typeDropdown.set(value='')
+        self.brandDropdown.set(value='Select')
+        self.typeDropdown.set(value='Select')
+        self.imageButton.configure(image=self.importIcon)
+        self.availabilityDropdown.set(value='Select')
+
 
     def select_image(self):
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg;*.gif")])
@@ -433,21 +437,39 @@ class maintenanceThreeView(ctk.CTkFrame):
         self.nameEntry.delete(0, 'end')
         self.brandDropdown.set('Select')
         self.typeDropdown.set('Select')
+        self.availabilityDropdown.set('Select')
         self.quantityEntry.delete(0, 'end')
-        self.priceEntry.delete(0, 'end')
+        self.sellingPriceEntry.delete(0, 'end')
+        self.capitalPriceEntry.delete(0, 'end')
 
     def save_button_clicked(self):
-        product_name = self.name_entry.get()
-        type = self.typeDropdown.get()
-        brand = self.brandDropdown.get()
-        quantity = self.quantity.get()
-        price = self.price.get()
-        image = self.image_data
-        self.controller.save_button_clicked(product_name, type, brand, quantity, price, image)
-        messagebox.showinfo('Success', 'Product Added Successfully')
-        self.clear_form()
+        if self.selected_row is not None:
+            id = self.id
+            name = self.name_entry.get()
+            quantity = self.quantity.get()
+            selling_price = self.price.get()
+            capital_price = self.capital_price.get()
+            # capital_price_list = list(capital_price)
+            # print(id, name, quantity, selling_price, capital_price)
+            availability = self.availability_var.get()
 
-        self.show_productTable()
+            self.clear_form()
+            self.deselect_row(self.selected_row)
+
+            self.controller.update_product(id, name, quantity, selling_price, capital_price, availability)
+            self.show_productTable()
+        else:
+            product_name = self.name_entry.get()
+            type = self.typeDropdown.get()
+            brand = self.brandDropdown.get()
+            quantity = self.quantity.get()
+            price = self.price.get()
+            image = self.image_data
+            self.controller.save_button_clicked(product_name, type, brand, quantity, price, image)
+            messagebox.showinfo('Success', 'Product Added Successfully')
+            self.clear_form()
+
+            self.show_productTable()
 
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():

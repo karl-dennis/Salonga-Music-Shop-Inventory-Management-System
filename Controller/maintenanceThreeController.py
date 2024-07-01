@@ -91,3 +91,10 @@ class maintenanceThreeController:
 
     def get_product_image(self, product_id):
         return self.model.get_product_image(product_id)
+
+    def update_product(self, id, name, quantity, selling_price, capital_price, availability):
+        print(f'Availability: {availability}')
+        self.model.update_product(id, name, quantity, selling_price, capital_price, availability)
+
+    def get_availability(self, product_id):
+        return self.model.get_availability(product_id)

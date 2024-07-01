@@ -441,7 +441,8 @@ class productView(ctk.CTkFrame):
         quantity = self.quantity.get()
         price = self.sellingPrice.get()
         image = self.image_data
-        self.controller.save_button_clicked(product_name,type,brand,quantity,price,image)
+        capital_price = self.capitalPrice.get()
+        self.controller.save_button_clicked(product_name,type,brand,quantity,price,image, capital_price)
         messagebox.showinfo('Success', 'Product Added Successfully')
         self.clear_form()
 
