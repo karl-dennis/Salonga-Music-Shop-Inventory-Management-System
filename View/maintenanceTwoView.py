@@ -74,14 +74,16 @@ class maintenanceTwoView(ctk.CTkFrame):
         self.userLogsTableFrame.place(x=11, y=79)
 
         """ [date, timestamp, username, employeeID, role] """
-        table_values = [
-            ['June 30, 2024', '10:21:54', 'seris', 'A0001', 'Admin'],
-            ['July 01, 2024', '00:01:21', 'fritz', 'E0001', 'Employee'],
-        ]
+        # table_values = [
+        #     ['June 30, 2024', '10:21:54', 'seris', 'A0001', 'Admin'],
+        #     ['July 01, 2024', '00:01:21', 'fritz', 'E0001', 'Employee'],
+        # ]
+
+        self.table_values = self.controller.get_event()
 
         self.reordered_table = []
 
-        for row_values in table_values:
+        for row_values in self.table_values:
             action = f"{row_values[2]} logged in at {row_values[1]}"  # username logged in at timestamp
             reordered_row_values = [row_values[0], row_values[1], action, row_values[3], row_values[4]]
             self.reordered_table.append(reordered_row_values)

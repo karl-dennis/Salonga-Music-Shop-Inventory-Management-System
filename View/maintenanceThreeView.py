@@ -344,6 +344,13 @@ class maintenanceThreeView(ctk.CTkFrame):
         self.table.edit_row(row, fg_color='#EAEAEA')
         print(f"Selected row {row}: {self.reordered_table[row]}")
 
+        self.name_entry.set(value=self.reordered_table[row][1])
+        self.quantity.set(value=self.reordered_table[row][5])
+        self.price.set(value=self.reordered_table[row][4])
+        self.brandDropdown.set(value=self.reordered_table[row][3])
+        self.typeDropdown.set(value=self.reordered_table[row][2])
+        self.image_data = None
+
     def deselect_row(self, row):
         self.table.edit_row(row, fg_color='#F7F7F7')
         print(f"Deselected row {row}: {self.reordered_table[row]}")
