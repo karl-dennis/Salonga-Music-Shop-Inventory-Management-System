@@ -63,4 +63,11 @@ class maintenanceFourController:
                 tab.configure(text_color=active_text)
             else:
                 tab.configure(text_color=inactive_text)
+
+    def get_data(self):
+        return self.model.fetch_data()
+
+    def update_transaction_status(self, selected_transaction_id, selected_value):
+        print(selected_transaction_id, selected_value)
+        self.model.update_transaction_status(selected_transaction_id, selected_value)
     

@@ -88,12 +88,13 @@ class productModel:
         else:
             image_data = image
 
-        product_data = [product_id, name, brand, product_type, quantity, price, status, image_data, capital_price]
+        availability = 'For Sale'
+        product_data = [product_id, name, brand, product_type, quantity, price, status, image_data, capital_price, availability]
 
         try:
             # Insert the new product into the products table
-            self.cursor.execute('''INSERT INTO products (product_id, product_name, product_brand, product_type, product_quantity, product_price, status, product_image, capital_price)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', product_data)
+            self.cursor.execute('''INSERT INTO products (product_id, product_name, product_brand, product_type, product_quantity, product_price, status, product_image, capital_price, availability)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', product_data)
             self.connectDatabase.commit()
 
             # Insert the initial stock entries into the stock_items table
