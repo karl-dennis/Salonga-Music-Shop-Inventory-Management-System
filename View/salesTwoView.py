@@ -326,9 +326,7 @@ class salesTwoView(ctk.CTkFrame):
     def show_orderFrame(self):
         self.orderFrame = ctk.CTkFrame(self.baseFrame, width=285, height=583, fg_color='#F7F7F7', corner_radius=7)
         self.orderFrame.place(x=546, y=15)
-        
-        orderID = 1 # ID Counter, increments on click (save button)
-        
+                
         self.orderIDLabel = ctk.CTkLabel(self.orderFrame, text="Order #", width=121, height=23,
                                          anchor='w', 
                                          font=('Inter', 15, 'bold'), text_color='#2E2E2E') 
