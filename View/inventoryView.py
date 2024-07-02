@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import customtkinter as ctk
+import sqlite3
+import pandas as pd
+import seaborn as sns
 
 class inventoryView(ctk.CTkFrame):
     def __init__(self, master, controller):
@@ -19,36 +22,46 @@ class inventoryView(ctk.CTkFrame):
         label = ctk.CTkLabel(inner_frame, text="Stock Graph", font=('Inter Medium', 12), text_color='#2E2E2E',
                              width=80, height=14)
         label.place(x=13, y=12)
-        
-        view_all = ctk.CTkButton(inner_frame, text="View All", font=("Inter Medium", 12, 'underline'), 
-                                            text_color="#2E8EC4", fg_color='transparent', hover_color='#F7F7F7',
-                                            width=60, height=14)
-        view_all.place(x=450, y=9)
 
     def plot(self, inner_frame):
-        categories = ['Brass', 'Woodwind', 'Percussion', 'String']
-        stocks = [[10, 5, 5, 2], [15, 10, 5, 3], [10, 10, 5, 4], [20, 10, 5, 2]]  # Sublists represent subgroups of bars for each category
+        conn = sqlite3.connect('salonga_music_shop.db')
 
-        fig = plt.figure(figsize=(5, 3.5))
-        
-        ax = fig.add_subplot(111)
-        x = np.arange(len(categories))
-        width = 0.2  # Width of each bar group
+        query = "SELECT product_type, product_quantity FROM products"
+        df = pd.read_sql_query(query, conn)
+        conn.close()
 
-        # Plotting each subgroup of bars for each category
-        for i, sublist in enumerate(stocks):
-            ax.bar(x + width*i, sublist, width=width, label=f'Subgroup {i+1}')
-            
+        data = df.groupby('product_type').sum().reset_index()
+
+        fig, ax = plt.subplots(figsize=(5, 3.5))
+
+        sns.set_theme(style="whitegrid")
+
+        sns.barplot(x='product_quantity', y='product_type', data=data, palette="viridis", ax=ax)
+
+        ax.set_title('Stocks by Category', fontsize=14)
+        ax.set_xlabel('Stocks', fontsize=14)
+        # ax.set_ylabel('Categories', fontsize=12)
+        ax.set_ylabel('')
+
         fig.set_facecolor("#F7F7F7")
         ax.set_facecolor("#F7F7F7")
-        ax.set_xlabel('Categories')
-        ax.set_ylabel('Stocks')
-        ax.set_title('Stocks by Category')
-        ax.set_xticks(x + width*(len(stocks)-1)/2)
-        ax.set_xticklabels(categories)
-        ax.legend()
-        
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+
+        ax.tick_params(axis='y', labelsize=11,  direction='out')
+        plt.subplots_adjust(left=0.18, bottom=0.15, right=0.95)
 
         canvas = FigureCanvasTkAgg(fig, master=inner_frame)
         canvas.draw()
-        canvas.get_tk_widget().place(x=90, y=10)
+        canvas.get_tk_widget().place(x=0, y=10, width=650, height=350)
+        
+        
+if __name__ == "__main__":   
+    root = ctk.CTk()
+    root.geometry("520x292")
+    ctk.set_appearance_mode('light')
+
+    inventory_view = inventoryView(root, None)
+    inventory_view.pack(expand=True, fill='both')
+
+    root.mainloop()

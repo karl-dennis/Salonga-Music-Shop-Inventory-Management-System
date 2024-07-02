@@ -9,8 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import io
-import pandas as pd
+import pandas as pd     
 import sqlite3
+import seaborn as sns
 
 class productView(ctk.CTkFrame):
 
@@ -192,47 +193,45 @@ class productView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.productGraphFrame, text="Stock Graph", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        self.innerFrame = ctk.CTkFrame(self.productGraphFrame, width=362, height=192, fg_color='#F7F7F7',
+        self.innerFrame = ctk.CTkFrame(self.productGraphFrame, width=598, height=232, fg_color='#F7F7F7',
                                        corner_radius=5)
-        self.innerFrame.place(x=10, y=35)
+        self.innerFrame.place(x=10, y=10)
 
         # Call the plot method and pass the inner frame
         self.plot(self.innerFrame)
 
     def plot(self, inner_frame):
-        # categories = ['Brass', 'Woodwind', 'Percussion', 'String']
-        # stocks = [[10, 5, 5, 2], [15, 10, 5, 3], [10, 10, 5, 4], [20, 10, 5, 2]]  # Sublists represent subgroups of bars for each category
-
         conn = sqlite3.connect('salonga_music_shop.db')
 
         query = "SELECT product_type, product_quantity FROM products"
         df = pd.read_sql_query(query, conn)
+        conn.close()
 
-        # print(df)
+        data = df.groupby('product_type').sum().reset_index()
 
-        fig = plt.figure(figsize=(4, 2.5))
+        fig, ax = plt.subplots(figsize=(9, 4))
 
-        ax = fig.add_subplot(111)
-        x = np.arange(len(df['product_type']))
-        width = 0.1  # Width of each bar group
+        sns.set_theme(style="whitegrid")
 
-        # Plotting each subgroup of bars for each category
-        for i, sublist in enumerate(df['product_quantity']):
-            ax.bar(x + width * i, sublist, width=width, label=f'Subgroup {i + 1}')
+        sns.barplot(x='product_quantity', y='product_type', data=data, palette="viridis", ax=ax)
+
+        ax.set_title('Stocks by Category', fontsize=14)
+        ax.set_xlabel('Stocks', fontsize=14)
+        # ax.set_ylabel('Categories', fontsize=12)
+        ax.set_ylabel('')
 
         fig.set_facecolor("#F7F7F7")
         ax.set_facecolor("#F7F7F7")
-        ax.set_xlabel('Categories')
-        ax.set_ylabel('Stocks')
-        ax.set_title('Stocks by Category')
-        ax.set_xticks(x + width * (len(df['product_quantity']) - 1) / 2)
-        ax.set_xticklabels(df['product_type'])
-        ax.legend()
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+
+        ax.tick_params(axis='y', labelsize=11,  direction='out')
+        plt.subplots_adjust(left=0.18, bottom=0.15)
 
         canvas = FigureCanvasTkAgg(fig, master=inner_frame)
         canvas.draw()
-        canvas.get_tk_widget().place(x=90, y=10)  # Adjust x and y to position the plot correctly within the inner frame
-
+        canvas.get_tk_widget().place(x=0, y=0, width=650, height=350)
+     
     
 
     def show_productTable(self):

@@ -23,9 +23,6 @@ class graphSalesView(ctk.CTkFrame):
         label = ctk.CTkLabel(self.inner_frame, text="Sales Graph", font=('Inter Medium', 12), text_color='#2E2E2E')
         label.place(relx=0.03, rely=0.05)
 
-        view_all = ctk.CTkButton(self.inner_frame, text="View All", font=("Inter Medium", 12, 'underline'),
-                                 text_color="#2E8EC4", fg_color='transparent', hover_color='#F7F7F7')
-        view_all.place(relx=0.85, rely=0.03)
 
     def plot(self, inner_frame):
         conn = sqlite3.connect('salonga_music_shop.db')
