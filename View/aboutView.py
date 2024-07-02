@@ -53,7 +53,7 @@ class aboutView(ctk.CTkFrame):
         self.userManualFrame = ctk.CTkFrame(self.baseFrame, width=820, height=526, bg_color='#DFDFDF', fg_color='#F7F7F7')
         self.userManualFrame.place(x=11, y=79)
            
-        self.open_pdf("plt.pdf")  # Specify the PDF file to open
+        self.open_pdf("SALONGA MUSIC SHOP SYSTEM MANUAL.pdf")  # Specify the PDF file to open
         
     def open_pdf(self, file_path):
         if self.pdf_frame:
@@ -61,7 +61,7 @@ class aboutView(ctk.CTkFrame):
         
         self.pdf_frame = CTkPDFViewer(self.userManualFrame, 
                                       width=800, height=500, 
-                                      page_width=800, page_height=500,
+                                      page_width=400, page_height=500,
                                       file=file_path,
                                       page_separation_height=10,
                                       fg_color='#F7F7F7', bg_color='#DFDFDF',
