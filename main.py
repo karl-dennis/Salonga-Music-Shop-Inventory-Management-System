@@ -8,7 +8,7 @@ if __name__ == '__main__':
     # signUp.main()
     # login = loginController()
     # login.main()
-    dashboard = dashboardController()
+    dashboard = dashboardController('TNC4966')
     dashboard.main()
     # verifyEmail = verifyEmailController()
     # verifyEmail.main()
