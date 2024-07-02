@@ -1,10 +1,12 @@
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 import customtkinter as ctk
 from CTkTable import *
 from PIL import Image
 import shutil
 import os
 import datetime
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 
 class maintenanceFourView(ctk.CTkFrame):
 
@@ -33,7 +35,13 @@ class maintenanceFourView(ctk.CTkFrame):
 
         self.show_maintenanceFour()
         self.show_salesTable()
-            
+        
+        generate_report_btn = ctk.CTkButton(self.baseFrame, text="Generate PDF Report",
+                                            font=('Consolas', 12), text_color='#F7F7F7', bg_color='#F7F7F7',
+                                            fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=8,
+                                            command=self.generate_pdf_report)
+        generate_report_btn.place(x=23, y=570)
+
             
     def show_maintenanceFour(self):
         self.maintenanceFourFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7', corner_radius=7)
@@ -274,7 +282,56 @@ class maintenanceFourView(ctk.CTkFrame):
     def on_systemDialog_close(self):
         self.system_dialog.destroy()
         self.system_dialog = None
-            
+    
+    def generate_pdf_report(self):
+        # Fetch data to be included in the report
+        data = self.controller.get_data()
+
+        # Ask user to select a directory
+        directory = filedialog.askdirectory(title="Select Directory to Save PDF Report")
+        
+        if not directory:
+            return
+
+        # Define a fixed file name with timestamp
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        pdf_file = os.path.join(directory, f'sales_report_{timestamp}.pdf')
+        
+        # Generate PDF using ReportLab
+        c = canvas.Canvas(pdf_file, pagesize=letter)
+        width, height = letter
+
+        # Set up the title and timestamp
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(36, height - 50, "Sales Report")
+        c.setFont("Helvetica", 10)
+        c.drawString(width - 140, height - 50, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+        # Set up table headers
+        headers = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Date', 'Time', 'Status']
+        col_widths = [60, 100, 100, 80, 80, 60, 60]  # Adjust widths as needed
+        
+        row_height = 20
+        y_start = height - 100
+
+        # Draw table headers
+        c.setFont("Helvetica-Bold", 12)
+        for i, header in enumerate(headers):
+            c.drawString(36 + sum(col_widths[:i]), y_start, header)
+
+        # Draw data rows
+        c.setFont("Helvetica", 12)
+        y = y_start - row_height
+        for row_data in data:
+            for i, col_value in enumerate(row_data):
+                c.drawString(36 + sum(col_widths[:i]), y, str(col_value))
+            y -= row_height
+
+        # Save the PDF file
+        c.save()
+        messagebox.showinfo('Report Generated', f'Sales report has been generated as {pdf_file}')
+
+
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

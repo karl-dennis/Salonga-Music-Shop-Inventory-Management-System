@@ -12,41 +12,38 @@ class loginModel:
     def __init__(self):
         self.connectDatabase()
         self.maintenance = maintenanceTwoModel()
-    
+        self.emp_id = None  # Initialize emp_id attribute
+
     def login(self, username, password):
         try:
             # Retrieve the stored hashed password for the given username
             self.cursor.execute('''SELECT password FROM accounts WHERE username=?''', (username,))
             result = self.cursor.fetchone()
-            
+
             if result is None:
                 messagebox.showerror('Invalid', 'Username does not exist')
-                return False
-            
+                return False, None  # Return None as emp_id when login fails
+
             stored_hashed_password = result[0]
-            
+
             # Verify the provided password against the stored hashed password
             if bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
                 print('Success: User logged in successfully.')
-                print(type(username))
                 self.cursor.execute('''SELECT employee_id FROM accounts WHERE username=?''', (username,))
                 id = self.cursor.fetchone()
-                print(id)
-                emp_id = id[0]
-                print(emp_id)
-                self.cursor.execute('''SELECT level_of_access FROM employees WHERE employee_id=?''', (emp_id,))
+                self.emp_id = id[0]  # Set emp_id attribute
+                self.cursor.execute('''SELECT level_of_access FROM employees WHERE employee_id=?''', (self.emp_id,))
                 role = self.cursor.fetchone()
-                print(role)
-                self.maintenance.log_event(username, emp_id, role[0])
-                return True
+                self.maintenance.log_event(username, self.emp_id, role[0])
+                return True, self.emp_id  # Return True and emp_id on successful login
             else:
                 print('Error: Incorrect password.')
-                return False
+                return False, None  # Return None as emp_id when login fails
 
         except sqlite3.Error as e:
             print('Error:', e)
-            return False
-    
+            return False, None  # Return None as emp_id on database error
+
     def connectDatabase(self):
         try:
             self.connectDatabase = sqlite3.connect('salonga_music_shop.db')
@@ -65,7 +62,6 @@ class loginModel:
         self.server = smtplib.SMTP('smtp.gmail.com', 587)
         self.server.starttls()
         self.server.login('salongamusic40@gmail.com', 'ebef pjjt eovv dkwe')
-        # 'ykqz ccoh cmpa rrii' - kurt app password
 
         employee_id = self.get_id_account(username)
 
@@ -85,23 +81,21 @@ class loginModel:
         else:
             print("Error: Failed to get employee ID")
 
-    # getting id from accounts table
     def get_id_account(self, username):
         try:
             self.cursor.execute('''SELECT employee_id FROM accounts WHERE username=?''', (username,))
             result = self.cursor.fetchone()
-            
+
             if result is None:
                 messagebox.showerror('Invalid', 'Username does not exist')
                 return False
             if result:
                 return self.get_id_employee(result[0])
-            
+
         except sqlite3.Error as e:
             print('Error:', e)
             return False
-    
-    # getting id from employee table
+
     def get_id_employee(self, employee_id):
         try:
             self.cursor.execute('''SELECT email_address FROM employees WHERE employee_id=?''', (employee_id,))
@@ -117,3 +111,10 @@ class loginModel:
 
     def get_otp(self):
         return self.otp
+
+# Example of usage:
+# Initialize an instance of loginModel
+# model = loginModel()
+# Call the login method
+# success, emp_id = model.login(username, password)
+# Now emp_id can be accessed outside the class if login was successful

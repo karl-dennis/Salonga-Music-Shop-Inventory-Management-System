@@ -49,7 +49,7 @@ class inventoryView(ctk.CTkFrame):
         ax.spines['right'].set_visible(False)
 
         ax.tick_params(axis='y', labelsize=11,  direction='out')
-        plt.subplots_adjust(left=0.18, bottom=0.15, right=0.95)
+        plt.subplots_adjust(left=0.18, top=0.85, bottom=0.18, right=0.95)
 
         canvas = FigureCanvasTkAgg(fig, master=inner_frame)
         canvas.draw()

@@ -1,13 +1,15 @@
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import datetime
 import customtkinter as ctk
 from CTkTable import *
 import shutil
 import os
-import datetime
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from PIL import Image
 
-class maintenanceTwoView(ctk.CTkFrame):
 
+class maintenanceTwoView(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
@@ -31,6 +33,7 @@ class maintenanceTwoView(ctk.CTkFrame):
 
         self.show_maintenanceTwo()
         self.show_userLogsTable()
+        self.show_generate_report_button()  # New method to show the report button
 
     def show_maintenanceTwo(self):
         self.maintenanceTwoFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7',
@@ -70,9 +73,10 @@ class maintenanceTwoView(ctk.CTkFrame):
         self.selection5.place(x=533, y=14)
 
         self.system_dialog = None
-        
+
         self.tabLine = ctk.CTkFrame(self.tabFrame, width=78, height=4, fg_color='#5089B5', corner_radius=7)
         self.tabLine.place(x=159, y=39)
+
 
     def show_userLogsTable(self):
         self.userLogsTableFrame = ctk.CTkFrame(self.baseFrame, width=820, height=526, corner_radius=7,
@@ -80,10 +84,6 @@ class maintenanceTwoView(ctk.CTkFrame):
         self.userLogsTableFrame.place(x=11, y=79)
 
         """ [date, timestamp, username, employeeID, role] """
-        # table_values = [
-        #     ['June 30, 2024', '10:21:54', 'seris', 'A0001', 'Admin'],
-        #     ['July 01, 2024', '00:01:21', 'fritz', 'E0001', 'Employee'],
-        # ]
 
         self.table_values = self.controller.get_event()
 
@@ -158,6 +158,74 @@ class maintenanceTwoView(ctk.CTkFrame):
             rowLine = ctk.CTkFrame(self.tableFrame, width=800, height=2, fg_color='#dbdbdb')
             rowLine.place(x=0, y=(row) * 28 - 1)
 
+
+    def show_generate_report_button(self):
+        generate_report_btn = ctk.CTkButton(self.baseFrame, text="Generate PDF Report",
+                                            font=('Consolas', 12), text_color='#F7F7F7', bg_color='#F7F7F7',
+                                            fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=8,
+                                            command=self.generate_pdf_report)
+        generate_report_btn.place(x=23, y=570)
+
+    def generate_pdf_report(self):
+        # Fetch data to be included in the report
+        table_values = self.controller.get_event()
+
+        # Ask user to select a directory
+        directory = filedialog.askdirectory(title="Select Directory to Save PDF Report")
+        
+        if not directory:
+            return
+
+        # Define a fixed file name with timestamp
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        pdf_file = os.path.join(directory, f'user_logs_report_{timestamp}.pdf')
+        
+        # Create a PDF document
+        c = canvas.Canvas(pdf_file, pagesize=letter)
+        width, height = letter
+
+        # Set up the title and timestamp
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(36, height - 50, "User Logs Report")
+        c.setFont("Helvetica", 10)
+        c.drawString(width - 140, height - 50, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+        # Draw table headers
+        headers = ['Date', 'Timestamp', 'Action', 'Employee ID', 'Role']
+        y = height - 100
+        x_positions = [36, 160, 280, 420, 540]
+        for i, header in enumerate(headers):
+            c.drawString(x_positions[i], y, header)
+
+        # Draw table rows
+        row_height = 20
+        y -= row_height
+        for row in table_values:
+            date, timestamp, username, employee_id, role = row
+            action = f"{username} logged in at {timestamp}"
+            data = [date, timestamp, action, employee_id, role]
+            for i, text in enumerate(data):
+                c.drawString(x_positions[i], y, str(text))
+            y -= row_height
+
+        # Save the PDF file
+        c.save()
+
+        messagebox.showinfo('Report Generated', f'User Logs report has been generated as {pdf_file}')
+
+    def show_systemDialog(self):
+        if self.system_dialog is None:
+            self.system_dialog = ctk.CTkFrame(self, width=300, height=200, bg_color="#F7F7F7", corner_radius=7)
+            self.system_dialog.place(x=315, y=0)
+
+            ctk.CTkLabel(self.system_dialog, width=200, height=200, text="Backup", fg_color="#2E2E2E", font=("Inter", 12, "bold"), text_color="#9A9A9A", anchor="n")
+            ctk.CTkLabel(self.system_dialog, width=200, height=200, text="System", fg_color="#2E2E2E", font=("Inter", 12, "bold"), text_color="#9A9A9A", anchor="n")
+            ctk.CTkLabel(self.system_dialog, width=200, height=200, text="Administrator", fg_color="#2E2E2E", font=("Inter", 12, "bold"), text_color="#9A9A9A", anchor="n")
+            ctk.CTkLabel(self.system_dialog, width=200, height=200, text="View Log", fg_color="#2E2E2E", font=("Inter", 12, "bold"), text_color="#9A9A9A", anchor="n")
+            ctk.CTkLabel(self.system_dialog, width=200, height=200, text="Exit", fg_color="#2E2E2E", font=("Inter", 12, "bold"), text_color="#9A9A9A", anchor="n")
+
+
+        
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
@@ -256,20 +324,4 @@ class SystemDialog(ctk.CTkToplevel):
         x = (self.winfo_screenwidth() // 2) - (width // 2)
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f'{370}x{220}+{x}+{y}')
- 
-
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("Maintenance Two Page (Test)")
-
-        self.maintenancetwo_view = maintenanceTwoView(self.root, None)
-        self.maintenancetwo_view.pack(fill=ctk.BOTH, expand=True)
-
-    def run(self):
-        self.root.mainloop()
-
-
-if __name__ == "__main__":
-    app = App()
-    app.run()
+        

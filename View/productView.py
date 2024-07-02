@@ -193,11 +193,10 @@ class productView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self.productGraphFrame, text="Stock Graph", font=('Inter Medium', 13), text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        self.innerFrame = ctk.CTkFrame(self.productGraphFrame, width=598, height=232, fg_color='#F7F7F7',
+        self.innerFrame = ctk.CTkFrame(self.productGraphFrame, width=578, height=200, fg_color='#F7F7F7',
                                        corner_radius=5)
-        self.innerFrame.place(x=10, y=10)
+        self.innerFrame.place(x=10, y=27)
 
-        # Call the plot method and pass the inner frame
         self.plot(self.innerFrame)
 
     def plot(self, inner_frame):
@@ -209,7 +208,7 @@ class productView(ctk.CTkFrame):
 
         data = df.groupby('product_type').sum().reset_index()
 
-        fig, ax = plt.subplots(figsize=(9, 4))
+        fig, ax = plt.subplots(figsize=(9, 8))
 
         sns.set_theme(style="whitegrid")
 
@@ -226,11 +225,12 @@ class productView(ctk.CTkFrame):
         ax.spines['right'].set_visible(False)
 
         ax.tick_params(axis='y', labelsize=11,  direction='out')
-        plt.subplots_adjust(left=0.18, bottom=0.15)
+        plt.subplots_adjust(left=0.17, right=0.97, bottom=0.25)
 
         canvas = FigureCanvasTkAgg(fig, master=inner_frame)
         canvas.draw()
-        canvas.get_tk_widget().place(x=0, y=0, width=650, height=350)
+        canvas.get_tk_widget().place(x=0, y=0, width=720, height=250)
+
      
     
 

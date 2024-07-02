@@ -116,6 +116,7 @@ class maintenanceThreeModel:
                                        FROM products WHERE availability = ?''', (availability, ))
         data = self.cursor.fetchall()
         converted_data = [list(row) for row in data]
+        
         return converted_data
 
     def generate_unique_id(self):

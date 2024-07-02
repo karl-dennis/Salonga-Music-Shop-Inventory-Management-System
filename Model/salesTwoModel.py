@@ -45,7 +45,8 @@ class salesTwoModel:
         try:
             date = datetime.now().strftime('%Y-%m-%d')
 
-            self.cursor.execute("SELECT * FROM transactions WHERE date LIKE ? ORDER BY timestamp DESC",
+            self.cursor.execute('''SELECT transaction_id, customer_name, customer_contact, products_ordered, revenue, date, timestamp 
+                                   FROM transactions WHERE date LIKE ? ORDER BY timestamp DESC''',
                                 (date,))
             transaction_data = self.cursor.fetchall()
 

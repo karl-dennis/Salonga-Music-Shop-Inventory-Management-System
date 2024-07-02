@@ -1,3 +1,5 @@
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 import customtkinter as ctk
 from PIL import Image
 import io
@@ -42,6 +44,12 @@ class maintenanceThreeView(ctk.CTkFrame):
         self.show_maintenanceThree()
         self.show_productReg()
         self.show_productTable()
+        
+        generate_report_btn = ctk.CTkButton(self.baseFrame, text="Generate PDF Report",
+                                            font=('Consolas', 12), text_color='#F7F7F7', bg_color='#F7F7F7',
+                                            fg_color='#1FB2E7', hover_color='#2193BC', corner_radius=8,
+                                            command=self.generate_pdf_report)
+        generate_report_btn.place(x=247, y=570)
 
     def show_maintenanceThree(self):
         self.maintenanceThreeFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7',
@@ -485,7 +493,57 @@ class maintenanceThreeView(ctk.CTkFrame):
     def on_systemDialog_close(self):
         self.system_dialog.destroy()
         self.system_dialog = None
-            
+        
+    def generate_pdf_report(self):
+        # Ask user to select a directory
+        directory = filedialog.askdirectory(title="Select Directory to Save PDF Report")
+        if not directory:
+            return
+
+        # Define a fixed file name with timestamp
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        pdf_file = os.path.join(directory, f'stock_report_{timestamp}.pdf')
+
+        # Generate PDF using ReportLab
+        c = canvas.Canvas(pdf_file, pagesize=letter)
+        width, height = letter
+
+        # Set up the title and timestamp
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(36, height - 50, "Stock Report")
+        c.setFont("Helvetica", 10)
+        c.drawString(width - 140, height - 50, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+        # Set up table headers
+        headers = ['Product ID', 'Product Name', 'Type', 'Brand', 'Price', 'Quantity', 'Status']
+        col_widths = [70, 115, 90, 85, 70, 60, 70]  # Adjust widths as needed
+        
+        row_height = 20
+        y_start = height - 100
+
+        # Draw table headers
+        c.setFont("Helvetica-Bold", 12)
+        for i, header in enumerate(headers):
+            c.drawString(36 + sum(col_widths[:i]), y_start, header)
+
+        # Draw data rows
+        c.setFont("Helvetica", 12)
+        y = y_start - row_height
+        
+        # price = self.reordered_table[4].strip('₱')
+        for row_values in self.reordered_table:
+            for i, value in enumerate(row_values):
+                if i == 1:  # Shorten product name
+                    value = value[:25] + '...' if len(value) > 28 else value
+                elif i == 4:  # Format price column
+                    value = f'{value:,.2f}'
+                c.drawString(36 + sum(col_widths[:i]), y, str(value))
+            y -= row_height
+
+        # Save the PDF file
+        c.save()
+
+        messagebox.showinfo('Report Generated', f'Stock report has been generated as {pdf_file}')
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

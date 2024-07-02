@@ -15,6 +15,7 @@ class maintenanceTwoModel:
             self.cursor = self.connectDatabase.cursor()
         except sqlite3.Error as e:
             print('Error:', e)
+            
     def create_table_user_log(self):
         try:
             """ [date, timestamp, username, employeeID, role] """
@@ -48,6 +49,7 @@ class maintenanceTwoModel:
             return result
         except sqlite3.Error as e:
             print('Error', e)
+            
     # def user_login(self, employee_id):
     #     self.log_event(employee_id, 'login')
 
