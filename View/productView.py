@@ -25,6 +25,9 @@ class productView(ctk.CTkFrame):
         self.search_query = ctk.StringVar()
         self.image_data = None
 
+        self.table_values = self.controller.get_data()
+
+
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
         
@@ -242,9 +245,8 @@ class productView(ctk.CTkFrame):
                                   text_color='#2E2E2E')
         self.label.place(x=14, y=7)
 
-        table_values = self.controller.get_data()
         reordered_table = []
-        for row_values in table_values:
+        for row_values in self.table_values:
             reordered_row_values = [row_values[0], row_values[1], row_values[3], row_values[2], row_values[5], row_values[4], row_values[6]]
             reordered_table.append(reordered_row_values)
         
@@ -323,22 +325,19 @@ class productView(ctk.CTkFrame):
         for row in range(1, self.table.rows):
             rowLine = ctk.CTkFrame(self.tableFrame, width=598, height=2, fg_color='#dbdbdb')
             rowLine.place(x=0, y=(row * 25) - 4)
-        
-     
-       
-          
+
     def search_bar(self):
         self.searchFrame = ctk.CTkFrame(self.productTableFrame, width=160, height=22, fg_color='transparent')
-        self.searchFrame.place(x=430, y=8) 
-        
+        self.searchFrame.place(x=430, y=8)
+
         self.search_query.set('Search')
-        
+
         self.searchEntry = ctk.CTkEntry(self.searchFrame, width=160, height=22,
-                                        fg_color='#FAFAFA', border_color='#BCBCBC', 
-                                        border_width=2, corner_radius=10, font=('Inter Medium', 11), 
+                                        fg_color='#FAFAFA', border_color='#BCBCBC',
+                                        border_width=2, corner_radius=10, font=('Inter Medium', 11),
                                         text_color='#959595', textvariable=self.search_query)
-        self.searchEntry.place(x=0, y=0) 
-        
+        self.searchEntry.place(x=0, y=0)
+
         def on_entry_click(event):
             if self.searchEntry.get() == 'Search':
                 self.searchEntry.delete(0, tk.END)  # Delete all the text in the entry
@@ -348,17 +347,61 @@ class productView(ctk.CTkFrame):
                 self.search_query.set('Search')
 
         self.searchEntry.bind('<FocusIn>', on_entry_click)
-        self.searchEntry.bind('<FocusOut>', on_focus_out)    
-        
+        self.searchEntry.bind('<FocusOut>', on_focus_out)
+
         def perform_search():
-            query = self.search_query.get()
-            if query.strip() != '':
-                query = self.search_query.get()
-                
-                """Insert model/controller here"""
-                
-                print(f"Performing search for: {query}")
-            
+            query = self.search_query.get().strip()
+
+            if query == '':
+                return
+
+            search_results = []
+
+            for row_values in self.table_values:
+                if any(query.lower() in str(value).lower() for value in row_values):
+                    search_results.append(row_values)
+
+            if not search_results:
+                print("No results found for query:", query)
+                return
+
+            self.table.destroy()
+
+            self.table = CTkTable(master=self.tableFrame, column=7, padx=0, pady=0, font=('Inter Medium', 12))
+            for row_values in search_results:
+                self.table.add_row(row_values)
+
+            cell_widths = [98, 96, 91, 86, 70, 60, 65]
+            for row in range(self.table.rows):
+                if row < len(search_results):  # Check if row index is within range
+                    for column in range(self.table.columns):
+                        if column < len(search_results[row]):  # Check if column index is within range
+                            self.table.frame[row, column].configure(width=cell_widths[column], height=25,
+                                                                    fg_color='#F7F7F7', text_color='#868686',
+                                                                    corner_radius=0, anchor='w')
+
+                    if len(search_results[row]) > 5:  # Ensure there are enough elements in the row
+                        quantity = int(search_results[row][5])  # Column[5] = Quantity
+
+                        if 0 <= quantity <= 5:
+                            status = "Low Stock" if quantity > 0 else "No Stock"
+                            status_color = "#E9AC07" if quantity > 0 else "#D92929"
+                        else:
+                            status = "Available"
+                            status_color = "#329932"
+
+                        self.table.insert(row, 6, status)
+                        self.table.frame[row, 6].configure(text_color=status_color)  # Status
+
+                    if len(search_results[row]) > 5:  # Ensure there are enough elements in the row
+                        self.table.frame[row, 5].configure(text_color=status_color, font=('Inter', 12))  # Quantity
+
+            self.table.pack(fill='both', expand=True)
+
+            for row in range(1, self.table.rows):
+                rowLine = ctk.CTkFrame(self.tableFrame, width=598, height=2, fg_color='#dbdbdb')
+                rowLine.place(x=0, y=(row * 25) - 4)
+
         self.searchEntry.bind('<Return>', lambda event: perform_search())
 
     def select_image(self):
