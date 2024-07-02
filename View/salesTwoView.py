@@ -2,6 +2,12 @@ import customtkinter as ctk
 import tkinter as tk
 from CTkTable import *
 import json
+import sqlite3
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 class salesTwoView(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
@@ -369,10 +375,57 @@ class salesTwoView(ctk.CTkFrame):
         self.salesGraphFrame = ctk.CTkFrame(self.baseFrame, width=522, height=232, fg_color='#F7F7F7', corner_radius=7)
         self.salesGraphFrame.place(x=12, y=367)
         
+        self.plot(self.salesGraphFrame)
+        
         self.label = ctk.CTkLabel(self.salesGraphFrame, text="Sales Graph", font=('Inter Medium', 13), text_color='#2E2E2E',
                                   width=130, height=16, anchor='w')
         self.label.place(x=12, y=8)
 
+        
+        
+    def plot(self, inner_frame):
+        conn = sqlite3.connect('salonga_music_shop.db')
+        
+        query = '''
+            SELECT date, SUM(revenue) as total_revenue
+            FROM transactions
+            GROUP BY date
+            ORDER BY date
+        '''
+        
+        # Execute the query and store the result in a DataFrame
+        data = pd.read_sql_query(query, conn)
+        conn.close()
+
+        # Set the Seaborn style and palette
+        sns.set(style="whitegrid", palette="viridis")
+
+        fig, ax = plt.subplots()
+        fig.set_facecolor("#F7F7F7")
+        ax.set_facecolor("#F7F7F7")
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+
+        # Plotting with Seaborn
+        sns.lineplot(data=data, x='date', y='total_revenue', marker='o', ax=ax)
+
+        # Customize labels and title
+        ax.set_title('Daily Revenue', fontsize=14)
+        ax.set_xlabel('Date', fontsize=12)
+        ax.set_ylabel('Total Revenue', fontsize=12)
+
+        # Adjust grid appearance
+        ax.grid(False, color='white')
+        plt.subplots_adjust(left=0.18, top=0.85, bottom=0.18, right=0.95)
+
+
+        # Adjust plot canvas within inner_frame
+        canvas = FigureCanvasTkAgg(fig, master=inner_frame)
+        canvas.draw()
+        canvas.get_tk_widget().place(x=5, rely=0.05, relwidth=0.97, relheight=0.93)
+    
+    
+    
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
