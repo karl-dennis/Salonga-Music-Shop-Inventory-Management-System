@@ -6,7 +6,7 @@ from PIL import Image
 import shutil
 import os
 import datetime
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 
 class maintenanceFourView(ctk.CTkFrame):
 
@@ -329,7 +329,8 @@ class maintenanceFourView(ctk.CTkFrame):
 
         # Save the PDF file
         c.save()
-        print(f"PDF report generated successfully at: {pdf_file}")
+        messagebox.showinfo('Report Generated', f'Sales report has been generated as {pdf_file}')
+
 
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):

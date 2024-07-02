@@ -5,7 +5,7 @@ import customtkinter as ctk
 from CTkTable import *
 import shutil
 import os
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from PIL import Image
 
 
@@ -210,7 +210,8 @@ class maintenanceTwoView(ctk.CTkFrame):
 
         # Save the PDF file
         c.save()
-        print(f"PDF report generated: {pdf_file}")
+
+        messagebox.showinfo('Report Generated', f'User Logs report has been generated as {pdf_file}')
 
     def show_systemDialog(self):
         if self.system_dialog is None:
