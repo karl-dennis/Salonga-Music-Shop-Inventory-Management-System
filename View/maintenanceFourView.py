@@ -14,6 +14,8 @@ class maintenanceFourView(ctk.CTkFrame):
         self.configure(width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         ctk.set_appearance_mode("light")
 
+        self.status_var = ctk.StringVar()
+
         self.active_tab = 4
         self.search_query = ctk.StringVar()
         
@@ -74,11 +76,11 @@ class maintenanceFourView(ctk.CTkFrame):
         self.salesTableFrame = ctk.CTkFrame(self.baseFrame, width=820, height=526, fg_color='#F7F7F7', corner_radius=7)
         self.salesTableFrame.place(x=11, y=79)
         
-        # table_values = self.controller.get_data()
-        table_values = [
-            ['O0001', 'Fritz Gonzales', '09692123869', 25700, '10-12-2024', '10:00:25', 'Active'],
-            ['O0002', 'Lucas Ballesteros', '09998299276', 8500, '11-15-2024', '13:01:25', 'Active']
-        ]
+        table_values = self.controller.get_data()
+        # table_values = [
+        #     ['O0001', 'Fritz Gonzales', '09692123869', 25700, '10-12-2024', '10:00:25', 'Active'],
+        #     ['O0002', 'Lucas Ballesteros', '09998299276', 8500, '11-15-2024', '13:01:25', 'Active']
+        # ]
         
         self.reordered_table = []
         for row_values in table_values:
@@ -172,20 +174,23 @@ class maintenanceFourView(ctk.CTkFrame):
         self.status_vars = [] 
         self.status_dropdowns = []
         for row in range(0, self.table.rows):
-            status_var = ctk.StringVar(value=self.reordered_table[row][6])
-            status_dropdown = ctk.CTkOptionMenu(self.tableFrame,
+
+            self.status_dropdown = ctk.CTkOptionMenu(self.tableFrame,
                                                 values=["Active", "Inactive"],
                                                 width=70, height=16,
                                                 font=('Inter Medium', 9),
                                                 corner_radius=10,
-                                                variable=status_var)
-            status_dropdown.place(x=710, y=11 + (row * 38))
+                                                variable=self.status_var.set(self.reordered_table[row][6]),
+                                                command=self.on_dropdown_clicked)
+            self.status_dropdown.place(x=710, y=11 + (row * 38))
 
-            status_var.trace_add('write', lambda *args, sv=status_var, sd=status_dropdown: self.update_status_dropdown_colors(sv, sd))
-            self.update_status_dropdown_colors(status_var, status_dropdown)
+            self.status_dropdown.bind("<Button-1>", self.on_dropdown_clicked)
 
-            self.status_vars.append(status_var)
-            self.status_dropdowns.append(status_dropdown)    
+            self.status_var.trace_add('write', lambda *args, sv=self.status_var, sd=self.status_dropdown: self.update_status_dropdown_colors(sv, sd))
+            self.update_status_dropdown_colors(self.status_var, self.status_dropdown)
+
+            self.status_vars.append(self.status_var)
+            self.status_dropdowns.append(self.status_dropdown)
             
     def update_status_dropdown_colors(self, status_var, status_dropdown):
         status = status_var.get()
@@ -194,8 +199,21 @@ class maintenanceFourView(ctk.CTkFrame):
         status_dropdown.configure(text_color=colors['text_color'],
                                 button_color=colors['button_color'],
                                 fg_color=colors['fg_color'],
-                                button_hover_color=colors['button_hover_color'])  
-            
+                                button_hover_color=colors['button_hover_color'])
+
+    def update_status_cell(self, row_index, new_status):
+        # Determine the status color based on the new status
+        if new_status == 'Delivered':
+            status_color = '#6CB510'
+        elif new_status == 'Pending':
+            status_color = '#BB9A25'
+        else:
+            status_color = '#868686'  # Default color
+
+        # Update the cell text and color in the table
+        self.table.insert(row_index, 3, new_status)
+        self.table.frame[row_index, 3].configure(text_color=status_color, font=('Inter Semibold', 12))
+
     def bind_cell_click_events(self):
         for row_index in range(self.table.rows):
             for col_index in range(self.table.columns):
@@ -212,6 +230,27 @@ class maintenanceFourView(ctk.CTkFrame):
 
             self.select_row(index)
             self.selected_row = index
+
+    def on_dropdown_clicked(self, event):
+        # This function will be called when the dropdown button is clicked
+        if self.selected_row is not None:
+            selected_transaction_id = self.reordered_table[self.selected_row][0]
+            # Get the newly selected value from the dropdown
+            selected_value = self.status_var.get()
+            # print(selected_value)
+
+            # Update the delivery status in the controller
+            self.controller.update_transaction_status(selected_transaction_id, selected_value)
+
+            # Update the status in the local table data
+            self.reordered_table[self.selected_row][6] = selected_value
+
+            # Update the specific cell in the table to reflect the new status
+            self.update_status_cell(self.selected_row, selected_value)
+
+            self.show_salesTable()
+        else:
+            print("No row selected.")
 
     def select_row(self, row):
         self.table.edit_row(row, fg_color='#EAEAEA')
