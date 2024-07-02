@@ -1,50 +1,48 @@
 from Model.loginModel import loginModel
 from View.loginView import loginView
 import tkinter as tk
-from tkinter import messagebox
-from tkinter import simpledialog
+from tkinter import messagebox, simpledialog
 import customtkinter as ctk
+from Controller.dashboardController import dashboardController
+from Controller.verifyEmailController import verifyEmailController
 
 class loginController:
     def __init__(self):
         self.model = loginModel()
         self.view = loginView(self)
+        self.emp_id = None  # Initialize emp_id attribute
 
     def main(self):
         self.view.main()
 
     def on_button_click(self, username, password):
-        if username != '' and password != '':
-            loginConfirm = self.model.login(username, password)
+        if username and password:  # Ensure both username and password are provided
+            login_success, self.emp_id = self.model.login(username, password)
 
-            if loginConfirm:
+            if login_success:
                 self.model.send_email(username)
                 otp = self.model.get_otp()
 
                 print(otp)  # Debugging: Print the OTP to check its value and type
 
-                # input_otp = simpledialog.askinteger("OTP", "Input OTP")
                 dialog = ctk.CTkInputDialog(text="Input OTP:", title="OTP")
                 dialog.geometry("200x150")
-                input_otp = int(dialog.get_input())
-                print(input_otp)
+                input_otp = dialog.get_input()
 
                 if input_otp is not None:  # Ensure the user doesn't cancel the dialog
-                    # Convert OTP to the same type for comparison
                     try:
-                        otp = int(otp)
+                        input_otp = int(input_otp)
                     except ValueError:
-                        messagebox.showerror("Error", "OTP format is invalid.")
+                        messagebox.showerror("Error", "Invalid OTP format.")
                         return
 
-                    if input_otp == otp:
+                    if input_otp == int(otp):
                         messagebox.showinfo('Success', 'Login Successful')
-                        from Controller.dashboardController import dashboardController
                         self.view.destroy()
-                        dashboard_controller = dashboardController()
+                        dashboard_controller = dashboardController(self.emp_id)
                         dashboard_controller.main()
                     else:
-                        messagebox.showerror("Warning", "Invalid Input")
+                        messagebox.showerror("Warning", "Invalid OTP")
                 else:
                     messagebox.showerror("Warning", "OTP input cancelled")
             else:
@@ -53,7 +51,11 @@ class loginController:
             messagebox.showerror('Warning!', 'Enter all data')
 
     def forgot_pass(self):
-        from Controller.verifyEmailController import verifyEmailController
         self.view.destroy()
         verifyEmail_controller = verifyEmailController()
         verifyEmail_controller.main()
+
+# Example usage:
+# Initialize an instance of loginController and call main()
+# controller = loginController()
+# controller.main()

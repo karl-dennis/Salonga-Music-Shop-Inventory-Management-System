@@ -1,3 +1,4 @@
+
 import sys
 from Model.dashboardModel import dashboardModel
 from View.dashboardView import dashboardView
@@ -7,10 +8,12 @@ from tkinter import messagebox
 from datetime import datetime
 
 class dashboardController:
-    def __init__(self):
+    def __init__(self, id):
         self.model = dashboardModel()
         self.view = dashboardView(self)
-        
+        self.loa = self.model.get_loa(id)
+        self.id = id
+        # print(f'dashboard Controller {self.id}')
     def main(self):
         self.view.main()
 
