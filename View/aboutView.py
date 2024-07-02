@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from CTkPDFViewer import CTkPDFViewer
 
 class aboutView(ctk.CTkFrame):
 
@@ -10,6 +11,7 @@ class aboutView(ctk.CTkFrame):
 
         self.active_tab = 1
         self.search_query = ctk.StringVar()
+        self.pdf_frame = None
         
         self.custom_styles()
         self.base_frame()
@@ -24,7 +26,9 @@ class aboutView(ctk.CTkFrame):
         self.place(x=0, y=0) # Place productView Frame, do not change this
 
         self.show_aboutOne()
-            
+        self.show_userManual()
+        
+        
     def show_aboutOne(self):
         self.aboutOneFrame = ctk.CTkFrame(self.baseFrame, width=820, height=51, fg_color='#F7F7F7', corner_radius=7)
         self.aboutOneFrame.place(x=11, y=15)
@@ -45,6 +49,27 @@ class aboutView(ctk.CTkFrame):
         self.tabLine = ctk.CTkFrame(self.tabFrame, width=78, height=4, fg_color='#5089B5', corner_radius=7)
         self.tabLine.place(x=28, y=39)
 
+    def show_userManual(self):
+        self.userManualFrame = ctk.CTkFrame(self.baseFrame, width=820, height=526, bg_color='#DFDFDF', fg_color='#F7F7F7')
+        self.userManualFrame.place(x=11, y=79)
+           
+        self.open_pdf("plt.pdf")  # Specify the PDF file to open
+        
+    def open_pdf(self, file_path):
+        if self.pdf_frame:
+            self.pdf_frame.destroy()
+        
+        self.pdf_frame = CTkPDFViewer(self.userManualFrame, 
+                                      width=800, height=500, 
+                                      page_width=800, page_height=500,
+                                      file=file_path,
+                                      page_separation_height=10,
+                                      fg_color='#F7F7F7', bg_color='#DFDFDF',
+                                      corner_radius=7,
+                                      )
+        self.pdf_frame.pack( expand=True)  # Occupy the entire userManualFrame
+        self.pdf_frame.tkraise()  # Raise the PDF viewer widget to the top layer
+    
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()

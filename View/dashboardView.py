@@ -87,8 +87,10 @@ class dashboardView(ctk.CTk):
         self.after(1000, self._update_time)
 
     def _app_icon(self):
-            self.appIcon = ctk.CTkLabel(self.leftFrame, text="Icon: Name", text_color='#595959', font=('Consolas', 20, 'bold'))
-            self.appIcon.place(x=33, y=12)
+            self.appIcon = ctk.CTkLabel(self.leftFrame, text="SALONGA\nMUSIC SHOP", 
+                                        width=149, height=33,
+                                        text_color='#595959', font=('Copperplate Gothic Light', 17))
+            self.appIcon.place(x=14, y=19)
 
     def _selection_1(self):
         self.selection1 = ctk.CTkButton(self.leftFrame, text="Dashboard", font=('Consolas', 18, 'bold'), 
