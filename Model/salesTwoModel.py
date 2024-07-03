@@ -64,7 +64,7 @@ class salesTwoModel:
             # Adjust the query to your database schema and search criteria
             search_query = f"%{query}%"
             self.cursor.execute(
-                "SELECT * FROM transactions WHERE customer_name LIKE ? OR customer_contact LIKE ? OR date LIKE ?",
+                "SELECT transaction_id, customer_name, customer_contact, products_ordered, revenue, date, timestamp FROM transactions WHERE customer_name LIKE ? OR customer_contact LIKE ? OR date LIKE ?",
                 (search_query, search_query, search_query,))
             filtered_transactions = self.cursor.fetchall()
 
