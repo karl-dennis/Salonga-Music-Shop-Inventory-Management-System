@@ -13,6 +13,7 @@ from Model.maintenanceThreeModel import *
 from Model.maintenanceFourModel import *
 from Model.aboutModel import *
 from Model.aboutTwoModel import *
+from Model.aboutThreeModel import *
 from Model.graphSalesModel import *
 from Model.statisticModel import *
 from Model.stockAlertsModel import *
@@ -24,6 +25,6 @@ __all__ = ["signupModel", "loginModel", "dashboardModel",
            "productModel", "salesModel", "salesTwoModel",
            "deliveryModel", "deliveryTwoModel", "inventoryModel", 
            "maintenanceModel", "maintenanceTwoModel", "maintenanceThreeModel",
-           "maintenanceFourModel", "aboutModel", "aboutTwoModel"
+           "maintenanceFourModel", "aboutModel", "aboutTwoModel", "aboutThreeModel",
            "graphSalesModel", "stockAlertsModel", "statisticModel", 
            "calendarModel", "verifyEmailModel", "resetPassModel"]
