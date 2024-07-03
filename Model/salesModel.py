@@ -43,21 +43,21 @@ class salesModel:
         except sqlite3.Error as e:
             print('Error:', e)
 
-    def save_transaction(self, name, contact, totalPrice, products_ordered, date, timestamp):
-        # print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {timestamp}")
-        # for row in products_ordered:
-        #     print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
-        try:
-            # print("adding transaction")
-            transaction_id = self.generate_unique_id()
-            status = 'Active'
-            self.cursor.execute('''INSERT INTO transactions (transaction_id, customer_name, customer_contact, products_ordered, revenue, date, timestamp, status)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (transaction_id, name, contact, products_ordered, totalPrice, date, timestamp, status))
-
-            self.connectDatabase.commit()
-            messagebox.showinfo('Success', 'Transaction Successful')
-        except sqlite3.Error as e:
-            print('Error:', e)
+    # def save_transaction(self, name, contact, totalPrice, products_ordered, date, timestamp):
+    #     # print(f"In model\nName: {name}, Contact: {contact}, Total Price: {totalPrice}, Date: {date}, Time: {timestamp}")
+    #     # for row in products_ordered:
+    #     #     print(f"Product: {row['name']}, Brand: {row['brand']}, Quantity: {row['quantity']}, Price: {row['price']}")
+    #     try:
+    #         # print("adding transaction")
+    #         transaction_id = self.generate_unique_id()
+    #         status = 'Active'
+    #         self.cursor.execute('''INSERT INTO transactions (transaction_id, customer_name, customer_contact, products_ordered, revenue, date, timestamp, status)
+    #                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (transaction_id, name, contact, products_ordered, totalPrice, date, timestamp, status))
+    #
+    #         self.connectDatabase.commit()
+    #         messagebox.showinfo('Success', 'Transaction Successful')
+    #     except sqlite3.Error as e:
+    #         print('Error:', e)
 
     def save_transaction(self, name, contact, totalPrice, products_ordered, date, timestamp):
         try:
@@ -67,11 +67,11 @@ class salesModel:
             # Begin transaction
             self.cursor.execute("BEGIN TRANSACTION")
 
-
+            status = 'Active'
             # Insert transaction details into transactions table
-            self.cursor.execute('''INSERT INTO transactions (transaction_id, customer_name, customer_contact, products_ordered, revenue, date, timestamp)
-                                VALUES (?, ?, ?, ?, ?, ?, ?)''',
-                                (transaction_id, name, contact, products_ordered, totalPrice, date, timestamp))
+            self.cursor.execute('''INSERT INTO transactions (transaction_id, customer_name, customer_contact, products_ordered, revenue, date, timestamp,status)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+                                (transaction_id, name, contact, products_ordered, totalPrice, date, timestamp, status))
 
 
             convert_json = json.loads(products_ordered)
