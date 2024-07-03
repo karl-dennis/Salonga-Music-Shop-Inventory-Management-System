@@ -284,35 +284,41 @@ class maintenanceFourView(ctk.CTkFrame):
         self.system_dialog = None
     
     def generate_pdf_report(self):
-        # Fetch data to be included in the report
-        data = self.controller.get_data()
-
         # Ask user to select a directory
         directory = filedialog.askdirectory(title="Select Directory to Save PDF Report")
-        
         if not directory:
             return
 
         # Define a fixed file name with timestamp
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         pdf_file = os.path.join(directory, f'sales_report_{timestamp}.pdf')
-        
+
         # Generate PDF using ReportLab
         c = canvas.Canvas(pdf_file, pagesize=letter)
         width, height = letter
 
-        # Set up the title and timestamp
-        c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 50, "Sales Report")
-        c.setFont("Helvetica", 10)
-        c.drawString(width - 140, height - 50, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        # Store information
+        store_name = "Salonga Music Shop"
+        store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
+        store_contact = "Telephone: 2955991, Cellphone: 0910-5005-5096"
 
+        # Header: Store name, address, and contact
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(36, height - 50, store_name)
+        c.setFont("Helvetica", 10)
+        c.drawString(36, height - 70, store_address)
+        c.drawString(36, height - 90, store_contact)
+
+        # Title: Sales Report and timestamp
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(36, height - 120, "Sales Report")
+        c.setFont("Helvetica", 10)
+        
         # Set up table headers
         headers = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Date', 'Time', 'Status']
         col_widths = [60, 100, 100, 80, 80, 60, 60]  # Adjust widths as needed
-        
         row_height = 20
-        y_start = height - 100
+        y_start = height - 150
 
         # Draw table headers
         c.setFont("Helvetica-Bold", 12)
@@ -322,15 +328,22 @@ class maintenanceFourView(ctk.CTkFrame):
         # Draw data rows
         c.setFont("Helvetica", 12)
         y = y_start - row_height
-        for row_data in data:
+        for row_data in self.controller.get_data():
             for i, col_value in enumerate(row_data):
+                if i == 3:  # Format revenue column
+                    col_value = f'{col_value:,.2f}'  # Assuming revenue is in Philippine Peso
                 c.drawString(36 + sum(col_widths[:i]), y, str(col_value))
             y -= row_height
 
+        # Footer: Generated on
+        generated_on_text = f"Generated on: {datetime.datetime.now().strftime('%B %d, %Y %H:%M:%S')}"
+        c.drawString(36, 36, generated_on_text)
+
         # Save the PDF file
         c.save()
-        messagebox.showinfo('Report Generated', f'Sales report has been generated as {pdf_file}')
 
+        # Show message box confirming report generation
+        messagebox.showinfo('Report Generated', f'Sales report has been generated as {pdf_file}')
 
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):

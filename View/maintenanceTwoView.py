@@ -184,16 +184,29 @@ class maintenanceTwoView(ctk.CTkFrame):
         c = canvas.Canvas(pdf_file, pagesize=letter)
         width, height = letter
 
+        # Store information
+        store_name = "Salonga Music Shop"
+        store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
+        store_contact = "Telephone: 2955991, Cellphone: 0910-5005-5096"
+
+        
+        # Set up store information
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(36, height - 50, store_name)
+        
+        c.setFont("Helvetica", 10)
+        c.drawString(36, height - 70, store_address)
+        c.drawString(36, height - 90, store_contact)
+
         # Set up the title and timestamp
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 50, "User Logs Report")
+        c.drawString(36, height - 120, "User Logs Report")
         c.setFont("Helvetica", 10)
-        c.drawString(width - 140, height - 50, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         # Draw table headers
         headers = ['Date', 'Timestamp', 'Action', 'Employee ID', 'Role']
-        y = height - 100
-        x_positions = [36, 160, 280, 420, 540]
+        y = height - 150
+        x_positions = [36, 160, 250, 420, 510]
         for i, header in enumerate(headers):
             c.drawString(x_positions[i], y, header)
 
@@ -208,11 +221,17 @@ class maintenanceTwoView(ctk.CTkFrame):
                 c.drawString(x_positions[i], y, str(text))
             y -= row_height
 
+        # Draw "Generated on" line after the table
+        generated_on_text = f"Generated on: {datetime.datetime.now().strftime('%B %d, %Y %H:%M:%S')}"
+        c.drawString(36, 36, generated_on_text)
+
         # Save the PDF file
         c.save()
 
         messagebox.showinfo('Report Generated', f'User Logs report has been generated as {pdf_file}')
-
+        
+        
+        
     def show_systemDialog(self):
         if self.system_dialog is None:
             self.system_dialog = ctk.CTkFrame(self, width=300, height=200, bg_color="#F7F7F7", corner_radius=7)
