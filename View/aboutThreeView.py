@@ -58,7 +58,7 @@ class aboutThreeView(ctk.CTkFrame):
         self.userManualFrame = ctk.CTkFrame(self.baseFrame, width=820, height=526, bg_color='#DFDFDF', fg_color='#F7F7F7')
         self.userManualFrame.place(x=11, y=79)
            
-        self.open_pdf("About Salonga Music Shop.pdf")  # Specify the PDF file to open
+        self.open_pdf("ABOUT SALONGA MUSIC SHOP.pdf")  # Specify the PDF file to open
         
     def open_pdf(self, file_path):
         if self.pdf_frame:

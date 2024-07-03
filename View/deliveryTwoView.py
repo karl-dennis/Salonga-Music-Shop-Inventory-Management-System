@@ -44,13 +44,13 @@ class deliveryTwoView(ctk.CTkFrame):
         self.tabFrame = ctk.CTkFrame(self.secondPageFrame, width=246, height=40, fg_color='transparent')
         self.tabFrame.place(x=6, y=7)
 
-        self.selection1 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='New Sale',
+        self.selection1 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='New Delivery',
                                         font=('Inter', 13, 'bold'), text_color='#9A9A9A',
                                         fg_color='#F7F7F7', hover_color='#F7F7F7',
                                         command=lambda: self.controller.set_active_tab(1))
         self.selection1.place(x=3, y=0)
 
-        self.selection2 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='Sales Report',
+        self.selection2 = ctk.CTkButton(self.tabFrame, width=110, height=36, text='Delivery History',
                                         font=('Inter', 13, 'bold'), text_color='#2E2E2E',
                                         fg_color='#F7F7F7', hover_color='#F7F7F7',
                                         command=lambda: self.controller.set_active_tab(2))
