@@ -181,7 +181,7 @@ class dashboardView(ctk.CTk):
         calendar_view.place(x=15, y=15)
         
     def show_statistic(self):
-        statistic_controller = statisticController()
+        statistic_controller = statisticController(self.baseFrame)
         statistic_view = statisticView(self.baseFrame, statistic_controller)
         statistic_view.place(x=15, y=233)
     
