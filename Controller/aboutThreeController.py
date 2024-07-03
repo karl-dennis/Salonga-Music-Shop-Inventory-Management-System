@@ -1,18 +1,21 @@
-from Model.aboutModel import aboutModel
-from View.aboutView import aboutView
+from Model.aboutThreeModel import aboutThreeModel
+from View.aboutThreeView import aboutThreeView
 import tkinter as tk
 from tkinter import messagebox
 
-class aboutController:
+class aboutThreeController:
     def __init__(self, parent):
-        self.model = aboutModel()
-        self.view = aboutView(parent, self)
+        self.model = aboutThreeModel()
+        self.view = aboutThreeView(parent, self)
         
     def main(self):
         self.view.base_frame()
         
     def show_aboutOne(self):
-        pass
+        self.view.clear_base_frame()
+        from Controller.aboutController import aboutController
+        about_controller = aboutController(self.view.baseFrame)
+        about_controller.main()
     
     def show_aboutTwo(self):
         self.view.clear_base_frame()
@@ -21,11 +24,8 @@ class aboutController:
         aboutTwo_controller.main()
     
     def show_aboutThree(self):
-        self.view.clear_base_frame()
-        from Controller.aboutThreeController import aboutThreeController
-        aboutThree_controller = aboutThreeController(self.view.baseFrame)
-        aboutThree_controller.main()
-        
+        pass
+    
     def set_active_tab(self, tab):
         self.view.active_tab = tab
         self.update_tab()
@@ -36,6 +36,7 @@ class aboutController:
             self.show_aboutTwo()
         elif tab == 3:
             self.show_aboutThree()
+ 
             
     def update_tab(self):
         active_text = '#2E2E2E'

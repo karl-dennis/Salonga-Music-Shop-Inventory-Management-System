@@ -10,13 +10,17 @@ from datetime import datetime
 class dashboardController:
     def __init__(self, id):
         self.model = dashboardModel()
-        self.view = dashboardView(self)
         self.loa = self.model.get_loa(id)
+        self.view = dashboardView(self)
         self.id = id
-        # print(f'dashboard Controller {self.id}')
+    
+    
+    def get_loa(self):
+        return self.loa
+    
     def main(self):
         self.view.main()
-
+    
     def close_window(self):
         if messagebox.askyesno('Wait', 'Do you want to Quit?'):
             self.view.quit()

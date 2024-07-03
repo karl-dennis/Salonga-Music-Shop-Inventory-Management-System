@@ -508,18 +508,28 @@ class maintenanceThreeView(ctk.CTkFrame):
         c = canvas.Canvas(pdf_file, pagesize=letter)
         width, height = letter
 
-        # Set up the title and timestamp
-        c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 50, "Stock Report")
-        c.setFont("Helvetica", 10)
-        c.drawString(width - 140, height - 50, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        # Store information
+        store_name = "Salonga Music Shop"
+        store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
+        store_contact = "Telephone: 2955991, Cellphone: 0910-5005-5096"
 
+        # Header: Store name, address, and contact
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(36, height - 50, store_name)
+        c.setFont("Helvetica", 10)
+        c.drawString(36, height - 70, store_address)
+        c.drawString(36, height - 90, store_contact)
+
+        # Title: Stock Report and timestamp
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(36, height - 120, "Stock Report")
+        c.setFont("Helvetica", 10)
+        
         # Set up table headers
         headers = ['Product ID', 'Product Name', 'Type', 'Brand', 'Price', 'Quantity', 'Status']
-        col_widths = [70, 115, 90, 85, 70, 60, 70]  # Adjust widths as needed
-        
+        col_widths = [70, 115, 90, 85, 60, 60, 70]  # Adjust widths as needed
         row_height = 20
-        y_start = height - 100
+        y_start = height - 150
 
         # Draw table headers
         c.setFont("Helvetica-Bold", 12)
@@ -529,21 +539,26 @@ class maintenanceThreeView(ctk.CTkFrame):
         # Draw data rows
         c.setFont("Helvetica", 12)
         y = y_start - row_height
-        
-        # price = self.reordered_table[4].strip('₱')
         for row_values in self.reordered_table:
             for i, value in enumerate(row_values):
-                if i == 1:  # Shorten product name
+                if i == 1:  # Shorten product name if too long
                     value = value[:25] + '...' if len(value) > 28 else value
                 elif i == 4:  # Format price column
-                    value = f'{value:,.2f}'
+                    value = f'{value:,.2f}'  # Assuming price is in Philippine Peso
                 c.drawString(36 + sum(col_widths[:i]), y, str(value))
             y -= row_height
+
+        # Footer: Generated on
+        generated_on_text = f"Generated on: {datetime.datetime.now().strftime('%B %d, %Y %H:%M:%S')}"
+        c.drawString(36, 36, generated_on_text)
 
         # Save the PDF file
         c.save()
 
+        # Show message box confirming report generation
         messagebox.showinfo('Report Generated', f'Stock report has been generated as {pdf_file}')
+    
+    
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

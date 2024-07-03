@@ -20,6 +20,10 @@ class dashboardView(ctk.CTk):
 
         ctk.set_appearance_mode("light")
 
+        
+        self.levelOfAccess = self.controller.get_loa()
+        # print(self.levelOfAccess)
+        
         self.set_window()
         self.custom_styles()
 
@@ -30,7 +34,10 @@ class dashboardView(ctk.CTk):
         self._left_frame()
         self._base_frame()
         self._top_label()
-
+        
+        if self.levelOfAccess == 'Employee':
+            self.topLabel.configure(text='Employee')
+            
         self._time_label()
         self._update_time()
         
@@ -42,8 +49,16 @@ class dashboardView(ctk.CTk):
         self._selection_3()
         self._selection_4()
         self._selection_5()
-        self._selection_6()
+        
+        if self.levelOfAccess != 'Employee':
+            self._selection_6(396)  
+        else:
+            self.selection4.place_forget()
+            self.selection5.place_forget()
+            self._selection_6(265)
+        
         self._logout_button()
+        
         
     def main(self):
         self.mainloop()
@@ -58,6 +73,7 @@ class dashboardView(ctk.CTk):
         self.minsize(set_width, set_height)
         self.maxsize(set_width, set_height)
         self.resizable(False, False)
+        
     def _top_frame(self):
         self.topFrame = ctk.CTkFrame(self, width=844, height=50, fg_color='#FFFFFF', corner_radius=0)
         self.topFrame.place(x=598, y=25, anchor='center')
@@ -123,11 +139,11 @@ class dashboardView(ctk.CTk):
                                         width=156, height=48, command=lambda: self.set_active_selection(5))
         self.selection5.place(x=10, y=330)
         
-    def _selection_6(self):
+    def _selection_6(self, y):
         self.selection6 = ctk.CTkButton(self.leftFrame, text="About", font=('Consolas', 18, 'bold'), 
                                         text_color="#595959", fg_color='#E2E2E2', hover_color='#f5f5f5', 
                                         width=156, height=48, command=lambda: self.set_active_selection(6))
-        self.selection6.place(x=10, y=396)
+        self.selection6.place(x=10, y=y)
     
     def _logout_button(self):
         self.logoutButton = ctk.CTkButton(self.leftFrame, text="Log Out", font=('Consolas', 15), text_color='#F8F8F8', hover_color='#4f4f4f',
@@ -165,7 +181,7 @@ class dashboardView(ctk.CTk):
         calendar_view.place(x=15, y=15)
         
     def show_statistic(self):
-        statistic_controller = statisticController()
+        statistic_controller = statisticController(self.baseFrame)
         statistic_view = statisticView(self.baseFrame, statistic_controller)
         statistic_view.place(x=15, y=233)
     

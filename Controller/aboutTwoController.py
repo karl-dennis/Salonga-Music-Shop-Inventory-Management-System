@@ -13,12 +13,18 @@ class aboutTwoController:
         
     def show_aboutOne(self):
         self.view.clear_base_frame()
-        from Controller.aboutController import aboutController
+        from Controller.aboutThreeController import aboutController
         about_controller = aboutController(self.view.baseFrame)
         about_controller.main()
     
     def show_aboutTwo(self):
         pass
+    
+    def show_aboutThree(self):
+        self.view.clear_base_frame()
+        from Controller.aboutThreeController import aboutThreeController
+        aboutThree_controller = aboutThreeController(self.view.baseFrame)
+        aboutThree_controller.main()
     
     def set_active_tab(self, tab):
         self.view.active_tab = tab
@@ -28,12 +34,14 @@ class aboutTwoController:
             self.show_aboutOne()
         elif tab == 2:
             self.show_aboutTwo()
+        elif tab == 3:
+            self.show_aboutThree()
             
     def update_tab(self):
         active_text = '#2E2E2E'
         inactive_text = '#9A9A9A'
 
-        for i in range(1, 3):
+        for i in range(1, 4):
             tab = getattr(self.view, f'selection{i}')
             if i == self.view.active_tab:
                 tab.configure(text_color=active_text)

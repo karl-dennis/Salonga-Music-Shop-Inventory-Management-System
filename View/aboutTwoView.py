@@ -38,11 +38,16 @@ class aboutTwoView(ctk.CTkFrame):
                                         fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(1))
         self.selection1.place(x=9, y=14)
         
-        self.selection2 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='FAQ',
+        self.selection2 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='FAQs',
                                         font=('Inter', 13, 'bold'), text_color='#2E2E2E',
                                         fg_color='#F7F7F7', hover_color='#F7F7F7')
         self.selection2.place(x=140, y=14)
 
+        self.selection3 = ctk.CTkButton(self.tabFrame, width=115, height=18, text='System',
+                                        font=('Inter', 13, 'bold'), text_color='#9A9A9A',
+                                        fg_color='#F7F7F7', hover_color='#F7F7F7', command=lambda: self.controller.set_active_tab(3))
+        self.selection3.place(x=253, y=14)
+        
         self.tabLine = ctk.CTkFrame(self.tabFrame, width=78, height=4, fg_color='#5089B5', corner_radius=7)
         self.tabLine.place(x=159, y=39)
         
