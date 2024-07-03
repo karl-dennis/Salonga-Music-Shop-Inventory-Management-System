@@ -13,6 +13,9 @@ class deliveryTwoView(ctk.CTkFrame):
 
         self.active_tab = 2
         self.search_query = tk.StringVar()
+        self.table_values = self.controller.fetch_delivery()
+        self.current_table_values = self.table_values
+
 
         self.rowFrames = []
 
@@ -85,13 +88,26 @@ class deliveryTwoView(ctk.CTkFrame):
         self.searchEntry.bind('<FocusOut>', on_focus_out)
 
         def perform_search():
-            query = self.search_query.get()
-            if query.strip() != '':
-                query = self.search_query.get()
+            query = self.search_query.get().strip()
 
-                """Insert model/controller here"""
+            if query == '':
+                # Reset to original table values
+                self.current_table_values = self.table_values
+                self.show_historyTable()
+                return
 
-                print(f"Performing search for: {query}")
+            search_results = []
+
+            for row_values in self.table_values:
+                if any(query.lower() in str(value).lower() for value in row_values):
+                    search_results.append(row_values)
+
+            if not search_results:
+                print("No results found for query:", query)
+                return
+
+            self.current_table_values = search_results
+            self.show_historyTable()
 
         self.searchEntry.bind('<Return>', lambda event: perform_search())
 
@@ -101,13 +117,12 @@ class deliveryTwoView(ctk.CTkFrame):
                                               fg_color='#F7F7F7', bg_color='#DFDFDF')
         self.historyTableFrame.place(x=0, y=52)
 
-        table_values = self.controller.fetch_delivery()
         # print(table_values)
-        if table_values is None:
+        if self.table_values is None:
             table_values = []
 
         self.reordered_table = []
-        for row_values in table_values:
+        for row_values in self.current_table_values:
             delivery_id, delivery_list, total, date, status = row_values
             self.orderList_JSON = json.loads(delivery_list)
             # reordered_row_values = {
