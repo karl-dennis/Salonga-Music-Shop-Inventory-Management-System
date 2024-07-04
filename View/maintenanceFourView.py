@@ -472,7 +472,7 @@ class maintenanceFourView(ctk.CTkFrame):
         # Tabulate products sold
         product_headers = ['Product Name', 'Quantity Sold', 'Revenue']
         product_col_widths = [150, 100, 100]
-        product_y_start = y - 40
+        product_y_start = y - 55
         product_y = product_y_start
 
         c.setFont("Helvetica-Bold", 12)
