@@ -119,6 +119,24 @@ class maintenanceThreeModel:
         
         return converted_data
 
+    def fetch_and_process_data(self):
+        availability = 'For Sale'
+        self.cursor.execute('''SELECT product_id, product_name, product_brand, product_type, 
+                                        product_quantity, product_price
+                                FROM products WHERE availability = ?''', (availability,))
+        data = self.cursor.fetchall()
+        converted_data = []
+        
+        for row in data:
+            product_id, product_name, product_brand, product_type, product_quantity, product_price = row
+            # Determine status based on quantity
+            status = 'Available' if product_quantity > 5 else 'Low Stock' if product_quantity > 0 else 'No Stock'
+            # Append data with quantity and price swapped
+            converted_data.append([product_id, product_name, product_brand, product_type, product_price, product_quantity, status])
+            
+        return converted_data
+
+
     def generate_unique_id(self):
         while True:
             letters = ''.join(random.choices(string.ascii_uppercase, k=3))

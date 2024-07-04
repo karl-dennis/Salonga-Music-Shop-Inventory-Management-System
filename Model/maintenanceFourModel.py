@@ -32,6 +32,24 @@ class maintenanceFourModel:
         except sqlite3.Error as e:
             print('Error: ', e)
 
+    def fetch_month_data(self):
+        try:
+            self.cursor.execute('''SELECT transaction_id, customer_name, customer_contact, revenue, date, timestamp, status, products_ordered FROM transactions''')
+            result = self.cursor.fetchall()
+            infos = [list(row) for row in result]
+            return infos
+        except sqlite3.Error as e:
+            print('Error: ', e)
+
+    def fetch_overall_data(self):
+        try:
+            self.cursor.execute('''SELECT transaction_id, customer_name, customer_contact, revenue, date, timestamp, status, products_ordered FROM transactions''')
+            result = self.cursor.fetchall()
+            infos = [list(row) for row in result]
+            return infos
+        except sqlite3.Error as e:
+            print('Error: ', e)
+            
     def update_transaction_status(self, selected_transaction_id, selected_value):
         self.cursor.execute('UPDATE transactions SET status = ? WHERE transaction_id = ?', (selected_value,selected_transaction_id))
         print('in database updating')

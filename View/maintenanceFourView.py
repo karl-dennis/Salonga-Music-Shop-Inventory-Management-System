@@ -11,6 +11,7 @@ import os
 import datetime
 from datetime import datetime
 from tkinter import filedialog, messagebox
+import json
 
 class maintenanceFourView(ctk.CTkFrame):
 
@@ -292,87 +293,132 @@ class maintenanceFourView(ctk.CTkFrame):
     def on_systemDialog_close(self):
         self.system_dialog.destroy()
         self.system_dialog = None
-    
-    
+
     def generate_overall_pdf_report(self):
         # Ask user to select a directory
         directory = filedialog.askdirectory(title="Select Directory to Save Overall Sales Report")
         if not directory:
             return
-        
+
         # Define a fixed file name with timestamp
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        pdf_file = f'{directory}/overall_sales_report_{timestamp}.pdf'
+        pdf_file = os.path.join(directory, f'overall_sales_report_{timestamp}.pdf')
 
         # Generate PDF using ReportLab
         c = canvas.Canvas(pdf_file, pagesize=letter)
-
-        # Set up styles
-        title_style = ('Helvetica-Bold', 16)
-        header_style = ('Helvetica-Bold', 12)
-        body_style = ('Helvetica', 10)
+        width, height = letter
 
         # Store information
         store_name = "Salonga Music Shop"
         store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
-        store_contact = "Telephone: 2955991, Cellphone: 0910-5005-5096"
+        store_contact = "Telephone: 2955991, Cellphone: 0910-500-5096"
 
-        # Header: Store name, address, and contact
-        c.setFont(*title_style)
-        c.drawString(36, letter[1] - 50, store_name)
-        c.setFont(*body_style)
-        c.drawString(36, letter[1] - 70, store_address)
-        c.drawString(36, letter[1] - 90, store_contact)
+        # Header: Store name, address, and contact (centered)
+        c.setFont("Helvetica-Bold", 16)
+        store_name_width = c.stringWidth(store_name, "Helvetica-Bold", 16)
+        store_name_x = (width - store_name_width) / 2
+        c.drawString(store_name_x, height - 50, store_name)
 
-        # Title: Sales Report and timestamp
-        c.setFont(*title_style)
-        c.drawString(36, letter[1] - 120, "Sales Report (Overall)")
-        c.setFont(*body_style)
+        c.setFont("Helvetica", 10)
+        store_address_width = c.stringWidth(store_address, "Helvetica", 10)
+        store_address_x = (width - store_address_width) / 2
+        c.drawString(store_address_x, height - 70, store_address)
+
+        store_contact_width = c.stringWidth(store_contact, "Helvetica", 10)
+        store_contact_x = (width - store_contact_width) / 2
+        c.drawString(store_contact_x, height - 90, store_contact)
+
+        # Title: Sales Report and timestamp (left-aligned)
+        c.setFont("Helvetica-Bold", 16)
+        title_text = "Sales Report (Overall)"
+        title_width = c.stringWidth(title_text, "Helvetica-Bold", 16)
+        title_x = (width - title_width) / 2
+        c.drawString(title_x, height - 120, title_text)
         
-        # Set up table headers
+        
+        c.setFont("Helvetica", 10)
+
+        # Set up table headers (left-aligned)
         headers = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Date', 'Time', 'Status']
         col_widths = [60, 100, 100, 80, 80, 60, 60]  # Adjust widths as needed
         row_height = 20
-        table_width = sum(col_widths)
-
-        # Set initial y position for table
-        y_start = letter[1] - 150  # Starting point for table
-        y = y_start
+        y_start = height - 150
 
         # Draw table headers
-        c.setFont(*header_style)
+        c.setFont("Helvetica-Bold", 12)
         for i, header in enumerate(headers):
-            c.drawString(36 + sum(col_widths[:i]), y, header)
+            c.drawString(36 + sum(col_widths[:i]), y_start, header)
 
-        y -= row_height  # Move y position for rows
-        
-        # Initialize total revenue
-        total_revenue = 0.0
+        # Initialize variables for tracking total revenue and product quantities
+        c.setFont("Helvetica", 12)
+        y = y_start - row_height
+        total_revenue = 0
+        product_quantities = {}
+        product_revenues = {}
 
-        # Iterate through data and draw rows
-        for row_data in self.controller.get_data():
-            for i, col_value in enumerate(row_data):
+        # Fetch data for the overall period
+        for row_data in self.controller.get_overall_data():
+            order_date = datetime.strptime(row_data[4], '%Y-%m-%d').date()  # Assuming date is in ISO format
+            for i, col_value in enumerate(row_data[:7]):
                 if i == 3:  # Format revenue column
-                    col_value_formatted = f'Php {col_value:,.2f}'  # Assuming revenue is in Philippine Peso
+                    col_value = f'{col_value:,.2f}'  # Assuming revenue is in Philippine Peso
                     total_revenue += row_data[3]  # Assuming revenue is the fourth column
-                    col_value = col_value_formatted
-                else:
-                    col_value = str(col_value)
-                c.setFont(*body_style)
-                c.drawString(36 + sum(col_widths[:i]), y, col_value)
+                c.drawString(36 + sum(col_widths[:i]), y, str(col_value))
+
+            # Update product quantities and revenues
+            products_ordered = json.loads(row_data[7])
+            for product in products_ordered:
+                product_name = product['name']
+                product_quantity = product['quantity']
+                product_revenue = product['price'] * product_quantity
+                product_quantities[product_name] = product_quantities.get(product_name, 0) + product_quantity
+                product_revenues[product_name] = product_revenues.get(product_name, 0) + product_revenue
+
             y -= row_height
 
-        c.setFont("Helvetica", 12)
-        # Draw total revenue
-        c.drawString(36, y - 20, f'Total Revenue: Php {total_revenue:,.2f}')
+        # Display total revenue after the table
+        total_revenue_text = f'Total Revenue: Php {total_revenue:,.2f}'
+        c.drawString(36, y - 20, total_revenue_text)
 
+        # Tabulate products sold (left-aligned)
+        product_headers = ['Product Name', 'Quantity Sold', 'Revenue']
+        product_col_widths = [150, 100, 100]
+        product_y_start = y - 55
+        product_y = product_y_start
+
+        c.setFont("Helvetica-Bold", 12)
+        for i, header in enumerate(product_headers):
+            c.drawString(36 + sum(product_col_widths[:i]), product_y, header)
+        product_y -= row_height
+
+        c.setFont("Helvetica", 12)
+        for product, quantity in product_quantities.items():
+            revenue = product_revenues[product]
+            product_row = [product, quantity, f'Php {revenue:,.2f}']
+            for i, col_value in enumerate(product_row):
+                c.drawString(36 + sum(product_col_widths[:i]), product_y, str(col_value))
+            product_y -= row_height
+
+        # Identify the most bought product and its revenue
+        if product_quantities:
+            most_bought_product = max(product_quantities, key=product_quantities.get)
+            most_bought_product_quantity = product_quantities[most_bought_product]
+            most_bought_product_revenue = product_revenues[most_bought_product]
+            most_bought_product_text = (f'Trending Product: {most_bought_product} '
+                                        f'({most_bought_product_quantity} units, '
+                                        f'Revenue: Php {most_bought_product_revenue:,.2f})')
+            c.drawString(36, product_y - 20, most_bought_product_text)
+
+        # Footer: Generated on (left-aligned)
         generated_on_text = f"Generated on: {datetime.now().strftime('%B %d, %Y %H:%M:%S')}"
         c.drawString(36, 36, generated_on_text)
+
         # Save the PDF file
         c.save()
 
         # Show message box confirming report generation
         messagebox.showinfo('Report Generated', f'Overall sales report has been generated as {pdf_file}')
+
     
     def generate_current_month_pdf_report(self):
         # Ask user to select a directory
@@ -391,21 +437,33 @@ class maintenanceFourView(ctk.CTkFrame):
         # Store information
         store_name = "Salonga Music Shop"
         store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
-        store_contact = "Telephone: 2955991, Cellphone: 0910-5005-5096"
+        store_contact = "Telephone: 2955991, Cellphone: 0910-500-5096"
 
-        # Header: Store name, address, and contact
+        # Header: Store name, address, and contact (centered)
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 50, store_name)
-        c.setFont("Helvetica", 10)
-        c.drawString(36, height - 70, store_address)
-        c.drawString(36, height - 90, store_contact)
+        store_name_width = c.stringWidth(store_name, "Helvetica-Bold", 16)
+        store_name_x = (width - store_name_width) / 2
+        c.drawString(store_name_x, height - 50, store_name)
 
-        # Title: Sales Report and timestamp
-        c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 120, "Sales Report (Current Month)")
         c.setFont("Helvetica", 10)
+        store_address_width = c.stringWidth(store_address, "Helvetica", 10)
+        store_address_x = (width - store_address_width) / 2
+        c.drawString(store_address_x, height - 70, store_address)
+
+        store_contact_width = c.stringWidth(store_contact, "Helvetica", 10)
+        store_contact_x = (width - store_contact_width) / 2
+        c.drawString(store_contact_x, height - 90, store_contact)
+
+        # Title: Sales Report and timestamp (left-aligned)
+        c.setFont("Helvetica-Bold", 16)
+        current_month_name = datetime.now().strftime('%B %Y')  # Gets current month and year, e.g., July 2024
+        title_text = f'Sales Report ({current_month_name})'
+        title_width = c.stringWidth(title_text, "Helvetica-Bold", 16)
+        title_x = (width - title_width) / 2
+        c.drawString(title_x, height - 120, title_text)
         
-        # Set up table headers
+        c.setFont("Helvetica", 10)
+        # Set up table headers (left-aligned)
         headers = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Date', 'Time', 'Status']
         col_widths = [60, 100, 100, 80, 80, 60, 60]  # Adjust widths as needed
         row_height = 20
@@ -416,26 +474,69 @@ class maintenanceFourView(ctk.CTkFrame):
         for i, header in enumerate(headers):
             c.drawString(36 + sum(col_widths[:i]), y_start, header)
 
-        # Draw data rows and calculate total revenue for current month
+        # Initialize variables for tracking total revenue and product quantities
         c.setFont("Helvetica", 12)
         y = y_start - row_height
         total_revenue = 0
         current_month = datetime.now().month
-        for row_data in self.controller.get_data():
+        product_quantities = {}
+        product_revenues = {}
+
+        # Fetch data for the current month
+        for row_data in self.controller.get_month_data():
             order_date = datetime.strptime(row_data[4], '%Y-%m-%d').date()  # Assuming date is in ISO format
             if order_date.month == current_month:
-                for i, col_value in enumerate(row_data):
+                for i, col_value in enumerate(row_data[:7]):
                     if i == 3:  # Format revenue column
                         col_value = f'{col_value:,.2f}'  # Assuming revenue is in Philippine Peso
                         total_revenue += row_data[3]  # Assuming revenue is the fourth column
                     c.drawString(36 + sum(col_widths[:i]), y, str(col_value))
+
+                # Update product quantities and revenues
+                products_ordered = json.loads(row_data[7])
+                for product in products_ordered:
+                    product_name = product['name']
+                    product_quantity = product['quantity']
+                    product_revenue = product['price'] * product_quantity
+                    product_quantities[product_name] = product_quantities.get(product_name, 0) + product_quantity
+                    product_revenues[product_name] = product_revenues.get(product_name, 0) + product_revenue
+
                 y -= row_height
 
         # Display total revenue after the table
         total_revenue_text = f'Total Revenue: Php {total_revenue:,.2f}'
         c.drawString(36, y - 20, total_revenue_text)
 
-        # Footer: Generated on
+        # Tabulate products sold (left-aligned)
+        product_headers = ['Product Name', 'Quantity Sold', 'Revenue']
+        product_col_widths = [150, 100, 100]
+        product_y_start = y - 55
+        product_y = product_y_start
+
+        c.setFont("Helvetica-Bold", 12)
+        for i, header in enumerate(product_headers):
+            c.drawString(36 + sum(product_col_widths[:i]), product_y, header)
+        product_y -= row_height
+
+        c.setFont("Helvetica", 12)
+        for product, quantity in product_quantities.items():
+            revenue = product_revenues[product]
+            product_row = [product, quantity, f'Php {revenue:,.2f}']
+            for i, col_value in enumerate(product_row):
+                c.drawString(36 + sum(product_col_widths[:i]), product_y, str(col_value))
+            product_y -= row_height
+
+        # Identify the most bought product and its revenue
+        if product_quantities:
+            most_bought_product = max(product_quantities, key=product_quantities.get)
+            most_bought_product_quantity = product_quantities[most_bought_product]
+            most_bought_product_revenue = product_revenues[most_bought_product]
+            most_bought_product_text = (f'Trending Product: {most_bought_product} '
+                                        f'({most_bought_product_quantity} units, '
+                                        f'Revenue: Php {most_bought_product_revenue:,.2f})')
+            c.drawString(36, product_y - 20, most_bought_product_text)
+
+        # Footer: Generated on (left-aligned)
         generated_on_text = f"Generated on: {datetime.now().strftime('%B %d, %Y %H:%M:%S')}"
         c.drawString(36, 36, generated_on_text)
 
@@ -444,7 +545,7 @@ class maintenanceFourView(ctk.CTkFrame):
 
         # Show message box confirming report generation
         messagebox.showinfo('Report Generated', f'Sales report for current month has been generated as {pdf_file}')
-        
+
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

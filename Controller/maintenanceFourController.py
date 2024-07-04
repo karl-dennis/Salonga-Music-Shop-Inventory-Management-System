@@ -67,6 +67,12 @@ class maintenanceFourController:
     def get_data(self):
         return self.model.fetch_data()
 
+    def get_month_data(self):
+        return self.model.fetch_month_data()
+
+    def get_overall_data(self):
+        return self.model.fetch_overall_data()
+    
     def update_transaction_status(self, selected_transaction_id, selected_value):
         print(selected_transaction_id, selected_value)
         self.model.update_transaction_status(selected_transaction_id, selected_value)

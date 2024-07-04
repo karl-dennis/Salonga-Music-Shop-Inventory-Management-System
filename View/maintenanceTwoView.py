@@ -1,6 +1,6 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-import datetime
+from datetime import datetime as dt
 import customtkinter as ctk
 from CTkTable import *
 import shutil
@@ -86,7 +86,8 @@ class maintenanceTwoView(ctk.CTkFrame):
         """ [date, timestamp, username, employeeID, role] """
 
         self.table_values = self.controller.get_event()
-
+        
+        self.table_values.sort(key=lambda x: (dt.strptime(x[0], "%Y-%m-%d"), dt.strptime(x[1], "%H:%M:%S")), reverse=True)
         self.reordered_table = []
 
         for row_values in self.table_values:
@@ -169,7 +170,7 @@ class maintenanceTwoView(ctk.CTkFrame):
     def generate_pdf_report(self):
         # Fetch data to be included in the report
         table_values = self.controller.get_event()
-
+        table_values.sort(key=lambda x: (dt.strptime(x[0], "%Y-%m-%d"), dt.strptime(x[1], "%H:%M:%S")), reverse=True)
         # Ask user to select a directory
         directory = filedialog.askdirectory(title="Select Directory to Save PDF Report")
         
@@ -177,7 +178,7 @@ class maintenanceTwoView(ctk.CTkFrame):
             return
 
         # Define a fixed file name with timestamp
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        timestamp = dt.now().strftime("%Y-%m-%d_%H-%M-%S")
         pdf_file = os.path.join(directory, f'user_logs_report_{timestamp}.pdf')
         
         # Create a PDF document
@@ -187,20 +188,31 @@ class maintenanceTwoView(ctk.CTkFrame):
         # Store information
         store_name = "Salonga Music Shop"
         store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
-        store_contact = "Telephone: 2955991, Cellphone: 0910-5005-5096"
+        store_contact = "Telephone: 2955991, Cellphone: 0910-500-5096"
 
         
         # Set up store information
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 50, store_name)
+        store_name_width = c.stringWidth(store_name, "Helvetica-Bold", 16)
+        store_name_x = (width - store_name_width) / 2
+        c.drawString(store_name_x, height - 50, store_name)
         
         c.setFont("Helvetica", 10)
-        c.drawString(36, height - 70, store_address)
-        c.drawString(36, height - 90, store_contact)
+        store_address_width = c.stringWidth(store_address, "Helvetica", 10)
+        store_address_x = (width - store_address_width) / 2
+        c.drawString(store_address_x, height - 70, store_address)
+        
+        store_contact_width = c.stringWidth(store_contact, "Helvetica", 10)
+        store_contact_x = (width - store_contact_width) / 2
+        c.drawString(store_contact_x, height - 90, store_contact)
 
-        # Set up the title and timestamp
+        # Set up the title and timestamp (centered)
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 120, "User Logs Report")
+        title_text = "User Logs Report"
+        title_width = c.stringWidth(title_text, "Helvetica-Bold", 16)
+        title_x = (width - title_width) / 2
+        c.drawString(title_x, height - 120, title_text)
+        
         c.setFont("Helvetica", 10)
 
         # Draw table headers
@@ -222,15 +234,14 @@ class maintenanceTwoView(ctk.CTkFrame):
             y -= row_height
 
         # Draw "Generated on" line after the table
-        generated_on_text = f"Generated on: {datetime.datetime.now().strftime('%B %d, %Y %H:%M:%S')}"
+        generated_on_text = f"Generated on: {dt.now().strftime('%B %d, %Y %H:%M:%S')}"
         c.drawString(36, 36, generated_on_text)
 
         # Save the PDF file
         c.save()
 
         messagebox.showinfo('Report Generated', f'User Logs report has been generated as {pdf_file}')
-        
-        
+
         
     def show_systemDialog(self):
         if self.system_dialog is None:
@@ -309,7 +320,7 @@ class SystemDialog(ctk.CTkToplevel):
         if not backup_folder:
             return
 
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        timestamp = dt.now().strftime("%Y-%m-%d_%H-%M-%S")
         backup_file = os.path.join(backup_folder, f'backup_{timestamp}.db')
 
         try:
