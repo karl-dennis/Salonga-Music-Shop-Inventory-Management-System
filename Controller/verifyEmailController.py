@@ -22,14 +22,17 @@ class verifyEmailController:
     def show_resetPass(self):
         input_otp = self.view.get_otp()
         generated_otp = self.model.get_otp()
-
-        if input_otp == generated_otp:
-            from Controller.resetPassController import resetPassController
-            self.view.destroy()
-            resetPass_controller = resetPassController(self.view.get_email_from_view())
-            resetPass_controller.main()
+        if input_otp == '':
+            messagebox.showinfo('Error', 'OTP required')
+            if input_otp == generated_otp:
+                from Controller.resetPassController import resetPassController
+                self.view.destroy()
+                resetPass_controller = resetPassController(self.view.get_email_from_view())
+                resetPass_controller.main()
+            else:
+                messagebox.showerror('Warning', 'Incorrect')
         else:
-            messagebox.showerror('Warning', 'Incorrect')
+            return
 
     def email(self):
         print(self.view.get_email_from_view())
