@@ -1,5 +1,6 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from datetime import datetime
 import datetime
 import customtkinter as ctk
 from CTkTable import *
@@ -192,15 +193,26 @@ class maintenanceTwoView(ctk.CTkFrame):
         
         # Set up store information
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 50, store_name)
+        store_name_width = c.stringWidth(store_name, "Helvetica-Bold", 16)
+        store_name_x = (width - store_name_width) / 2
+        c.drawString(store_name_x, height - 50, store_name)
         
         c.setFont("Helvetica", 10)
-        c.drawString(36, height - 70, store_address)
-        c.drawString(36, height - 90, store_contact)
+        store_address_width = c.stringWidth(store_address, "Helvetica", 10)
+        store_address_x = (width - store_address_width) / 2
+        c.drawString(store_address_x, height - 70, store_address)
+        
+        store_contact_width = c.stringWidth(store_contact, "Helvetica", 10)
+        store_contact_x = (width - store_contact_width) / 2
+        c.drawString(store_contact_x, height - 90, store_contact)
 
-        # Set up the title and timestamp
+        # Set up the title and timestamp (centered)
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 120, "User Logs Report")
+        title_text = "User Logs Report"
+        title_width = c.stringWidth(title_text, "Helvetica-Bold", 16)
+        title_x = (width - title_width) / 2
+        c.drawString(title_x, height - 120, title_text)
+        
         c.setFont("Helvetica", 10)
 
         # Draw table headers
@@ -229,8 +241,7 @@ class maintenanceTwoView(ctk.CTkFrame):
         c.save()
 
         messagebox.showinfo('Report Generated', f'User Logs report has been generated as {pdf_file}')
-        
-        
+
         
     def show_systemDialog(self):
         if self.system_dialog is None:

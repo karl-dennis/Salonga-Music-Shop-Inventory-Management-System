@@ -313,7 +313,7 @@ class maintenanceFourView(ctk.CTkFrame):
         store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
         store_contact = "Telephone: 2955991, Cellphone: 0910-500-5096"
 
-        # Header: Store name, address, and contact
+        # Header: Store name, address, and contact (centered)
         c.setFont("Helvetica-Bold", 16)
         store_name_width = c.stringWidth(store_name, "Helvetica-Bold", 16)
         store_name_x = (width - store_name_width) / 2
@@ -328,12 +328,17 @@ class maintenanceFourView(ctk.CTkFrame):
         store_contact_x = (width - store_contact_width) / 2
         c.drawString(store_contact_x, height - 90, store_contact)
 
-        # Title: Sales Report and timestamp
+        # Title: Sales Report and timestamp (left-aligned)
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 120, "Sales Report (Overall)")
+        title_text = "Sales Report (Overall)"
+        title_width = c.stringWidth(title_text, "Helvetica-Bold", 16)
+        title_x = (width - title_width) / 2
+        c.drawString(title_x, height - 120, title_text)
+        
+        
         c.setFont("Helvetica", 10)
 
-        # Set up table headers
+        # Set up table headers (left-aligned)
         headers = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Date', 'Time', 'Status']
         col_widths = [60, 100, 100, 80, 80, 60, 60]  # Adjust widths as needed
         row_height = 20
@@ -375,7 +380,7 @@ class maintenanceFourView(ctk.CTkFrame):
         total_revenue_text = f'Total Revenue: Php {total_revenue:,.2f}'
         c.drawString(36, y - 20, total_revenue_text)
 
-        # Tabulate products sold
+        # Tabulate products sold (left-aligned)
         product_headers = ['Product Name', 'Quantity Sold', 'Revenue']
         product_col_widths = [150, 100, 100]
         product_y_start = y - 55
@@ -404,7 +409,7 @@ class maintenanceFourView(ctk.CTkFrame):
                                         f'Revenue: Php {most_bought_product_revenue:,.2f})')
             c.drawString(36, product_y - 20, most_bought_product_text)
 
-        # Footer: Generated on
+        # Footer: Generated on (left-aligned)
         generated_on_text = f"Generated on: {datetime.now().strftime('%B %d, %Y %H:%M:%S')}"
         c.drawString(36, 36, generated_on_text)
 
@@ -434,7 +439,7 @@ class maintenanceFourView(ctk.CTkFrame):
         store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
         store_contact = "Telephone: 2955991, Cellphone: 0910-500-5096"
 
-        # Header: Store name, address, and contact
+        # Header: Store name, address, and contact (centered)
         c.setFont("Helvetica-Bold", 16)
         store_name_width = c.stringWidth(store_name, "Helvetica-Bold", 16)
         store_name_x = (width - store_name_width) / 2
@@ -449,12 +454,16 @@ class maintenanceFourView(ctk.CTkFrame):
         store_contact_x = (width - store_contact_width) / 2
         c.drawString(store_contact_x, height - 90, store_contact)
 
-        # Title: Sales Report and timestamp
+        # Title: Sales Report and timestamp (left-aligned)
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 120, "Sales Report (Current Month)")
+        title_text = "Sales Report (Current Month)"
+        title_width = c.stringWidth(title_text, "Helvetica-Bold", 16)
+        title_x = (width - title_width) / 2
+        c.drawString(title_x, height - 120, title_text)
+
         c.setFont("Helvetica", 10)
 
-        # Set up table headers
+        # Set up table headers (left-aligned)
         headers = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Date', 'Time', 'Status']
         col_widths = [60, 100, 100, 80, 80, 60, 60]  # Adjust widths as needed
         row_height = 20
@@ -498,7 +507,7 @@ class maintenanceFourView(ctk.CTkFrame):
         total_revenue_text = f'Total Revenue: Php {total_revenue:,.2f}'
         c.drawString(36, y - 20, total_revenue_text)
 
-        # Tabulate products sold
+        # Tabulate products sold (left-aligned)
         product_headers = ['Product Name', 'Quantity Sold', 'Revenue']
         product_col_widths = [150, 100, 100]
         product_y_start = y - 55
@@ -527,7 +536,7 @@ class maintenanceFourView(ctk.CTkFrame):
                                         f'Revenue: Php {most_bought_product_revenue:,.2f})')
             c.drawString(36, product_y - 20, most_bought_product_text)
 
-        # Footer: Generated on
+        # Footer: Generated on (left-aligned)
         generated_on_text = f"Generated on: {datetime.now().strftime('%B %d, %Y %H:%M:%S')}"
         c.drawString(36, 36, generated_on_text)
 
