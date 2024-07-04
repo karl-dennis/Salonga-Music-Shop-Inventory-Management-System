@@ -96,6 +96,7 @@ class maintenanceFourView(ctk.CTkFrame):
         self.salesTableFrame.place(x=11, y=79)
         
         table_values = self.controller.get_data()
+        table_values.sort(key=lambda x: (datetime.strptime(x[4], "%Y-%m-%d"), datetime.strptime(x[5], "%H:%M:%S")), reverse=True)
         # table_values = [
         #     ['O0001', 'Fritz Gonzales', '09692123869', 25700, '10-12-2024', '10:00:25', 'Active'],
         #     ['O0002', 'Lucas Ballesteros', '09998299276', 8500, '11-15-2024', '13:01:25', 'Active']
@@ -356,8 +357,12 @@ class maintenanceFourView(ctk.CTkFrame):
         product_quantities = {}
         product_revenues = {}
 
+        table_values_pdf = self.controller.get_overall_data()
+
+        table_values_pdf.sort(key=lambda x: (datetime.strptime(x[4], "%Y-%m-%d"), datetime.strptime(x[5], "%H:%M:%S")), reverse=True)
+
         # Fetch data for the overall period
-        for row_data in self.controller.get_overall_data():
+        for row_data in table_values_pdf:
             order_date = datetime.strptime(row_data[4], '%Y-%m-%d').date()  # Assuming date is in ISO format
             for i, col_value in enumerate(row_data[:7]):
                 if i == 3:  # Format revenue column
@@ -482,8 +487,13 @@ class maintenanceFourView(ctk.CTkFrame):
         product_quantities = {}
         product_revenues = {}
 
+        table_values_pdf = self.controller.get_month_data()
+
+        table_values_pdf.sort(key=lambda x: (datetime.strptime(x[4], "%Y-%m-%d"), datetime.strptime(x[5], "%H:%M:%S")),
+                              reverse=True)
+
         # Fetch data for the current month
-        for row_data in self.controller.get_month_data():
+        for row_data in table_values_pdf:
             order_date = datetime.strptime(row_data[4], '%Y-%m-%d').date()  # Assuming date is in ISO format
             if order_date.month == current_month:
                 for i, col_value in enumerate(row_data[:7]):
