@@ -456,13 +456,13 @@ class maintenanceFourView(ctk.CTkFrame):
 
         # Title: Sales Report and timestamp (left-aligned)
         c.setFont("Helvetica-Bold", 16)
-        title_text = "Sales Report (Current Month)"
+        current_month_name = datetime.now().strftime('%B %Y')  # Gets current month and year, e.g., July 2024
+        title_text = f'Sales Report ({current_month_name})'
         title_width = c.stringWidth(title_text, "Helvetica-Bold", 16)
         title_x = (width - title_width) / 2
         c.drawString(title_x, height - 120, title_text)
-
+        
         c.setFont("Helvetica", 10)
-
         # Set up table headers (left-aligned)
         headers = ['Order ID', 'Buyer', 'Contact #', 'Revenue', 'Date', 'Time', 'Status']
         col_widths = [60, 100, 100, 80, 80, 60, 60]  # Adjust widths as needed
