@@ -32,6 +32,9 @@ class maintenanceThreeController:
     def get_data(self):
         return self.model.fetch_data()
 
+    def get_processed_data(self):
+        return self.model.fetch_and_process_data()
+    
     def show_maintenanceOne(self):
         self.view.clear_base_frame()
         from Controller.maintenanceController import maintenanceController

@@ -493,7 +493,7 @@ class maintenanceThreeView(ctk.CTkFrame):
     def on_systemDialog_close(self):
         self.system_dialog.destroy()
         self.system_dialog = None
-        
+
     def generate_pdf_report(self):
         # Ask user to select a directory
         directory = filedialog.askdirectory(title="Select Directory to Save PDF Report")
@@ -513,19 +513,30 @@ class maintenanceThreeView(ctk.CTkFrame):
         store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
         store_contact = "Telephone: 2955991, Cellphone: 0910-500-5096"
 
-        # Header: Store name, address, and contact
+        # Header: Store name, address, and contact (centered)
         c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 50, store_name)
-        c.setFont("Helvetica", 10)
-        c.drawString(36, height - 70, store_address)
-        c.drawString(36, height - 90, store_contact)
+        store_name_width = c.stringWidth(store_name, "Helvetica-Bold", 16)
+        store_name_x = (width - store_name_width) / 2
+        c.drawString(store_name_x, height - 50, store_name)
 
-        # Title: Stock Report and timestamp
-        c.setFont("Helvetica-Bold", 16)
-        c.drawString(36, height - 120, "Stock Report")
         c.setFont("Helvetica", 10)
-        
-        # Set up table headers
+        store_address_width = c.stringWidth(store_address, "Helvetica", 10)
+        store_address_x = (width - store_address_width) / 2
+        c.drawString(store_address_x, height - 70, store_address)
+
+        store_contact_width = c.stringWidth(store_contact, "Helvetica", 10)
+        store_contact_x = (width - store_contact_width) / 2
+        c.drawString(store_contact_x, height - 90, store_contact)
+
+        # Title: Stock Report and timestamp (centered)
+        c.setFont("Helvetica-Bold", 16)
+        report_title = "Stock Report"
+        report_title_width = c.stringWidth(report_title, "Helvetica-Bold", 16)
+        report_title_x = (width - report_title_width) / 2
+        c.drawString(report_title_x, height - 120, report_title)
+        c.setFont("Helvetica", 10)
+
+        # Set up table headers (left-aligned)
         headers = ['Product ID', 'Product Name', 'Type', 'Brand', 'Price', 'Quantity', 'Status']
         col_widths = [70, 115, 90, 85, 60, 60, 70]  # Adjust widths as needed
         row_height = 20
@@ -534,21 +545,26 @@ class maintenanceThreeView(ctk.CTkFrame):
         # Draw table headers
         c.setFont("Helvetica-Bold", 12)
         for i, header in enumerate(headers):
-            c.drawString(36 + sum(col_widths[:i]), y_start, header)
+            header_x = 36 + sum(col_widths[:i])  # Left-aligned position
+            c.drawString(header_x, y_start, header)
 
-        # Draw data rows
+        # Fetch and process data
+        data = self.controller.get_processed_data()
+
+        # Draw data rows (left-aligned)
         c.setFont("Helvetica", 12)
         y = y_start - row_height
-        for row_values in self.reordered_table:
+        for row_values in data:
             for i, value in enumerate(row_values):
                 if i == 1:  # Shorten product name if too long
                     value = value[:25] + '...' if len(value) > 28 else value
-                elif i == 4:  # Format price column
+                elif i == 4:  # Format price column (was quantity)
                     value = f'{value:,.2f}'  # Assuming price is in Philippine Peso
-                c.drawString(36 + sum(col_widths[:i]), y, str(value))
+                value_x = 36 + sum(col_widths[:i])  # Left-aligned position
+                c.drawString(value_x, y, str(value))
             y -= row_height
 
-        # Footer: Generated on
+        # Footer: Generated on (left-aligned)
         generated_on_text = f"Generated on: {datetime.datetime.now().strftime('%B %d, %Y %H:%M:%S')}"
         c.drawString(36, 36, generated_on_text)
 
@@ -557,8 +573,8 @@ class maintenanceThreeView(ctk.CTkFrame):
 
         # Show message box confirming report generation
         messagebox.showinfo('Report Generated', f'Stock report has been generated as {pdf_file}')
-    
-    
+
+
 class SystemDialog(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
