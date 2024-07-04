@@ -187,7 +187,7 @@ class maintenanceTwoView(ctk.CTkFrame):
         # Store information
         store_name = "Salonga Music Shop"
         store_address = "#674 Gonzalo Puyat St., Quiapo, Manila"
-        store_contact = "Telephone: 2955991, Cellphone: 0910-5005-5096"
+        store_contact = "Telephone: 2955991, Cellphone: 0910-500-5096"
 
         
         # Set up store information
