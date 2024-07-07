@@ -5,17 +5,24 @@ from tkinter import messagebox, simpledialog
 import customtkinter as ctk
 from Controller.dashboardController import dashboardController
 from Controller.verifyEmailController import verifyEmailController
+import sys
 
 class loginController:
     def __init__(self):
         self.model = loginModel()
         self.view = loginView(self)
         self.emp_id = None  # Initialize emp_id attribute
+        self.login_attempts = 0
+        self.max_attempts = 3
 
     def main(self):
         self.view.main()
 
     def on_button_click(self, username, password):
+        if self.login_attempts >= self.max_attempts:
+            messagebox.showerror('Error', 'Maximum login attempts exceeded.')
+            sys.exit()
+
         if username and password:  # Ensure both username and password are provided
             login_success, self.emp_id = self.model.login(username, password)
 
@@ -46,7 +53,12 @@ class loginController:
                 else:
                     messagebox.showerror("Warning", "OTP input cancelled")
             else:
-                messagebox.showerror('Warning', 'Invalid login credentials')
+                self.login_attempts += 1
+                if self.login_attempts >= self.max_attempts:
+                    messagebox.showerror('Error', 'Maximum login attempts exceeded.')
+                    sys.exit()
+                else:
+                    messagebox.showerror('Warning', 'Invalid login credentials')
         else:
             messagebox.showerror('Warning!', 'Enter all data')
 

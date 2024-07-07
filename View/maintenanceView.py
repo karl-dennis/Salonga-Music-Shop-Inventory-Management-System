@@ -360,7 +360,7 @@ class maintenanceView(ctk.CTkFrame):
             
     def select_row(self, row):
         self.table.edit_row(row, fg_color='#EAEAEA')
-        print(f"Selected row {row}: {self.reordered_table[row]}")
+        # print(f"Selected row {row}: {self.reordered_table[row]}")
         self.id = self.table_values[row][0]
         # self.username_entry.set(value=self.reordered_table[row][1])
         self.username_entry.set(value=self.table_values[row][1])
@@ -373,7 +373,7 @@ class maintenanceView(ctk.CTkFrame):
 
     def deselect_row(self, row):
         self.table.edit_row(row, fg_color='#F7F7F7')
-        print(f"Deselected row {row}: {self.reordered_table[row]}")
+        # print(f"Deselected row {row}: {self.reordered_table[row]}")
 
         self.username_entry.set(value='')
         self.passwordEntry.configure(state='normal')
@@ -422,6 +422,11 @@ class maintenanceView(ctk.CTkFrame):
     def clear_form(self):
         self.usernameEntry.delete(0, 'end')
         self.loaDropdown.set('Select')
+        self.passwordEntry.delete(0, 'end')
+        self.emailEntry.delete(0, 'end')
+        self.birthdateEntry.delete('0', 'end')
+        self.firstnameEntry.delete(0, 'end')
+        self.lastnameEntry.delete(0, 'end')
 
     def save_button_clicked(self):
         if self.selected_row is not None:
@@ -532,7 +537,7 @@ class SystemDialog(ctk.CTkToplevel):
 
         try:
             shutil.copy(database_path, backup_file)
-            print(f"Database backed up successfully to {backup_file}")
+            # print(f"Database backed up successfully to {backup_file}")
         except Exception as e:
             print(f"Error during backup: {str(e)}")
     
@@ -550,7 +555,7 @@ class SystemDialog(ctk.CTkToplevel):
         try:
             # Perform the restore by copying the backup file to the database path
             shutil.copy(backup_file, database_path)
-            print(f"Database restored successfully from {backup_file}")
+            # print(f"Database restored successfully from {backup_file}")
         except Exception as e:
             print(f"Error during restore: {str(e)}")
             
