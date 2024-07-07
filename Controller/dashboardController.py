@@ -1,4 +1,3 @@
-
 import sys
 from Model.dashboardModel import dashboardModel
 from View.dashboardView import dashboardView
@@ -6,6 +5,7 @@ from View.productView import productView
 import tkinter as tk
 from tkinter import messagebox
 from datetime import datetime
+from Model.maintenanceTwoModel import maintenanceTwoModel
 
 class dashboardController:
     def __init__(self, id):
@@ -13,6 +13,7 @@ class dashboardController:
         self.loa = self.model.get_loa(id)
         self.view = dashboardView(self)
         self.id = id
+        self.maintenance = maintenanceTwoModel()
     
     
     def get_loa(self):
@@ -34,11 +35,12 @@ class dashboardController:
 
     def show_login(self):
         from Controller.loginController import loginController
-        
         current_datetime = datetime.now()
         current_time_date_str = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
-        print(current_time_date_str)
-        
+        # print(current_time_date_str)
+        username = self.model.get_username(self.id)
+        event = 'logged out'
+        self.maintenance.log_event(username, self.id, self.loa, event)
         self.view.destroy()
         login_controller = loginController()
         login_controller.main()

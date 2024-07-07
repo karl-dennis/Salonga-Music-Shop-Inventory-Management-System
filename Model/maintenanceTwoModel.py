@@ -26,18 +26,19 @@ class maintenanceTwoModel:
             username TEXT,
             employee_id TEXT,
             role TEXT,
+            event TEXT,
             FOREIGN KEY(employee_id) REFERENCES employees(employee_id)
             )'''
             self.cursor.execute(create_table_query_user_log)
         except sqlite3.Error as e:
             print('Error:', e)
 
-    def log_event(self, username, employee_id, role):
+    def log_event(self, username, employee_id, role, event):
         try:
             timestamp = datetime.now().strftime('%H:%M:%S')
             date = datetime.now().strftime('%Y-%m-%d')
-            log_query = '''INSERT INTO user_log (date, timestamp, username, employee_id, role) VALUES (?, ?, ?, ?, ?)'''
-            self.cursor.execute(log_query, (date, timestamp, username, employee_id, role))
+            log_query = '''INSERT INTO user_log (date, timestamp, username, employee_id, role, event) VALUES (?, ?, ?, ?, ?, ?)'''
+            self.cursor.execute(log_query, (date, timestamp, username, employee_id, role, event))
             self.connectDatabase.commit()
         except sqlite3.Error as e:
             print('Error:', e)

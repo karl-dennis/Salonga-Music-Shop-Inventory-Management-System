@@ -310,7 +310,7 @@ class productView(ctk.CTkFrame):
                                                         fg_color='#F7F7F7', text_color='#868686',
                                                         corner_radius=0, anchor='w')
 
-            if reordered_table:
+            if reordered_table and len(reordered_table) > row and len(reordered_table[row]) > 5:
                 quantity = int(reordered_table[row][5])  # Column[5] = Quantity
                 if quantity == 0:
                     status = "No Stock"
@@ -321,6 +321,12 @@ class productView(ctk.CTkFrame):
                 else:
                     status = "Available"
                     status_color = "#329932"
+            else:
+                # Handle case when reordered_table is empty or row index and column index are out of range
+                # For example:
+                quantity = 0  # or any default value
+                status = ""  # or handle differently based on your application's logic
+                status_color = "#D92929"
 
                 self.table.insert(row, 6, status)
                 self.table.frame[row, 6].configure(text_color=status_color)  # Status
@@ -398,7 +404,7 @@ class productView(ctk.CTkFrame):
                 new_width = int(img_height * aspect_ratio)
 
             resized_image = selected_image.resize((new_width, new_height))
-            # print(f"New image size: {new_width}x{new_height}")
+            print(f"New image size: {new_width}x{new_height}")
             new_image = ctk.CTkImage(light_image=resized_image, size=(new_width, new_height))
 
             self.imageButton.configure(image=new_image)
@@ -455,5 +461,4 @@ class productView(ctk.CTkFrame):
         self.controller.save_button_clicked(product_name,type,brand,quantity,price,image, capital_price)
         messagebox.showinfo('Success', 'Product Added Successfully')
         self.clear_form()
-
         self.show_productTable()
