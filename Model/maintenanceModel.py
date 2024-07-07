@@ -29,7 +29,7 @@ class maintenanceModel:
 
             # Insert data into employees table first
             employeesData = (unique_id, first_name, last_name, birthdate, email, loa, status)
-            print(employeesData)
+            # print(employeesData)
             self.cursor.execute('''INSERT INTO employees (employee_id, first_name, last_name, birthday, email_address, level_of_access, status) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)''', employeesData)
 
@@ -132,10 +132,6 @@ class maintenanceModel:
         """
 
         update_accounts = """UPDATE accounts SET username = ? WHERE employee_id = ?"""
-        # Replace 'user_id' with your actual primary key column name
-
-        # Assuming self.selected_row gives you the user_id of the selected row
-        # Adjust this part according to how you identify the row to update in your table
 
         # Execute the update query
         self.cursor.execute(update_query, (first_name, last_name, birthdate, email, loa, id))

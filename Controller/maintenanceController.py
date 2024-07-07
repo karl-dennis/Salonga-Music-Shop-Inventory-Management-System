@@ -1,3 +1,5 @@
+import re
+from tkinter import messagebox
 from Model.maintenanceModel import maintenanceModel
 from View.maintenanceView import maintenanceView
 import tkinter as tk
@@ -65,10 +67,24 @@ class maintenanceController:
                 tab.configure(text_color=inactive_text)
     
     def get_employees_with_accounts(self):
-        print(self.model.fetch_employees_with_accounts())
+        # print(self.model.fetch_employees_with_accounts())
         return self.model.fetch_employees_with_accounts()
 
     def save_button_clicked(self, username, password, first_name, last_name, birthdate, email, loa):
+        username_pattern = re.compile(r'^[a-zA-Z0-9]{6,}$')
+        password_pattern = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~`!@#$%^&*()\-_=+{}[\]\\|;:"<>,./?]).+$')
+
+        if not username_pattern.match(username):
+            # print("Invalid username. It must contain at least 6 alphanumeric characters.")
+            messagebox.showinfo('Invalid username', 'It must contain at least 6 alphanumeric characters.')
+            return
+
+        if not password_pattern.match(password):
+            # print(
+            #     "Invalid password. It must contain at least one lowercase letter, one uppercase letter, one digit, and one special character.")
+            messagebox.showinfo('Invalid password', 'It must contain at least one lowercase letter, one uppercase letter, one digit, and one special character.')
+            return
+
         self.model.signup(username, password, first_name, last_name, birthdate, email, loa)
 
     def update(self, id, username, first_name, last_name, birthdate, email, loa):
