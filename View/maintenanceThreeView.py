@@ -658,19 +658,3 @@ class SystemDialog(ctk.CTkToplevel):
         x = (self.winfo_screenwidth() // 2) - (width // 2)
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f'{370}x{220}+{x}+{y}')
-       
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("Maintenance Three Page (Test)")
-
-        self.maintenancethree_view = maintenanceThreeView(self.root, None)
-        self.maintenancethree_view.pack(fill=ctk.BOTH, expand=True)
-
-    def run(self):
-        self.root.mainloop()
-
-
-if __name__ == "__main__":
-    app = App()
-    app.run()

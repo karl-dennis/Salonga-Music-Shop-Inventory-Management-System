@@ -54,14 +54,3 @@ class inventoryView(ctk.CTkFrame):
         canvas = FigureCanvasTkAgg(fig, master=inner_frame)
         canvas.draw()
         canvas.get_tk_widget().place(x=0, y=10, width=650, height=350)
-        
-        
-if __name__ == "__main__":   
-    root = ctk.CTk()
-    root.geometry("520x292")
-    ctk.set_appearance_mode('light')
-
-    inventory_view = inventoryView(root, None)
-    inventory_view.pack(expand=True, fill='both')
-
-    root.mainloop()

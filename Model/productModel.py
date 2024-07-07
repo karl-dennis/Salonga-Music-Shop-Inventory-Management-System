@@ -129,7 +129,7 @@ class productModel:
                 return unique_id
 
     def add_brand(self, new_brand):
-        print(f"Adding brand: {new_brand}")
+        # print(f"Adding brand: {new_brand}")
         try:
             self.cursor.execute('''INSERT INTO brands (brand) VALUES (?)''', (new_brand,))
             self.connectDatabase.commit()

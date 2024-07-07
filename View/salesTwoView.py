@@ -434,22 +434,3 @@ class salesTwoView(ctk.CTkFrame):
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
-
-
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("Sales Two Page (Test)")
-
-        self.salesTwo_view = salesTwoView(self.root, None)
-        self.salesTwo_view.pack(fill=ctk.BOTH, expand=True)
-
-        self.root.update()
-
-    def run(self):
-        self.root.mainloop()
-
-
-if __name__ == "__main__":
-    app = App()
-    app.run()

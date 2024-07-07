@@ -398,7 +398,7 @@ class productView(ctk.CTkFrame):
                 new_width = int(img_height * aspect_ratio)
 
             resized_image = selected_image.resize((new_width, new_height))
-            print(f"New image size: {new_width}x{new_height}")
+            # print(f"New image size: {new_width}x{new_height}")
             new_image = ctk.CTkImage(light_image=resized_image, size=(new_width, new_height))
 
             self.imageButton.configure(image=new_image)
@@ -457,18 +457,3 @@ class productView(ctk.CTkFrame):
         self.clear_form()
 
         self.show_productTable()
-
-# class App:
-#     def __init__(self):
-#         self.root = ctk.CTk()
-#         self.root.title("Products Page (Test)")
-
-#         self.product_view = productView(self.root, None)
-#         self.product_view.pack(fill=ctk.BOTH, expand=True)
-
-#     def run(self):
-#         self.root.mainloop()
-
-# if __name__ == "__main__":
-#     app = App()
-#     app.run()

@@ -135,21 +135,3 @@ class loginView(ctk.CTk):
         username = self.userName.get()
         password = self.password.get()
         self.controller.on_button_click(username, password)
-        
-        
-# class App:
-#     def __init__(self):
-#         self.root = ctk.CTk()
-#         self.root.title("Login Page (Test)")
-
-#         self.login_view = loginView(self.root, None)
-#         self.login_view.pack(fill=ctk.BOTH, expand=True)
-        
-#         self.root.update()
-        
-#     def run(self):
-#         self.root.mainloop()
-
-# if __name__ == "__main__":
-#     app = App()
-#     app.run()

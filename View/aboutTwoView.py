@@ -132,18 +132,3 @@ class CollapsibleFrame(ctk.CTkFrame):
         else:
             self.answer_label.pack(pady=5)
         self.expanded = not self.expanded
-
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("About Two Page (Test)")
-        
-        self.abouttwo_view = aboutTwoView(self.root, None)
-        self.abouttwo_view.pack(fill=ctk.BOTH, expand=True)
-        
-    def run(self):
-        self.root.mainloop()
-
-if __name__ == "__main__":
-    app = App()
-    app.run()

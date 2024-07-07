@@ -78,18 +78,3 @@ class aboutView(ctk.CTkFrame):
     def clear_base_frame(self):
         for widget in self.baseFrame.winfo_children():
             widget.destroy()
-    
-class App:
-    def __init__(self):
-        self.root = ctk.CTk()
-        self.root.title("About Page (Test)")
-        
-        self.about_view = aboutView(self.root, None)
-        self.about_view.pack(fill=ctk.BOTH, expand=True)
-        
-    def run(self):
-        self.root.mainloop()
-
-if __name__ == "__main__":
-    app = App()
-    app.run()

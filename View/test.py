@@ -51,16 +51,3 @@ class FAQSection(ctk.CTkFrame):
         else:
             frame.answer_label.pack(fill="x", padx=5, pady=5)
         frame.expanded = not frame.expanded
-
-class App(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-        self.title("FAQ Section Example")
-        self.geometry("650x400")
-        
-        self.faq_section = FAQSection(self)
-        self.faq_section.pack(fill="both", expand=True, padx=10, pady=10)
-
-if __name__ == "__main__":
-    app = App()
-    app.mainloop()
