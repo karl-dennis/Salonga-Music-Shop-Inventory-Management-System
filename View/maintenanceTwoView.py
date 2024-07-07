@@ -226,8 +226,8 @@ class maintenanceTwoView(ctk.CTkFrame):
         row_height = 20
         y -= row_height
         for row in table_values:
-            date, timestamp, username, employee_id, role = row
-            action = f"{username} logged in at {timestamp}"
+            date, timestamp, username, employee_id, role, event = row
+            action = f"{username} {event}"
             data = [date, timestamp, action, employee_id, role]
             for i, text in enumerate(data):
                 c.drawString(x_positions[i], y, str(text))
