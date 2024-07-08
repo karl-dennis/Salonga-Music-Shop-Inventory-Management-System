@@ -1,10 +1,8 @@
 import customtkinter as ctk
 import tkinter as tk
-from PIL import Image
 from CTkSpinbox import *
 from tkinter import messagebox
-import base64
-from PIL import Image, ImageTk
+from PIL import Image
 import io
 class deliveryView(ctk.CTkFrame):
 
@@ -30,11 +28,23 @@ class deliveryView(ctk.CTkFrame):
     def custom_styles(self):
         pass
 
-    def show_selection(self):
+    def filter_products(self, query):
+        """Filters products based on the search query."""
+        query = query.lower()
+        filtered_products = []
+        for product in self.products:
+            name, brand, product_type = product[1], product[2], product[3]
+            if query in name.lower() or query in brand.lower() or query in product_type.lower():
+                filtered_products.append(product)
+        return filtered_products
+
+    def show_selection(self, filtered_products=None):
         self.selectionTable = ctk.CTkScrollableFrame(self.firstPageFrame, width=493, height=423, fg_color='transparent')
         self.selectionTable.place(x=0, y=120)
 
         self.products = self.controller.get_product()  # Fetch products from the model
+        if filtered_products is not None:
+            self.products = filtered_products
 
         columns = 5
         frame_width = 83
@@ -49,7 +59,7 @@ class deliveryView(ctk.CTkFrame):
 
             price = float(price)
             if quantity > 5:
-                controller_index+=1
+                controller_index += 1
                 continue
 
             row = valid_index // columns
@@ -63,8 +73,6 @@ class deliveryView(ctk.CTkFrame):
             # Decode the product image from BLOB
             if product_image_blob:
                 product_image = Image.open(io.BytesIO(product_image_blob))
-                # product_image.thumbnail((66, 66))
-                # product_image = ImageTk.PhotoImage(product_image)
                 img_width, img_height = 80, 80
                 aspect_ratio = product_image.width / product_image.height
 
@@ -76,7 +84,7 @@ class deliveryView(ctk.CTkFrame):
                     new_width = int(img_height * aspect_ratio)
 
                 resized_image = product_image.resize((new_width, new_height))
-                product_image = ctk.CTkImage(light_image=product_image, size=(new_width, new_height))
+                product_image = ctk.CTkImage(light_image=resized_image, size=(new_width, new_height))
             else:
                 product_image = self.placeholderIcon  # Use a placeholder image if no image is available
 
@@ -96,7 +104,6 @@ class deliveryView(ctk.CTkFrame):
                                            width=80, height=7, font=('Inter Semibold', 7), text_color='#747474')
             selection_brand.grid(row=2, column=0)
 
-
             formatted_price = f'₱{price:,.2f}'
 
             selection_price = ctk.CTkLabel(selection_frame, text=formatted_price,
@@ -112,7 +119,7 @@ class deliveryView(ctk.CTkFrame):
             selection_quantity.grid(row=4, column=0)
 
             valid_index += 1
-            controller_index +=1
+            controller_index += 1
     
     def add_row(self, idx):
         for rowFrame, _, product_idx in self.rowFrames:
@@ -395,17 +402,16 @@ class deliveryView(ctk.CTkFrame):
                 self.search_query.set('Search')
 
         self.searchEntry.bind('<FocusIn>', on_entry_click)
-        self.searchEntry.bind('<FocusOut>', on_focus_out)    
-        
+        self.searchEntry.bind('<FocusOut>', on_focus_out)
+
         def perform_search():
-            query = self.search_query.get()
-            if query.strip() != '':
-                query = self.search_query.get()
-                
-                """Insert model/controller here"""
-                
-                print(f"Performing search for: {query}")
-            
+            query = self.search_query.get().strip()
+            if query != '':
+                filtered_products = self.filter_products(query)
+                self.show_selection(filtered_products)
+            else:
+                self.show_selection()
+
         self.searchEntry.bind('<Return>', lambda event: perform_search())
         
     def clear_base_frame(self):
