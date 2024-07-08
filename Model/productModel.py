@@ -3,9 +3,6 @@ import random
 import string
 import io
 from PIL import Image
-import pandas as pd
-import matplotlib.pyplot as plt
-
 
 class productModel:
     def __init__(self):
@@ -13,10 +10,6 @@ class productModel:
         self.cursor = None
         self.connect_database()
         self.create_table_products()
-
-        self.create_brand_table()
-        self.create_table_stock()
-
         self.create_product_type_table()
 
     def connect_database(self):
@@ -43,17 +36,6 @@ class productModel:
         except sqlite3.Error as e:
             print('Error:', e)
 
-    def create_table_stock(self):
-        try:
-            create_table_query_stocks = '''CREATE TABLE IF NOT EXISTS stock_items(
-                stock_id TEXT PRIMARY KEY,
-                product_id TEXT,
-                FOREIGN KEY (product_id) REFERENCES products (product_id)
-            )'''
-            self.cursor.execute(create_table_query_stocks)
-        except sqlite3.Error as e:
-            print('Error:', e)
-    
     def create_brand_table(self):
         try:
             create_table_query_stocks = '''CREATE TABLE IF NOT EXISTS brands(
@@ -97,15 +79,6 @@ class productModel:
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', product_data)
             self.connectDatabase.commit()
 
-            # Insert the initial stock entries into the stock_items table
-            stock_data = [(stock_id, product_id) for stock_id in stock_ids]
-            self.cursor.executemany('''INSERT INTO stock_items (stock_id, product_id)
-                        VALUES (?, ?)''', stock_data)
-            self.connectDatabase.commit()
-
-            print(f"Product added with ID: {product_id}")
-            print(f"{quantity} stock items added for product ID: {product_id}")
-
         except sqlite3.Error as e:
             print('Error:', e)
 
@@ -148,7 +121,7 @@ class productModel:
     def fetch_brand(self):
         self.cursor.execute('''SELECT * FROM brands''')
         brands = self.cursor.fetchall()
-        print(brands)
+        # print(brands)
         return [brand[0] for brand in brands]
 
     def fetch_type(self):

@@ -17,7 +17,7 @@ class dashboardModel:
             self.cursor.execute('''SELECT level_of_access FROM employees WHERE employee_id = ?''', (emp_id,))
             result = self.cursor.fetchone()
             if result:
-                print('In Model:', result[0])
+                # print('In Model:', result[0])
                 return result[0]
             else:
                 print('No access level found for employee_id:', emp_id)
@@ -25,3 +25,16 @@ class dashboardModel:
         except sqlite3.Error as e:
             print('Error in dashboard Model:', e)
             return None
+
+    def get_username(self, emp_id):
+        try:
+            self.cursor.execute('''SELECT username FROM accounts WHERE employee_id = ?''', (emp_id,))
+            result = self.cursor.fetchone()
+            if result:
+                # print('In Model:', result[0])
+                return result[0]
+            else:
+                print('no username found for employee_id:', emp_id)
+                return None
+        except sqlite3.Error as e:
+            print('Error: ',e)

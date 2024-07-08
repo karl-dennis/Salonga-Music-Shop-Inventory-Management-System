@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from Model.maintenanceTwoModel import *
 
+#sqlite cloud server password admin: QXM8N1QNcp
 
 class loginModel:
     def __init__(self):
@@ -34,7 +35,8 @@ class loginModel:
                 self.emp_id = id[0]  # Set emp_id attribute
                 self.cursor.execute('''SELECT level_of_access FROM employees WHERE employee_id=?''', (self.emp_id,))
                 role = self.cursor.fetchone()
-                self.maintenance.log_event(username, self.emp_id, role[0])
+                event = 'logged in'
+                self.maintenance.log_event(username, self.emp_id, role[0], event)
                 return True, self.emp_id  # Return True and emp_id on successful login
             else:
                 print('Error: Incorrect password.')
@@ -111,10 +113,3 @@ class loginModel:
 
     def get_otp(self):
         return self.otp
-
-# Example of usage:
-# Initialize an instance of loginModel
-# model = loginModel()
-# Call the login method
-# success, emp_id = model.login(username, password)
-# Now emp_id can be accessed outside the class if login was successful

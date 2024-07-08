@@ -91,7 +91,7 @@ class maintenanceTwoView(ctk.CTkFrame):
         self.reordered_table = []
 
         for row_values in self.table_values:
-            action = f"{row_values[2]} logged in at {row_values[1]}"  # username logged in at timestamp
+            action = f"{row_values[2]} {row_values[5]}"  # username logged in at timestamp
             reordered_row_values = [row_values[0], row_values[1], action, row_values[3], row_values[4]]
             self.reordered_table.append(reordered_row_values)
 
@@ -226,8 +226,8 @@ class maintenanceTwoView(ctk.CTkFrame):
         row_height = 20
         y -= row_height
         for row in table_values:
-            date, timestamp, username, employee_id, role = row
-            action = f"{username} logged in at {timestamp}"
+            date, timestamp, username, employee_id, role, event = row
+            action = f"{username} {event}"
             data = [date, timestamp, action, employee_id, role]
             for i, text in enumerate(data):
                 c.drawString(x_positions[i], y, str(text))
@@ -354,4 +354,3 @@ class SystemDialog(ctk.CTkToplevel):
         x = (self.winfo_screenwidth() // 2) - (width // 2)
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f'{370}x{220}+{x}+{y}')
-        

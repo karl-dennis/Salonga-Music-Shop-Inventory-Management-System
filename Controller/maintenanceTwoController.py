@@ -25,19 +25,19 @@ class maintenanceTwoController:
         from Controller.maintenanceThreeController import maintenanceThreeController
         maintenanceThree_controller = maintenanceThreeController(self.view.baseFrame)
         maintenanceThree_controller.main()
-        
+
     def show_maintenanceFour(self):
         self.view.clear_base_frame()
         from Controller.maintenanceFourController import maintenanceFourController
         maintenanceFour_controller = maintenanceFourController(self.view.baseFrame)
         maintenanceFour_controller.main()
-    
+
     def show_maintenanceFive(self):
         self.view.clear_base_frame()
         from Controller.maintenanceFiveController import maintenanceFiveController
         maintenanceFive_controller = maintenanceFiveController(self.view.baseFrame)
         maintenanceFive_controller.main()
-        
+
     def set_active_tab(self, tab):
         self.view.active_tab = tab
         self.update_tab()
@@ -52,7 +52,7 @@ class maintenanceTwoController:
             self.show_maintenanceFour()
         elif tab ==5:
             self.show_maintenanceFive()
-            
+
     def update_tab(self):
         active_text = '#2E2E2E'
         inactive_text = '#9A9A9A'
