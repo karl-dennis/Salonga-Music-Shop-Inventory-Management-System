@@ -321,16 +321,15 @@ class productView(ctk.CTkFrame):
                 else:
                     status = "Available"
                     status_color = "#329932"
-            else:
-                # Handle case when reordered_table is empty or row index and column index are out of range
-                # For example:
-                quantity = 0  # or any default value
-                status = ""  # or handle differently based on your application's logic
-                status_color = "#D92929"
-
+                    
                 self.table.insert(row, 6, status)
                 self.table.frame[row, 6].configure(text_color=status_color)  # Status
                 self.table.frame[row, 5].configure(text_color=status_color, font=('Inter', 12))  # Quantity
+                
+            else:
+                # quantity = 0 
+                status = "" 
+                self.table.insert(row, 6, status)
 
         self.table.pack(fill='both', expand=True)
 
