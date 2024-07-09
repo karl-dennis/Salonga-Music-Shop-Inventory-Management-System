@@ -44,8 +44,8 @@ class salesView(ctk.CTkFrame):
         return filtered_products
 
     def show_selection(self, filtered_products=None):
-        self.selectionTable = ctk.CTkScrollableFrame(self.firstPageFrame, width=493, height=423, fg_color='transparent')
-        self.selectionTable.place(x=0, y=120)
+        self.selectionTable = ctk.CTkScrollableFrame(self.firstPageFrame, width=499, height=505, fg_color='transparent')
+        self.selectionTable.place(x=0, y=53)
 
         self.products = self.controller.get_product()  # Fetch products from the model
         if filtered_products is not None:
@@ -307,47 +307,6 @@ class salesView(ctk.CTkFrame):
         self.dividerLine = ctk.CTkFrame(self.firstPageFrame, width=522, height=2, fg_color='#DDDDDD')
         self.dividerLine.place(x=0, y=51)
 
-        self.filterFrame = ctk.CTkFrame(self.firstPageFrame, fg_color='transparent', width=336, height=56)
-        self.filterFrame.place(x=14, y=59)
-
-        self.brandFrame = ctk.CTkFrame(self.filterFrame, width=160, height=56, fg_color='transparent')
-        self.brandFrame.place(x=0, y=0)
-
-        self.brandLabel = ctk.CTkLabel(self.brandFrame, width=106, height=26, text='Brand',
-                                    font=('Inter Medium', 12), text_color='#595959', anchor='w')
-        self.brandLabel.place(x=4, y=0)
-
-        self.brandDropdown = ctk.CTkComboBox(self.brandFrame,
-                                            values=['All', 'Fender', 'Yamaha'], # Insert values here
-                                            width=160, height=30, corner_radius=7,
-                                            bg_color='transparent', fg_color='#FAFAFA',
-                                            border_color='#CACACA', border_width=2, state='readonly',
-                                            font=('Inter Medium', 12), text_color='#595959',
-                                            dropdown_font=('Inter Medium', 12), dropdown_text_color='#595959',
-                                            dropdown_fg_color='#FAFAFA', dropdown_hover_color='#e4e4e4',
-                                            button_color='#CACACA',)
-        self.brandDropdown.set('All')
-        self.brandDropdown.place(x=0, y=26)
-
-        self.typeFrame = ctk.CTkFrame(self.filterFrame, width=160, height=56, fg_color='transparent')
-        self.typeFrame.place(x=176, y=0)
-
-        self.typeLabel = ctk.CTkLabel(self.typeFrame, width=106, height=26, text='Type',
-                                    font=('Inter Medium', 12), text_color='#595959', anchor='w')
-        self.typeLabel.place(x=4, y=0)
-
-        self.typeDropdown = ctk.CTkComboBox(self.typeFrame,
-                                            values=['All', 'Guitar', 'Violin'], # Insert values here
-                                            width=160, height=30, corner_radius=7,
-                                            bg_color='transparent', fg_color='#FAFAFA',
-                                            border_color='#CACACA', border_width=2, state='readonly',
-                                            font=('Inter Medium', 12), text_color='#595959',
-                                            dropdown_font=('Inter Medium', 12), dropdown_text_color='#595959',
-                                            dropdown_fg_color='#FAFAFA', dropdown_hover_color='#e4e4e4',
-                                            button_color='#CACACA',)
-        self.typeDropdown.set('All')
-        self.typeDropdown.place(x=0, y=26)
-
     def base_frame(self):
         self.baseFrame = ctk.CTkFrame(self, width=842, height=620, fg_color='#DFDFDF', corner_radius=0)
         self.baseFrame.place(x=0, y=0)
@@ -361,7 +320,6 @@ class salesView(ctk.CTkFrame):
 
         self.baseFrame.bind('<Button-1>', lambda event: self.baseFrame.focus_set())
         self.firstPageFrame.bind('<Button-1>', lambda event: self.firstPageFrame.focus_set())
-        self.filterFrame.bind('<Button-1>', lambda event: self.filterFrame.focus_set())
         self.selectionTable.bind('<Button-1>', lambda event: self.selectionTable.focus_set())
         self.orderFrame.bind('<Button-1>', lambda event: self.orderFrame.focus_set())
 
