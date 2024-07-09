@@ -538,6 +538,8 @@ class SystemDialog(ctk.CTkToplevel):
         try:
             shutil.copy(database_path, backup_file)
             # print(f"Database backed up successfully to {backup_file}")
+            messagebox.showinfo('Success', f'Database Backed up Successfully to {backup_file}')
+
         except Exception as e:
             print(f"Error during backup: {str(e)}")
     
@@ -556,6 +558,7 @@ class SystemDialog(ctk.CTkToplevel):
             # Perform the restore by copying the backup file to the database path
             shutil.copy(backup_file, database_path)
             # print(f"Database restored successfully from {backup_file}")
+            messagebox.showinfo('Success', f'Database Restored Successfully to {backup_file}')
         except Exception as e:
             print(f"Error during restore: {str(e)}")
             
